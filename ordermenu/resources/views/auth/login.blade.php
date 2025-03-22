@@ -21,14 +21,15 @@
         <h1 class="text-sm sm:text-lg font-bold">RUMAH MAKAN</h1>
         <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-yellow-400 mb-4">Kampoeng Sawah</h2>
 
-        <form id="loginForm" class="space-y-3 sm:space-y-4">
+        <form action="{{ route('loginAccount') }}" method="POST" class="space-y-3 sm:space-y-4">
+            @csrf
             <div class="relative">
                 <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm sm:text-base">👤</span>
-                <input type="text" placeholder="Username" class="w-full pl-9 sm:pl-10 p-2 sm:p-3 rounded-md border border-gray-300 text-black text-sm sm:text-base" required>
+                <input type="text" name="username" placeholder="Username" class="w-full pl-9 sm:pl-10 p-2 sm:p-3 rounded-md border border-gray-300 text-black text-sm sm:text-base" required>
             </div>
             <div class="relative">
                 <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm sm:text-base">#</span>
-                <input type="password" placeholder="Kode Akses" class="w-full pl-9 sm:pl-10 p-2 sm:p-3 rounded-md border border-gray-300 text-black text-sm sm:text-base" required>
+                <input type="password" name="password" placeholder="Kode Akses" class="w-full pl-9 sm:pl-10 p-2 sm:p-3 rounded-md border border-gray-300 text-black text-sm sm:text-base" required>
             </div>
             <button type="submit" class="w-full bg-yellow-400 text-[#731b0c] font-bold py-2 sm:py-3 rounded-md hover:bg-yellow-300">Login</button>
         </form>

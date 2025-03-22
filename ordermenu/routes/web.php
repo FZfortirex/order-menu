@@ -6,33 +6,27 @@ use App\Http\Controllers\MenuController;
 
 // Halaman utama (Login page)
 Route::get('/', function () {
-    return view('auth.login'); // Redirect ke halaman login
+    return redirect()->route('loginAccount'); // Redirect ke halaman login custom
 })->name('home');
 
-// Halaman welcome setelah login
-Route::get('/welcome', function () {
-    return view('welcome');
-})->middleware('auth')->name('welcome');
+// Authentication Routes (Tanpa middleware 'guest')
+Route::get('/loginAccount', [AuthController::class, 'showLogin'])->name('loginAccount');
+Route::post('/loginAccount', [AuthController::class, 'login']);
 
-// Authentication Routes
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login')->middleware('guest');
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+// Logout Route
+Route::post('/logoutAccount', [AuthController::class, 'logout'])->name('logoutAccount')->middleware('auth');
 
 // Middleware auth untuk halaman yang membutuhkan login
 Route::middleware(['auth'])->group(function () {
-    // Dashboard
-    Route::get('/dashboard', function () {
-        return view('dashboard'); // Blade template untuk dashboard
-    })->middleware('verified')->name('dashboard');
+    Route::get('/welcome', function () {
+        return view('welcome');
+    })->middleware('verified')->name('welcome');
 
     // Menu Routes
     Route::get('/menu', [MenuController::class, 'index'])->name('order.menu');
     Route::get('/menu/{id}', [MenuController::class, 'show'])->name('menu.show');
 });
 
-// View login
-Route::view('/auth/login', 'auth.login')->middleware('guest');
-
+// Import tambahan
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
