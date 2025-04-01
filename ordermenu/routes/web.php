@@ -8,18 +8,6 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\WaiterController;
 
-<<<<<<< HEAD
-Route::get('/login', function () {
-    return view(view()->shared('isMobile') ? 'auth.login-mobile' : 'auth.login-desktop');
-})->name('login')->middleware('guest');
-
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-Route::get('/welcome', function () {
-    return view(view()->shared('isMobile') ? 'welcome-mobile' : 'welcome-desktop');
-})->name('welcome'); // Hapus middleware dulu
-=======
 // Halaman utama (Login page)
 Route::get('/', function () {
     return redirect()->route('loginAccount'); // Redirect ke halaman login custom
@@ -38,6 +26,7 @@ Route::middleware(['auth'])->group(function () {
         return view('welcome');
     })->middleware('verified')->name('welcome');
 >>>>>>> Feat/Ordermenu-DB
+});
 
 Route::get('/kontak', function () {
     return view(view()->shared('isMobile') ? 'user.kontak-mobile' : 'user.kontak-desktop');
@@ -56,10 +45,7 @@ Route::middleware([AuthenticateUser::class, DetectDevice::class])->group(functio
     Route::get('/waiter', [WaiterController::class, 'index'])->name('waiter.index');
     Route::post('/waiter/update/{id}', [WaiterController::class, 'update'])->name('waiter.update');
 });
-<<<<<<< HEAD
-=======
 
 // Import tambahan
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
->>>>>>> Feat/Ordermenu-DB
