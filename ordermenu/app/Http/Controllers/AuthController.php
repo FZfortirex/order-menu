@@ -7,36 +7,6 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-<<<<<<< HEAD
-    public function showLoginForm()
-    {
-        return view('auth.login');
-    }
-    public function login(Request $request)
-{
-    $username = $request->input('username');
-    $password = $request->input('password');
-
-    if (!empty($username) && !empty($password)) {
-        session()->put('logged_in', true);
-        session()->put('username', $username);
-        session()->save();
-
-        // Debug session sebelum redirect
-        return response()->json(session()->all());
-    }
-
-    return back()->withErrors(['login' => 'Username atau password tidak boleh kosong']);
-}
-
-
-
-
-    public function logout()
-    {
-        session()->forget('logged_in'); // Hapus session
-        return redirect()->route('login');
-=======
     public function showLogin()
     {
         return view('auth.login');
@@ -71,6 +41,5 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/loginAccount');
->>>>>>> Feat/Ordermenu-DB
     }
 }

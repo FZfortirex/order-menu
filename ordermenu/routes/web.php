@@ -25,7 +25,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/welcome', function () {
         return view('welcome');
     })->middleware('verified')->name('welcome');
->>>>>>> Feat/Ordermenu-DB
 });
 
 Route::get('/kontak', function () {
