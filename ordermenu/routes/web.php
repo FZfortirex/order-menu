@@ -1,45 +1,42 @@
 <?php
 
-use App\Http\Middleware\AuthenticateUser;
-use App\Http\Middleware\DetectDevice;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\WaiterController;
+use App\Http\Middleware\AuthenticateUser;
+use App\Http\Middleware\DetectDevice;
+use App\Http\Controllers\KontakController;
+use App\Http\Controllers\WelcomeController;
 
-// Halaman utama (Login page)
+// Halaman Utama (Redirect ke login)
 Route::get('/', function () {
-    return redirect()->route('loginAccount'); // Redirect ke halaman login custom
+    return redirect()->route('loginAccount');
 })->name('home');
 
-// Authentication Routes (Tanpa middleware 'guest')
+// Authentication Routes (Menggunakan versi temanmu)
 Route::get('/loginAccount', [AuthController::class, 'showLogin'])->name('loginAccount');
 Route::post('/loginAccount', [AuthController::class, 'login']);
-
-// Logout Route
 Route::post('/logoutAccount', [AuthController::class, 'logout'])->name('logoutAccount')->middleware('auth');
 
-// Middleware auth untuk halaman yang membutuhkan login
-Route::middleware(['auth'])->group(function () {
-    Route::get('/welcome', function () {
-        return view('welcome');
-    })->middleware('verified')->name('welcome');
->>>>>>> Feat/Ordermenu-DB
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/welcome', [WelcomeController::class, 'index'])->name('welcome');
 });
 
-Route::get('/kontak', function () {
-    return view(view()->shared('isMobile') ? 'user.kontak-mobile' : 'user.kontak-desktop');
-})->name('kontak'); // Pastikan nama route didefinisikan di sini
-
+Route::get('/kontak', [KontakController::class, 'index'])->name('kontak');
 
 // Middleware untuk halaman setelah login
-Route::middleware([AuthenticateUser::class, DetectDevice::class])->group(function () {
+Route::middleware([AuthenticateUser::class, DetectDevice::class, 'auth'])->group(function () {
 
     // Order Routes
     Route::get('/order', [OrderController::class, 'index'])->name('order.index');
     Route::post('/order', [OrderController::class, 'store'])->name('order.store');
     Route::get('/order/{id}', [OrderController::class, 'show'])->name('order.show');
+
+    // Menu Routes
+    Route::get('/menu', [MenuController::class, 'index'])->name('order.menu');
+    Route::get('/menu/{id}', [MenuController::class, 'show'])->name('menu.show');
 
     // Waiter Routes
     Route::get('/waiter', [WaiterController::class, 'index'])->name('waiter.index');

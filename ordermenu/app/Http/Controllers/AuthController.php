@@ -4,73 +4,59 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class AuthController extends Controller
 {
-<<<<<<< HEAD
-    public function showLoginForm()
-    {
-        return view('auth.login');
-    }
-    public function login(Request $request)
+    public function showLogin(Request $request)
 {
-    $username = $request->input('username');
-    $password = $request->input('password');
+    // Deteksi apakah mobile atau desktop
+    $isMobile = $request->header('User-Agent') && preg_match('/Mobile|Android|iPhone|iPad/', $request->header('User-Agent'));
 
-    if (!empty($username) && !empty($password)) {
-        session()->put('logged_in', true);
-        session()->put('username', $username);
-        session()->save();
-
-        // Debug session sebelum redirect
-        return response()->json(session()->all());
-    }
-
-    return back()->withErrors(['login' => 'Username atau password tidak boleh kosong']);
+    return view($isMobile ? 'auth.login-mobile' : 'auth.login-desktop');
 }
 
 
-
-
-    public function logout()
-    {
-        session()->forget('logged_in'); // Hapus session
-        return redirect()->route('login');
-=======
-    public function showLogin()
-    {
-        return view('auth.login');
-    }
-
+    // Login Pakai Database
     public function login(Request $request)
     {
+        // Validasi input
         $credentials = $request->validate([
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
 
         // Cari user berdasarkan username
-        $user = \App\Models\User::where('name', $credentials['username'])->first();
+        $user = User::where('name', $credentials['username'])->first();
 
-        // Periksa apakah password dalam database sama dengan input (tanpa hash)
+        // Periksa password (tanpa hash, sesuaikan kalau ada hashing)
         if ($user && $credentials['password'] === $user->password) {
             Auth::login($user);
             $request->session()->regenerate();
             return redirect()->intended('/welcome');
         }
 
+        // Tambahan dari versimu: Debug session jika gagal login
+        session()->put('login_attempt', [
+            'username' => $credentials['username'],
+            'status' => 'failed',
+            'timestamp' => now(),
+        ]);
+
+        // Balikin error
         return back()->withErrors([
             'username' => 'Username atau password salah.',
         ]);
     }
 
-
+    // Logout Pakai Database
     public function logout(Request $request)
     {
-        Auth::logout();
+        Auth::logout(); // Hapus session
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        // Tambahan dari versimu: Hapus session manual
         return redirect('/loginAccount');
->>>>>>> Feat/Ordermenu-DB
     }
 }
