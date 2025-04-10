@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\PesananController;
 
 // Halaman utama hanya bisa diakses jika sudah login
 Route::get('/', function () {
@@ -26,6 +27,10 @@ Route::get('/order/makanan', [MenuController::class, 'makanan'])->name('makanan'
 Route::get('/order/minuman', [MenuController::class, 'minuman'])->name('minuman');
 Route::get('/order/cemilan', [MenuController::class, 'cemilan'])->name('cemilan');
 
+Route::post('/tambah-pesanan', [PesananController::class, 'tambah'])->name('tambah.pesanan');
+Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan');
+Route::post('/pesanan/submit', [PesananController::class, 'submit'])->name('pesanan.submit');
+Route::post('/pesanan/remove/{nama}', [PesananController::class, 'remove'])->name('pesanan.remove');
 
 // Views
 Route::view('/auth/login', 'auth.login')->middleware('guest');

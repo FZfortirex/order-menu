@@ -11,17 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('menus', function (Blueprint $table) {
+        Schema::create('pesanans', function (Blueprint $table) {
             $table->id();
-            $table->string('name');         
-            $table->text('desc');
-            $table->string('image');
-            $table->integer('price');        
-            $table->string('category');      
-            $table->integer('stock');
-            $table->integer('point');
+            $table->string('session_id');
             $table->timestamps();
         });
+        
     }
 
     /**
@@ -29,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('menus');
+        Schema::dropIfExists('pesanan_items');
     }
 };
