@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+
 
 class AuthController extends Controller
 {
@@ -31,10 +33,11 @@ class AuthController extends Controller
 
         // Periksa password (tanpa hash, sesuaikan kalau ada hashing)
         if ($user && $credentials['password'] === $user->password) {
-            Auth::login($user);
+            auth()->loginUsingId($user->id); // Langsung login pakai ID
             $request->session()->regenerate();
             return redirect()->intended('/welcome');
         }
+
 
         // Tambahan dari versimu: Debug session jika gagal login
         session()->put('login_attempt', [
