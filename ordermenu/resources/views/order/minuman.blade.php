@@ -83,40 +83,28 @@
 
     <!-- Daftar Menu -->
     <div class="container mx-auto px-4 py-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 flex-grow">
-        <script>
-            let menuItems = [
-                { name: "Es Teh Manis", desc: "Teh manis dingin menyegarkan", img: "es-teh.png", stock: 20, price: "5rb" },
-                { name: "Es Jeruk", desc: "Jeruk segar dengan es", img: "es-jeruk.png", stock: 18, price: "7rb" },
-                { name: "Jus Alpukat", desc: "Jus alpukat kental dan lezat", img: "jus-alpukat.png", stock: 10, price: "12rb" },
-                { name: "Jus Mangga", desc: "Jus mangga segar dan nikmat", img: "jus-mangga.png", stock: 15, price: "10rb" },
-                { name: "Es Kopi Susu", desc: "Kopi susu dengan es batu", img: "es-kopi-susu.png", stock: 12, price: "15rb" },
-                { name: "Es Cincau", desc: "Minuman cincau dengan gula merah", img: "es-cincau.png", stock: 14, price: "8rb" },
-                { name: "Es Campur", desc: "Aneka buah dengan sirup manis", img: "es-campur.png", stock: 10, price: "13rb" },
-                { name: "Es Kelapa Muda", desc: "Kelapa muda asli dengan es", img: "es-kelapa.png", stock: 9, price: "12rb" },
-                { name: "Susu Coklat", desc: "Susu coklat hangat atau dingin", img: "susu-coklat.png", stock: 18, price: "10rb" },
-                { name: "Susu Putih", desc: "Susu murni segar", img: "susu-putih.png", stock: 20, price: "9rb" },
-                { name: "Teh Tarik", desc: "Teh tarik khas Malaysia", img: "teh-tarik.png", stock: 10, price: "10rb" },
-                { name: "Wedang Jahe", desc: "Minuman jahe hangat", img: "wedang-jahe.png", stock: 12, price: "8rb" }
-            ];
+    <script>
+        let menuContainer = document.querySelector(".container.grid");
 
-            let menuContainer = document.querySelector(".container.grid");
-            menuItems.forEach(item => {
-                let menuHTML = `
-                    <div class="menu-item bg-white p-4 shadow rounded-xl flex items-center border border-black h-32">
-                        <img src="${item.img}" class="h-16 w-16 object-cover rounded-lg" alt="${item.name}">
-                        <div class="ml-4 flex-1">
-                            <h3 class="font-bold text-lg">${item.name}</h3>
-                            <p class="text-sm text-gray-600">${item.desc}</p>
-                            <div class="flex justify-between items-center mt-2">
-                                <p class="text-sm">Stok: ${item.stock}</p>
-                                <p class="text-sm font-semibold">Harga: ${item.price}</p>
-                            </div>
+        let filteredItems = menuItems.filter(item => item.category === "Minuman");
+
+        filteredItems.forEach(item => {
+            let menuHTML = `
+                <div class="menu-item bg-white p-4 shadow rounded-xl flex items-center border border-black h-32">
+                    <img src="${item.img}" class="h-16 w-16 object-cover rounded-lg" alt="${item.name}">
+                    <div class="ml-4 flex-1">
+                        <h3 class="font-bold text-lg">${item.name}</h3>
+                        <p class="text-sm text-gray-600">${item.desc}</p>
+                        <div class="flex justify-between items-center mt-2">
+                            <p class="text-sm">Stok: ${item.stock}</p>
+                            <p class="text-sm font-semibold">Harga: ${item.price}</p>
                         </div>
-                        <button class="ml-4 bg-yellow-400 px-5 py-3 rounded-full flex items-center justify-center text-xl font-bold border border-black">+</button>
-                    </div>`;
-                menuContainer.innerHTML += menuHTML;
-            });
-        </script>
+                    </div>
+                    <button class="ml-4 bg-yellow-400 px-5 py-3 rounded-full flex items-center justify-center text-xl font-bold border border-black">+</button>
+                </div>`;
+            menuContainer.innerHTML += menuHTML;
+        });
+    </script>
     </div>
 </body>
 </html>

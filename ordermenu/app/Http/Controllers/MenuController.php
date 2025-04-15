@@ -3,37 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Menu;
 
 class MenuController extends Controller
 {
 
     public function index(Request $request)
     {
-        //Data menu sementara (nanti bisa di ganti dengan database)
-        $menus = [
-            ['nama' => 'Ayam geprek',
-             'deskripsi' => 'ayam geprek khas',
-              'harga' => 10000,
-             'gambar' => '',
-        ],
-            ['nama' => 'Ayam Bakar',
-            'deskripsi' => 'Ayam bakar dengan bumbu khas',
-            'harga' => 12000,
-            'gambar' => '',
-            ],
-            ['nama' => 'Lele gorengr',
-            'deskripsi' => 'kan lele goreng renyah',
-            'harga' => 10000,
-            'gambar' => '',
-            ],
-            ['nama' => 'Nasi goreng',
-            'deskripsi' => 'Nasi goreng spesial',
-            'harga' => 15000,
-            'gambar' => '',
-            ],
-        ];
-
+        // Menampilkan semua menu
+        $menus = Menu::all();
         return view('order.menu', compact('menus'));
+    }
+
+    public function apiMenus()
+    {
+        return response()->json(Menu::all());
     }
 
     public function makanan()

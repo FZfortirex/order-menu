@@ -49,6 +49,11 @@ Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan');
 Route::post('/pesanan/submit', [PesananController::class, 'submit'])->name('pesanan.submit');
 Route::post('/pesanan/remove/{nama}', [PesananController::class, 'remove'])->name('pesanan.remove');
 
+Route::get('/menus', [MenuController::class, 'index']);
+Route::post('/tambah-pesanan', [MenuController::class, 'addToCart']);
+Route::get('/api/menus', [MenuController::class, 'apiMenus']);
+
+
 
 // Import tambahan
 require __DIR__.'/settings.php';
