@@ -36,32 +36,39 @@
         </h2>
         <p class="text-gray-600 mb-4">{{ $menu->desc }}</p>
 
-        <p class="font-semibold">Packaging</p>
-        <label class="flex items-center space-x-2 my-1">
-          <input type="checkbox"> <span>Dibungkus</span>
-        </label>
-        <label class="flex items-center space-x-2 mb-3">
-          <input type="checkbox"> <span>Makan di tempat</span>
-        </label>
+        <form action="{{ route('pesanan.add') }}" method="POST">
+          @csrf
+          <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+          <input type="hidden" name="price" value="{{ $menu->price }}">
+          <input type="hidden" id="quantity" name="quantity" value="1">
 
-        <p class="font-semibold flex justify-between items-center mt-4">
-          Catatan <span class="text-gray-500 text-sm">Opsional</span>
-        </p>
-        <p class="text-sm text-gray-500 mb-1">Contoh: tambahkan sedikit sambal saja</p>
-        <textarea class="w-full border rounded-lg p-2 mb-4" rows="3" placeholder="Tulis catatan di sini..."></textarea>
-
-        <div class="flex items-center justify-between mb-2">
-          <p>{{ $menu->name }}</p>
-          <div class="flex items-center space-x-4">
-            <button onclick="updateQty(-1)" class="text-xl bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center">➖</button>
-            <span id="qty" class="text-lg font-semibold">1</span>
-            <button onclick="updateQty(1)" class="text-xl bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center">➕</button>
+          <p class="font-semibold">Packaging</p>
+          <label class="flex items-center space-x-2 my-1">
+            <input type="radio" name="packaging" value="dibungkus" required>
+            <span>Dibungkus</span>
+          </label>
+          <label class="flex items-center space-x-2 mb-3">
+            <input type="radio" name="packaging" value="makan di tempat" required>
+            <span>Makan di tempat</span>
+          </label>
+          <p class="font-semibold flex justify-between items-center mt-4">
+            Catatan <span class="text-gray-500 text-sm">Opsional</span>
+          </p>
+          <p class="text-sm text-gray-500 mb-1">Contoh: tambahkan sedikit sambal saja</p>
+          <textarea name="note" class="w-full border rounded-lg p-2 mb-4" rows="3" placeholder="Tulis catatan di sini..."></textarea>
+          <div class="flex items-center justify-between mb-2">
+            <p>{{ $menu->name }}</p>
+            <div class="flex items-center space-x-4">
+              <button type="button" onclick="updateQty(-1)" class="text-xl bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center">➖</button>
+              <span id="qty" class="text-lg font-semibold">1</span>
+              <button type="button" onclick="updateQty(1)" class="text-xl bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center">➕</button>
+            </div>
           </div>
+          <button type="submit" class="bg-yellow-400 text-black rounded-xl w-full py-2 font-semibold flex items-center justify-between px-4">
+            Tambahkan : <span id="totalPrice">{{ $menu->price }}rb</span> <i class="fas fa-shopping-cart"></i>
+          </button>
+        </form>
         </div>
-
-        <button class="bg-yellow-400 text-black rounded-xl w-full py-2 font-semibold flex items-center justify-between px-4">
-          Tambahkan : <span id="totalPrice">{{ $menu->price }}rb</span> <i class="fas fa-shopping-cart"></i>
-        </button>
       </div>
     </div>
 
@@ -93,6 +100,7 @@
       if (qty < 1) qty = 1;
       document.getElementById('qty').innerText = qty;
       document.getElementById('totalPrice').innerText = (qty * price) + 'rb';
+      document.getElementById('quantity').value = qty;
     }
   </script>
 </body>

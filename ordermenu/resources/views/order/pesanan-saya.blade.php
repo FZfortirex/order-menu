@@ -19,7 +19,7 @@
           <img src="{{ asset('img/' . strtolower(str_replace(' ', '-', $item['name'])) . '.png') }}" alt="{{ $item['name'] }}" class="w-16 h-16 rounded-md object-cover">
           <div class="space-y-1">
             <h3 class="font-semibold text-base">{{ $item['name'] }}</h3>
-            <p class="text-sm text-gray-600">{{ $item['desc'] ?? 'Harga: ' . $item['price'] }}</p>
+            <p class="text-sm text-gray-600">{{ $item['desc'] ?? 'Harga: ' . $item['total_price'] }}</p>
           </div>
         </div>
         <div class="flex flex-col items-end justify-between h-full">
@@ -67,20 +67,18 @@
 
       <div class="mt-4 border-t pt-4 space-y-2 text-sm">
         <h4 class="font-medium">Riwayat Pembayaran</h4>
-        @php $total = 0; @endphp
         @foreach($pesanan as $item)
           @php
-            $subtotal = preg_replace('/[^0-9]/', '', $item['price']) * $item['quantity'];
-            $total += $subtotal;
+            $total += intval($item['items_price']);
           @endphp
           <div class="flex justify-between">
             <span>{{ $item['name'] }} x {{ $item['quantity'] }}</span>
-            <span>Rp. {{ number_format($subtotal, 0, ',', '.') }}</span>
+            <span>Rp. {{ number_format($item['items_price']) }}</span>
           </div>
         @endforeach
         <div class="flex justify-between font-semibold pt-2 border-t">
           <span>Total Pembayaran :</span>
-          <span>Rp. {{ number_format($total, 0, ',', '.') }}</span>
+          <span>Rp. {{ $total }}</span> <!-- Total sebagai integer -->
         </div>
       </div>
 

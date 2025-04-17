@@ -52,15 +52,22 @@ class MenuController extends Controller
 
     public function show(Request $request, $id)
     {
+        // Ambil menu berdasarkan ID atau gagal jika tidak ditemukan
         $menu = Menu::findOrFail($id);
 
+        // Ambil 3 menu acak lainnya, kecuali yang sedang ditampilkan
         $menus = Menu::where('id', '!=', $id)
-                     ->inRandomOrder()
-                     ->limit(3)
-                     ->get();
+                    ->inRandomOrder()
+                    ->limit(3)
+                    ->get();
 
-        $isMobile = $request->header('User-Agent') && preg_match('/Mobile|Android|iPhone|iPad/', $request->header('User-Agent'));
+        // Deteksi apakah perangkat yang digunakan adalah mobile
+        $userAgent = $request->header('User-Agent');
+        $isMobile = $userAgent && preg_match('/Mobile|Android|iPhone|iPad/', $userAgent);
 
-        return view($isMobile ? 'order.option-menu-mobile' : 'order.option-menu-desktop', compact('menu', 'menus'));
+        // Tampilkan view sesuai perangkat
+        $view = $isMobile ? 'order.option-menu-mobile' : 'order.option-menu-desktop';
+
+        return view($view, compact('menu', 'menus'));
     }
 }
