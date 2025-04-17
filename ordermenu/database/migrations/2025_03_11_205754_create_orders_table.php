@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id'); 
-            $table->integer('chat_id'); 
-            $table->integer('redeem_point_id'); 
+            $table->integer('redeem_point_id')->nullable();
             $table->integer('table'); 
             $table->string('additional_note');
             $table->integer('total_price');

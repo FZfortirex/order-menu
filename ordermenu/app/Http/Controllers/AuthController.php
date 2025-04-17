@@ -10,13 +10,22 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-public function showLogin(Request $request)
-{
-    // Deteksi apakah mobile atau desktop
-    $isMobile = $request->header('User-Agent') && preg_match('/Mobile|Android|iPhone|iPad/', $request->header('User-Agent'));
+    public function index()
+    {
+        $userId = Auth::id();
 
-    return view($isMobile ? 'auth.login-mobile' : 'auth.login-desktop');
-}
+        $pesanan = \App\Models\Pesanan::where('user_id', $userId)->get();
+
+        return view('pesanan', compact('pesanan'));
+    }
+    
+    public function showLogin(Request $request)
+    {
+        // Deteksi apakah mobile atau desktop
+        $isMobile = $request->header('User-Agent') && preg_match('/Mobile|Android|iPhone|iPad/', $request->header('User-Agent'));
+
+        return view($isMobile ? 'auth.login-mobile' : 'auth.login-desktop');
+    }
 
 
     // Login Pakai Database

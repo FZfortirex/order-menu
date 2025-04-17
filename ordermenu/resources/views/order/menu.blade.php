@@ -61,6 +61,11 @@
       }
     }
 
+    function goToDetail(id) {
+  window.location.href = `/menu/${id}`;
+}
+
+
     function renderCategories() {
       categoryContainer.innerHTML = '';
       categories.forEach((category, index) => {
@@ -71,26 +76,30 @@
         categoryContainer.appendChild(btn);
       });
     }
-
     function renderMenu(items) {
-      menuContainer.innerHTML = "";
-      items.forEach(item => {
-        menuContainer.innerHTML += `
-          <div class="menu-item bg-white p-4 shadow rounded-xl flex items-center border border-black h-32" data-category="${item.category}">
-            <img src="/images/${item.image}" class="h-16 w-16 object-cover rounded-lg" alt="${item.name}">
-            <div class="ml-4 flex-1">
-              <h3 class="font-bold text-lg">${item.name}</h3>
-              <p class="text-sm text-gray-600">${item.desc}</p>
-              <div class="flex justify-between items-center mt-2">
-                <p class="text-sm">Stok: ${item.stock}</p>
-                <p class="text-sm font-semibold">Harga: ${item.price}</p>
-              </div>
-            </div>
-            <button onclick='addToCart(${JSON.stringify(item)})' class="ml-4 bg-yellow-400 px-5 py-3 rounded-full flex items-center justify-center text-xl font-bold border border-black">+</button>
+  menuContainer.innerHTML = "";
+  items.forEach(item => {
+    menuContainer.innerHTML += `
+      <div onclick="goToDetail(${item.id})" class="menu-item bg-white p-4 shadow rounded-xl flex items-center border border-black h-32 hover:bg-gray-100 transition cursor-pointer" data-category="${item.category}">
+        <img src="/images/${item.image}" class="h-16 w-16 object-cover rounded-lg" alt="${item.name}">
+        <div class="ml-4 flex-1">
+          <h3 class="font-bold text-lg">${item.name}</h3>
+          <p class="text-sm text-gray-600">${item.desc}</p>
+          <div class="flex justify-between items-center mt-2">
+            <p class="text-sm">Stok: ${item.stock}</p>
+            <p class="text-sm font-semibold">Harga: ${item.price}</p>
           </div>
-        `;
-      });
-    }
+        </div>
+        <button
+          onclick='event.stopPropagation(); addToCart(${JSON.stringify(item)})'
+          class="ml-4 bg-yellow-400 px-5 py-3 rounded-full flex items-center justify-center text-xl font-bold border border-black hover:bg-yellow-300 transition">
+          +
+        </button>
+      </div>
+    `;
+  });
+}
+
 
     function filterCategory(category, clickedBtn) {
       document.querySelectorAll(".category-button").forEach(btn => btn.classList.remove("active-category"));

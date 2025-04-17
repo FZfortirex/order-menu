@@ -38,20 +38,25 @@ Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
 // Menu Routes
 Route::get('/menu', [MenuController::class, 'index'])->name('order.menu');
-Route::get('/menu/{id}', [MenuController::class, 'show'])->name('menu.show');
+Route::get('/menu/{id}', [MenuController::class, 'show'])->name('menu.detail');
 
 Route::get('/order/makanan', [MenuController::class, 'makanan'])->name('makanan');
 Route::get('/order/minuman', [MenuController::class, 'minuman'])->name('minuman');
 Route::get('/order/cemilan', [MenuController::class, 'cemilan'])->name('cemilan');
 
-Route::post('/tambah-pesanan', [PesananController::class, 'tambah'])->name('tambah.pesanan');
-Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan');
-Route::post('/pesanan/submit', [PesananController::class, 'submit'])->name('pesanan.submit');
-Route::post('/pesanan/remove/{nama}', [PesananController::class, 'remove'])->name('pesanan.remove');
+Route::middleware('auth')->group(function () {
+    Route::post('/pesanan/add', [PesananController::class, 'add'])->name('pesanan.add');
+    Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan');
+    Route::post('/pesanan/submit', [PesananController::class, 'submit'])->name('pesanan.submit');
+    Route::post('/pesanan/remove/{nama}', [PesananController::class, 'remove'])->name('pesanan.remove');
+});
 
 Route::get('/menus', [MenuController::class, 'index']);
 Route::post('/tambah-pesanan', [MenuController::class, 'addToCart']);
 Route::get('/api/menus', [MenuController::class, 'apiMenus']);
+
+
+
 
 
 
