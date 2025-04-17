@@ -38,7 +38,7 @@ Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
 // Menu Routes
 Route::get('/menu', [MenuController::class, 'index'])->name('order.menu');
-Route::get('/menu/{id}', [MenuController::class, 'show'])->name('menu.show');
+Route::get('/menu/{id}', [MenuController::class, 'show'])->name('menu.detail');
 
 Route::get('/order/makanan', [MenuController::class, 'makanan'])->name('makanan');
 Route::get('/order/minuman', [MenuController::class, 'minuman'])->name('minuman');
@@ -49,12 +49,11 @@ Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan');
 Route::post('/pesanan/submit', [PesananController::class, 'submit'])->name('pesanan.submit');
 Route::post('/pesanan/remove/{nama}', [PesananController::class, 'remove'])->name('pesanan.remove');
 
-// Middleware untuk halaman setelah login
-Route::middleware([AuthenticateUser::class, DetectDevice::class, 'auth'])->group(function () {
-    // Waiter Routes
-    Route::get('/waiter', [WaiterController::class, 'index'])->name('waiter.index');
-    Route::post('/waiter/update/{id}', [WaiterController::class, 'update'])->name('waiter.update');
-});
+Route::get('/menus', [MenuController::class, 'index']);
+Route::post('/tambah-pesanan', [MenuController::class, 'addToCart']);
+Route::get('/api/menus', [MenuController::class, 'apiMenus']);
+
+
 
 // Import tambahan
 require __DIR__.'/settings.php';

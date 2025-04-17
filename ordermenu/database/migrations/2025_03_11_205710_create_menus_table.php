@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('image');
             $table->integer('price');
             $table->string('category');
-            $table->string('stock');
-            $table->string('point');
+            $table->integer('stock');
+            $table->integer('point');
             $table->timestamps();
         });
     }

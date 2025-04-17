@@ -82,37 +82,28 @@
 
     <!-- Daftar Menu -->
     <div class="container mx-auto px-4 py-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 flex-grow">
-        <script>
-            let menuItems = [
-                { name: "Pisang Goreng", desc: "Pisang goreng renyah dan manis", img: "pisang-goreng.png", stock: 20, price: "8rb" },
-                { name: "Tahu Crispy", desc: "Tahu goreng crispy gurih", img: "tahu-crispy.png", stock: 18, price: "10rb" },
-                { name: "Cireng", desc: "Cireng kenyal dengan bumbu rujak", img: "cireng.png", stock: 15, price: "12rb" },
-                { name: "Risoles", desc: "Risoles isi ragout lezat", img: "risoles.png", stock: 14, price: "7rb" },
-                { name: "Mendoan", desc: "Tempe goreng setengah matang khas Banyumas", img: "mendoan.png", stock: 12, price: "9rb" },
-                { name: "Pastel", desc: "Pastel isi ayam dan sayur", img: "pastel.png", stock: 16, price: "8rb" },
-                { name: "Kroket", desc: "Kroket kentang isi daging cincang", img: "kroket.png", stock: 11, price: "10rb" },
-                { name: "Martabak Mini", desc: "Martabak manis mini aneka rasa", img: "martabak-mini.png", stock: 20, price: "12rb" },
-                { name: "Lumpia", desc: "Lumpia goreng dengan isi rebung dan ayam", img: "lumpia.png", stock: 10, price: "13rb" }
-            ];
+    <script>
+        let menuContainer = document.querySelector(".container.grid");
 
-            let menuContainer = document.querySelector(".container.grid");
-            menuItems.forEach(item => {
-                let menuHTML = `
-                    <div class="menu-item bg-white p-4 shadow rounded-xl flex items-center border border-black h-32">
-                        <img src="${item.img}" class="h-16 w-16 object-cover rounded-lg" alt="${item.name}">
-                        <div class="ml-4 flex-1">
-                            <h3 class="font-bold text-lg">${item.name}</h3>
-                            <p class="text-sm text-gray-600">${item.desc}</p>
-                            <div class="flex justify-between items-center mt-2">
-                                <p class="text-sm">Stok: ${item.stock}</p>
-                                <p class="text-sm font-semibold">Harga: ${item.price}</p>
-                            </div>
+        let filteredItems = menuItems.filter(item => item.category === "Cemilan");
+
+        filteredItems.forEach(item => {
+            let menuHTML = `
+                <div class="menu-item bg-white p-4 shadow rounded-xl flex items-center border border-black h-32">
+                    <img src="${item.img}" class="h-16 w-16 object-cover rounded-lg" alt="${item.name}">
+                    <div class="ml-4 flex-1">
+                        <h3 class="font-bold text-lg">${item.name}</h3>
+                        <p class="text-sm text-gray-600">${item.desc}</p>
+                        <div class="flex justify-between items-center mt-2">
+                            <p class="text-sm">Stok: ${item.stock}</p>
+                            <p class="text-sm font-semibold">Harga: ${item.price}</p>
                         </div>
-                        <button class="ml-4 bg-yellow-400 px-5 py-3 rounded-full flex items-center justify-center text-xl font-bold border border-black">+</button>
-                    </div>`;
-                menuContainer.innerHTML += menuHTML;
-            });
-        </script>
+                    </div>
+                    <button class="ml-4 bg-yellow-400 px-5 py-3 rounded-full flex items-center justify-center text-xl font-bold border border-black">+</button>
+                </div>`;
+            menuContainer.innerHTML += menuHTML;
+        });
+    </script>
     </div>
 </body>
 </html>

@@ -84,21 +84,10 @@
     <!-- Daftar Menu -->
     <div class="container mx-auto px-4 py-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 flex-grow">
         <script>
-            let menuItems = [
-                { name: "Ayam Bakar", desc: "Ayam bakar dengan bumbu khas", img: "ayam-bakar.png", stock: 12, price: "20rb" },
-                { name: "Ikan Bakar", desc: "Ikan bakar segar dengan sambal", img: "ikan-bakar.png", stock: 10, price: "30rb" },
-                { name: "Udang Saus Padang", desc: "Udang segar dengan saus pedas", img: "udang.png", stock: 8, price: "35rb" },
-                { name: "Cumi Goreng Tepung", desc: "Cumi goreng crispy", img: "cumi.png", stock: 15, price: "25rb" },
-                { name: "Lele Goreng", desc: "Lele goreng renyah", img: "lele.png", stock: 14, price: "15rb" },
-                { name: "Tahu Tempe Penyet", desc: "Tahu tempe penyet dengan sambal pedas", img: "tahu-tempe.png", stock: 20, price: "10rb" },
-                { name: "Nasi Goreng Spesial", desc: "Nasi goreng dengan ayam dan seafood", img: "nasi-goreng.png", stock: 10, price: "18rb" },
-                { name: "Sate Ayam", desc: "Sate ayam bumbu kacang", img: "sate.png", stock: 16, price: "22rb" },
-                { name: "Gurame Asam Manis", desc: "Gurame segar dengan saus asam manis", img: "gurame.png", stock: 9, price: "40rb" },
-                { name: "Sop Iga", desc: "Sop iga sapi dengan rempah pilihan", img: "sop-iga.png", stock: 7, price: "50rb" }
-            ];
-
             let menuContainer = document.querySelector(".container.grid");
-            menuItems.forEach(item => {
+            let filteredItems = menuItems.filter(item => item.category === "Makanan");
+
+            filteredItems.forEach(item => {
                 let menuHTML = `
                     <div class="menu-item bg-white p-4 shadow rounded-xl flex items-center border border-black h-32">
                         <img src="${item.img}" class="h-16 w-16 object-cover rounded-lg" alt="${item.name}">
