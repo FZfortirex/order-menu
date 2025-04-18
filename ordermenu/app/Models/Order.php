@@ -11,19 +11,19 @@ class Order extends Model
         'additional_note', 'total_price', 'status', 'total_point'
     ];
 
-    // Relasi dengan tabel Item (asumsi ada relasi one-to-many)
+    // Relasi dengan tabel Item
     public function items()
     {
         return $this->hasMany(Item::class);
     }
 
-    // Relasi dengan User (asumsi ada relasi many-to-one dengan User)
+    // Relasi dengan User 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // Relasi dengan redeem_point_id (asumsi ada relasi dengan Point)
+    // Relasi dengan redeem_point_id
     public function redeemPoint()
     {
         return $this->belongsTo(RedeemPoint::class);

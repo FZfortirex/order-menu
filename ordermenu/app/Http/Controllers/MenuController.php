@@ -22,22 +22,7 @@ class MenuController extends Controller
 
     public function makanan()
     {
-        $menus = [
-            [
-                'nama' => 'Ayam Geprek',
-                'deskripsi' => 'Ayam Goreng dengan Geprekan khasnya',
-                'harga' => 10000,
-                'gambar' => 'ayam-geprek.png',
-            ],
-            [
-                'nama' => 'Ayam Bakar',
-                'deskripsi' => 'Ayam panggang dengan bumbu khas',
-                'harga' => 12000,
-                'gambar' => 'ayam-bakar.png',
-            ]
-        ];
-
-        return view('order.makanan', compact('menus'));
+        return view('order.makanan');
     }
 
     public function minuman()

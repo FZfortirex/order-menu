@@ -21,23 +21,23 @@ class PesananController extends Controller
             'price'     => 'required|numeric',
         ]);
 
-        // Hitung total harga item (price * quantity)
+        // Hitung total harga item
         $totalItemPrice = $request->price * $request->quantity;
 
         // Simpan item ke database
         Item::create([
-            'user_id'     => auth()->id(), // Pastikan user login
+            'user_id'     => auth()->id(), // user login
             'menu_id'     => $request->menu_id,
             'packaging'   => $request->packaging,
             'note'        => $request->note,
             'quantity'    => $request->quantity,
-            'items_price' => $totalItemPrice, // ⬅️ total harga dari item
+            'items_price' => $totalItemPrice, // total harga dari item
         ]);
 
         return redirect('/menu')->with('success', 'Item berhasil ditambahkan ke pesanan.');
     }
 
-    // Hapus item dari pesanan berbasis session
+    // Hapus item dari pesanan
     public function remove($nama)
     {
         $pesanan = Session::get('pesanan', []);
@@ -52,7 +52,7 @@ class PesananController extends Controller
         return redirect()->back()->with('success', 'Item berhasil dihapus.');
     }
 
-    // Kirim pesanan (hanya berlaku jika menggunakan session)
+    // Kirim pesanan 
     public function submit(Request $request)
     {
         $request->validate([
@@ -79,16 +79,18 @@ class PesananController extends Controller
             'additional_note' => $request->catatan,
             'total_price'     => $totalHarga,
             'status'          => 'menunggu', // status default
-            'total_point'     => 0, // kalau belum ada sistem poin
+            'total_point'     => 0, // belum ada sistem poin
         ]);
 
-        // Kosongkan pesanan user (hapus dari table items)
-        Item::where('user_id', $userId)->delete();
+        // Update semua item user yang belum punya order_id
+        Item::where('user_id', auth()->id())
+        ->whereNull('order_id')
+        ->update(['order_id' => $order->id]);
 
         return redirect('/menu')->with('success', 'Pesanan berhasil dikirim!');
     }
 
-    // Tampilkan daftar pesanan (session-based)
+    // Tampilkan daftar pesanan
     public function index()
     {
         $userId = Auth::id();
@@ -100,7 +102,7 @@ class PesananController extends Controller
                 'name'         => $item->menu->name ?? 'Menu Tidak Ditemukan',
                 'desc'         => $item->note ?? '',
                 'quantity'     => $item->quantity,
-                'items_price'  => $item->items_price, // ✅ Tambahkan ini
+                'items_price'  => $item->items_price, 
                 'total_price'  => 'Rp. ' . number_format($item->items_price, 0, ',', '.'),
             ];
         });

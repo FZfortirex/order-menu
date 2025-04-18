@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id'); 
             $table->integer('menu_id'); 
+            $table->integer('order_id')->nullable(); 
             $table->string('packaging'); 
-            $table->string('note'); 
+            $table->string('note')->nullable(); 
             $table->integer('quantity'); 
             $table->integer('items_price'); 
             $table->timestamps();

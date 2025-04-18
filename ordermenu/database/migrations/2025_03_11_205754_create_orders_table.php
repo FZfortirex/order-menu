@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('user_id'); 
             $table->integer('redeem_point_id')->nullable();
             $table->integer('table'); 
-            $table->string('additional_note');
+            $table->string('additional_note')->nullable();
             $table->integer('total_price');
             $table->string('status');
             $table->integer('total_point');
