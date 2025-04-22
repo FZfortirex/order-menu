@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Profile Desktop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
     @media (max-width: 1024px) {
@@ -42,10 +43,12 @@
           <div class="text-xl">💲</div>
           <div class="text-base font-semibold">0 poin</div>
         </div>
-        <button class="text-sm text-white bg-maroon-800 px-4 py-2 rounded flex items-center">
-          Tukar Poin
-          <span class="ml-1">➡️</span>
-        </button>
+        <a href="/tukarpoin">
+  <button class="text-sm text-white bg-maroon-800 px-4 py-2 rounded flex items-center">
+    Tukar Poin
+    <span class="ml-1">➡️</span>
+  </button>
+</a>
       </div>
     </div>
   </div>

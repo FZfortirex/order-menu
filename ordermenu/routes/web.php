@@ -13,6 +13,7 @@ use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\TukarPoinController;
 
 // Halaman Utama (Redirect ke login)
 Route::get('/', function () {
@@ -46,7 +47,14 @@ Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store
 Route::get('/reviews/{id}', [ReviewController::class, 'show'])->name('reviews.show');
 Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 
+Route::get('/kontak', [KontakController::class, 'index'])->name('kontak');
 
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+Route::get('/tukarpoin', [TukarPoinController::class, 'index'])->name('tukarpoin');
+
+// Menu Routes
+Route::get('/menu', [MenuController::class, 'index'])->name('order.menu');
+Route::get('/menu/{id}', [MenuController::class, 'show'])->name('menu.detail');
 
 Route::get('/order/makanan', [MenuController::class, 'makanan'])->name('makanan');
 Route::get('/order/minuman', [MenuController::class, 'minuman'])->name('minuman');

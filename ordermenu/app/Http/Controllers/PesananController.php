@@ -39,20 +39,25 @@ class PesananController extends Controller
 
     // Hapus item dari pesanan
     public function remove($nama)
-    {
-        $pesanan = Session::get('pesanan', []);
+{
+    $userId = auth()->id();
 
-        // Filter item yang berbeda dari yang ingin dihapus
-        $filtered = array_filter($pesanan, function ($item) use ($nama) {
-            return $item['name'] !== $nama;
-        });
+    $item = Item::whereHas('menu', function ($query) use ($nama) {
+        $query->where('name', $nama);
+    })->where('user_id', $userId)
+      ->whereNull('order_id') // pastikan hanya yang belum dikirim
+      ->first();
 
-        Session::put('pesanan', $filtered);
-
+    if ($item) {
+        $item->delete();
         return redirect()->back()->with('success', 'Item berhasil dihapus.');
     }
 
-    // Kirim pesanan 
+    return redirect()->back()->with('error', 'Item tidak ditemukan atau sudah dikirim.');
+}
+
+
+    // Kirim pesanan
     public function submit(Request $request)
     {
         $request->validate([
@@ -101,14 +106,17 @@ class PesananController extends Controller
             return [
                 'name'         => $item->menu->name ?? 'Menu Tidak Ditemukan',
                 'desc'         => $item->note ?? '',
+                'packaging'    => $item->packaging ?? '-',
+                'note'         => $item->note ?? '-',
                 'quantity'     => $item->quantity,
-                'items_price'  => $item->items_price, 
+                'items_price'  => $item->items_price,
                 'total_price'  => 'Rp. ' . number_format($item->items_price, 0, ',', '.'),
             ];
         });
-        
+
+
         $total = $pesanan->sum('items_price');
 
-        return view('order.pesanan-saya', compact('pesanan', 'total'));        
+        return view('order.pesanan-saya', compact('pesanan', 'total'));
     }
 }

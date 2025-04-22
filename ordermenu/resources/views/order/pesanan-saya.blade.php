@@ -20,14 +20,17 @@
           <div class="space-y-1">
             <h3 class="font-semibold text-base">{{ $item['name'] }}</h3>
             <p class="text-sm text-gray-600">{{ $item['desc'] ?? 'Harga: ' . $item['total_price'] }}</p>
+
+            <p class="text-sm text-gray-600">Jumlah: {{ $item['quantity'] ?? 1 }}</p>
+            <p class="text-xs text-gray-500 italic">Packaging: {{ $item['packaging'] ?? '-' }}</p>
+            <p class="text-xs text-gray-500 italic">Catatan: {{ $item['note'] ?? '-' }}</p>
           </div>
         </div>
         <div class="flex flex-col items-end justify-between h-full">
-          <span class="font-semibold text-sm">x{{ $item['quantity'] }}</span>
           <form method="POST" action="{{ route('pesanan.remove', $item['name']) }}">
             @csrf
-            <button type="submit" class="text-red-600 text-xl font-bold hover:text-red-800 rounded-full">
-              <span class="bg-red-100 p-1 rounded-full">❗</span>
+            <button type="submit" class="text-red-600 text-xl font-bold hover:text-red-800 rounded-full" title="Hapus">
+              <span class="bg-red-100 p-1 rounded-full">✖</span> 
             </button>
           </form>
         </div>
@@ -44,7 +47,14 @@
 
       <div>
         <label class="block text-sm font-medium">Meja</label>
-        <input type="text" name="meja" placeholder="Contoh: 4" class="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-yellow-400" required>
+        <input
+  type="number"
+  name="meja"
+  placeholder="Contoh: 4"
+  class="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-yellow-400"
+  required
+  min="1"
+  oninput="this.value = this.value.replace(/[^0-9]/g, '');">
       </div>
 
       <div>
@@ -67,18 +77,19 @@
 
       <div class="mt-4 border-t pt-4 space-y-2 text-sm">
         <h4 class="font-medium">Riwayat Pembayaran</h4>
+        @php $total = 0; @endphp
         @foreach($pesanan as $item)
           @php
-            $total += intval($item['items_price']);
+            $total += intval($item['items_price'] ?? 0);
           @endphp
           <div class="flex justify-between">
-            <span>{{ $item['name'] }} x {{ $item['quantity'] }}</span>
-            <span>Rp. {{ number_format($item['items_price']) }}</span>
+            <span>{{ $item['name'] }} x {{ $item['quantity'] ?? 1 }}</span>
+            <span>Rp. {{ number_format($item['items_price'] ?? 0) }}</span>
           </div>
         @endforeach
         <div class="flex justify-between font-semibold pt-2 border-t">
           <span>Total Pembayaran :</span>
-          <span>Rp. {{ $total }}</span> <!-- Total sebagai integer -->
+          <span>Rp. {{ number_format($total) }}</span>
         </div>
       </div>
 
