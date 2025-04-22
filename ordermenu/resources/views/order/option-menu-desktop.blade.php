@@ -30,9 +30,10 @@
       <div class="md:w-1/2 w-full">
         <h2 class="text-2xl font-semibold flex items-center justify-between mb-2">
           {{ $menu->name }}
-          <span class="text-blue-500 text-sm border rounded-full px-2 py-1 flex items-center">
-            <i class="fas fa-star mr-1"></i> Reviews
-          </span>
+          <a href="{{ route('menu.reviews', $menu->id) }}" class="text-blue-500 text-sm border rounded-full px-2 py-1 flex items-center hover:bg-blue-100 transition">
+          <i class="fas fa-star mr-1"></i> Reviews
+          </a>
+
         </h2>
         <p class="text-gray-600 mb-4">{{ $menu->desc }}</p>
 
