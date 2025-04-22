@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kontak</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
 </head>
 <body class="bg-red-900 text-white">
      <!-- Navbar -->
@@ -27,9 +33,7 @@
 
         <div>
     <h2 class="text-lg font-bold mb-2">Lokasi Kampoeng Sawah</h2>
-    <a href="https://maps.app.goo.gl/1RF3GNKJdJiTqD9XA" target="_blank">
-        <img src="{{ asset('images/lokasi.png') }}" alt="Lokasi Maps" class="w-full rounded-md shadow-lg">
-    </a>
+    <div id="map" style="height: 300px;"></div>
     <p class="mt-4">Jam Operasional:</p>
     <p>Senin-Minggu: <span class="text-red-400">09:00-19:00</span></p>
         </div>
@@ -43,4 +47,18 @@
      @include('partials.footer')
 
 </body>
+
+<script>
+    var map = L.map('map').setView([-6.865679899765911, 110.82454083667585], 13); // Ganti dengan koordinat yang sesuai
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Menambahkan marker untuk Kampoeng Sawah
+    L.marker([-6.865679899765911, 110.82454083667585]).addTo(map)
+        .bindPopup('<b>Kampoeng Sawah</b><br />Alamat Kampoeng Sawah')
+        .openPopup();
+</script>
+
 </html>

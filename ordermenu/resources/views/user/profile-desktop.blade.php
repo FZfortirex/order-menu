@@ -43,10 +43,13 @@
           <div class="text-xl">💲</div>
           <div class="text-base font-semibold">0 poin</div>
         </div>
-        <button class="text-sm text-white bg-maroon-800 px-4 py-2 rounded flex items-center">
-          Tukar Poin
-          <span class="ml-1">➡️</span>
-        </button>
+        <a href="/tukarpoin">
+  <button class="text-sm text-white bg-maroon-800 px-4 py-2 rounded flex items-center">
+    Tukar Poin
+    <span class="ml-1">➡️</span>
+  </button>
+</a>
+
       </div>
     </div>
   </div>

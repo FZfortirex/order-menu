@@ -11,17 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('menus', function (Blueprint $table) {
+        Schema::create('tukar_poin', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('desc');
-            $table->string('image');
-            $table->integer('price');
-            $table->string('category');
-            $table->integer('stock');
-            $table->integer('point');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('reward_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
+
     }
 
     /**
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('menus');
+        Schema::dropIfExists('tukar_poins');
     }
 };
