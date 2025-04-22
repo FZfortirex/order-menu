@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Models\Order;
+use App\Models\User;
 use App\Models\Item;
 
 class PesananController extends Controller
@@ -67,33 +68,48 @@ class PesananController extends Controller
         ]);
 
         $userId = auth()->id();
-        $items = Item::where('user_id', $userId)->get();
+
+        $items = Item::where('user_id', $userId)
+            ->whereNull('order_id')
+            ->with('menu') // pastikan menu ikut diambil
+            ->get();
 
         if ($items->isEmpty()) {
             return redirect()->back()->with('error', 'Tidak ada pesanan untuk dikirim.');
         }
 
-        // Hitung total harga dari semua item
+        // Hitung total harga
         $totalHarga = $items->sum('items_price');
 
-        // Buat order baru di tabel orders
+        // Hitung total point dari menu.point * quantity
+        $totalPoint = $items->sum(function ($item) {
+            return optional($item->menu)->point * $item->quantity;
+        });
+
+        // Buat order
         $order = Order::create([
             'user_id'         => $userId,
-            'redeem_point_id' => null, // bisa disesuaikan nanti
+            'redeem_point_id' => null,
             'table'           => $request->meja,
             'additional_note' => $request->catatan,
             'total_price'     => $totalHarga,
-            'status'          => 'menunggu', // status default
-            'total_point'     => 0, // belum ada sistem poin
+            'status'          => 'menunggu',
+            'total_point'     => $totalPoint,
         ]);
 
-        // Update semua item user yang belum punya order_id
-        Item::where('user_id', auth()->id())
-        ->whereNull('order_id')
-        ->update(['order_id' => $order->id]);
+        // Update item
+        Item::where('user_id', $userId)
+            ->whereNull('order_id')
+            ->update(['order_id' => $order->id]);
 
-        return redirect('/menu')->with('success', 'Pesanan berhasil dikirim!');
+        // Tambahkan poin ke user
+        $user = User::find($userId);
+        $user->my_points += $totalPoint;
+        $user->save();
+
+        return redirect('/menu')->with('success', 'Pesanan berhasil dikirim! Kamu dapat ' . $totalPoint . ' poin.');
     }
+
 
     // Tampilkan daftar pesanan
     public function index()

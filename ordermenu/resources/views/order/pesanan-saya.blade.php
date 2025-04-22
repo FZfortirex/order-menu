@@ -50,7 +50,7 @@
         <input
   type="number"
   name="meja"
-  placeholder="Contoh: 4"
+  placeholder="Contoh: 4 (Diisi berupa angka)"
   class="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-yellow-400"
   required
   min="1"

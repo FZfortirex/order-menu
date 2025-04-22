@@ -18,7 +18,7 @@
 
   @include('partials.navbar')
   <div class="container mx-auto p-6 rounded-xl shadow-md mt-6">
-    <a href="{{ url()->previous() }}" class="text-black text-lg font-semibold flex items-center mb-4">
+    <a href="{{ url('/menu') }}" class="text-black text-lg font-semibold flex items-center mb-4">
       <i class="fas fa-arrow-left mr-2"></i> BACK
     </a>
 
@@ -30,9 +30,9 @@
       <div class="md:w-1/2 w-full">
         <h2 class="text-2xl font-semibold flex items-center justify-between mb-2">
           {{ $menu->name }}
-          <span class="text-blue-500 text-sm border rounded-full px-2 py-1 flex items-center">
-            <i class="fas fa-star mr-1"></i> Reviews
-          </span>
+          <a href="{{ route('menu.reviews', $menu->id) }}" class="text-blue-500 text-sm border rounded-full px-2 py-1 flex items-center hover:bg-blue-100 transition">
+          <i class="fas fa-star mr-1"></i> Reviews
+          </a>
         </h2>
         <p class="text-gray-600 mb-4">{{ $menu->desc }}</p>
 
