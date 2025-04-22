@@ -13,7 +13,7 @@
 
   <!-- Back & Profile Nav -->
   <div class="flex justify-between items-center px-4 py-2 border-b">
-    <button class="text-sm font-medium">&#x2190; BACK</button>
+    <a href="{{ url('/menu') }}" class="text-base font-medium">&#x2190; BACK</a>
     <span class="text-sm font-medium">Profile</span>
     <div></div>
   </div>
@@ -21,9 +21,11 @@
   <!-- Profile Section -->
   <div class="p-4">
     <div class="flex items-center space-x-4">
-      <div class="w-16 h-16 rounded-full bg-gray-300"></div>
+      <div class="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center text-3xl font-bold text-white">
+        {{ strtoupper(substr($user->name, 0, 1)) }} 
+      </div>
       <div>
-        <div class="text-sm font-semibold">Username</div>
+        <div class="text-base font-semibold">{{ $user->name }}</div>
         <div class="text-xs text-gray-500">Hastag</div>
       </div>
       <div class="ml-auto text-xl">💬</div>
@@ -34,7 +36,7 @@
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-2">
           <div class="text-lg">💲</div>
-          <div class="text-sm font-semibold">0 poin</div>
+          <div class="text-base font-semibold">{{ $user->my_points }} poin</div>
         </div>
         <button class="text-sm text-white bg-maroon-800 px-3 py-1 rounded flex items-center">
           Tukar Poin

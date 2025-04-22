@@ -15,8 +15,8 @@
   </style>
 </head>
 <div class="p-4 bg-white min-h-screen">
-  <a href="{{ url()->previous() }}" class="text-black text-base font-semibold flex items-center mb-4">
-    <i class="fas fa-arrow-left mr-2"></i> Kembali
+  <a href="{{ url('/menu') }}" class="text-black text-lg font-semibold flex items-center mb-4">
+    <i class="fas fa-arrow-left mr-2"></i> BACK
   </a>
 
   <!-- Gambar -->
