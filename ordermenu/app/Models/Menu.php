@@ -11,4 +11,10 @@ class Menu extends Model
     protected $fillable = [
         'name', 'desc', 'image', 'price', 'category', 'stock', 'point'
     ];
+
+    public function reviews()
+    {      
+    return $this->hasMany(Review::class);
+    }
+
 }
