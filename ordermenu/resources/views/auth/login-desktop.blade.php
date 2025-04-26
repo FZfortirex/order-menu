@@ -30,7 +30,7 @@
       </div>
       <div class="relative">
         <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">#</span>
-        <input type="password" name="password" placeholder="Kode Akses" class="w-full pl-10 p-3 rounded-md border border-gray-300 text-black" required>
+        <input type="password" name="password" placeholder="Password" class="w-full pl-10 p-3 rounded-md border border-gray-300 text-black" required>
       </div>
       <button type="submit" class="w-full bg-yellow-400 text-[#731b0c] font-bold py-3 rounded-md hover:bg-yellow-300">Login</button>
     </form>
