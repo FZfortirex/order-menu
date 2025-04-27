@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Order; 
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -12,11 +14,7 @@ class AuthController extends Controller
 {
     public function index()
     {
-        $userId = Auth::id();
 
-        $pesanan = \App\Models\Pesanan::where('user_id', $userId)->get();
-
-        return view('pesanan', compact('pesanan'));
     }
     
     public function showLogin(Request $request)
@@ -40,11 +38,19 @@ class AuthController extends Controller
         // Cari user berdasarkan username
         $user = User::where('name', $credentials['username'])->first();
 
-        // Periksa password (tanpa hash, sesuaikan kalau ada hashing)
         if ($user && $credentials['password'] === $user->password) {
-            auth()->loginUsingId($user->id); // Langsung login pakai ID
+            auth()->loginUsingId($user->id); // Login pakai ID
             $request->session()->regenerate();
-            return redirect()->intended('/welcome');
+
+            if ($user->role === 'admin') {
+                $orders = Order::all();
+                Session::put('admin_logged_in', true);
+                return redirect()->route('dashboard');
+            } else {
+                return redirect()->intended('/welcome'); 
+            }
+
+            return back()->withErrors(['msg' => 'Username atau Password salah!']);
         }
 
 
@@ -67,6 +73,7 @@ class AuthController extends Controller
         Auth::logout(); // Hapus session
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+        Session::forget('admin_logged_in');
 
         // Tambahan dari versimu: Hapus session manual
         return redirect('/loginAccount');
