@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Mobile_Detect;
 use Jenssegers\Agent\Agent; // Tambahkan package ini
+use App\Models\Order; 
 //use App\Models\Order; // Pastikan model Order sudah ada
 
 class ListOrderController extends Controller
@@ -16,31 +17,25 @@ class ListOrderController extends Controller
             return redirect()->route('login')->withErrors(['msg' => 'Silakan login terlebih dahulu.']);
         }
         // Data dummy untuk sementara
-        $orders = [
-            [
-                'name' => 'Customer 1',
-                'table' => '5',
-                'total_price' => '40rb'
-            ],
-            [
-                'name' => 'Customer 2',
-                'table' => '3',
-                'total_price' => '50rb'
-            ],
-            [
-                'name' => 'Customer 3',
-                'table' => '7',
-                'total_price' => '60rb'
-            ],
-        ];
+        $orders = Order::all();
+
+        // Hitung jumlah meja yang sudah digunakan
+        $usedTables = $orders->count();
+
+        // Total meja yang tersedia
+        $totalTables = 36; 
+        
+        // Jumlah meja yang tersedia
+        $availableTables = $totalTables - $usedTables;
+
         $agent = new Agent();
         $userAgent = $request->header('User-Agent');
 
         // Ganti $detect jadi $agent
     if ($agent->isMobile()) {
-        return view('admin.list-order-mobile', compact('orders'));
+        return view('admin.list-order-mobile', compact('orders', 'availableTables', 'totalTables'));
     } else {
-        return view('admin.list-order-desktop', compact('orders'));
+        return view('admin.list-order-desktop', compact('orders', 'availableTables', 'totalTables'));
     }
     }
 }

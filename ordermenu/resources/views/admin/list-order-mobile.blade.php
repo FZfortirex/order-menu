@@ -7,12 +7,19 @@
 </head>
 <body>
     <h2>List Menu Orders (Mobile View)</h2>
+    <div class="flex flex-wrap justify-between items-center gap-4 mb-8">
+        <input type="text" placeholder="Cari pesanan..." class="px-4 py-2 border rounded-md w-64 shadow-sm focus:ring focus:ring-red-300">
+        <div class="ml-auto text-gray-700">
+            Available tables: <strong class="text-green-600">{{ $availableTables }}/{{ $totalTables }}</strong>
+        </div>
+    </div>
     <div>
         @foreach ($orders as $order)
             <div>
-                <p>Nama: {{ $order['name'] }}</p>
-                <p>Meja: {{ $order['table'] }}</p>
-                <p>Total Harga: {{ $order['total_price'] }}</p>
+                <p>Nama: {{ $order->user->name }}</p>
+                <p>Meja: {{ $order->table ?? '-' }}</p>
+                <p>Total Harga: {{ number_format($order->total_price, 0, ',', '.') }} Rp</p>
+                <p>Catatan : {{ $order->additional_note }}</p>
             </div>
         @endforeach
     </div>

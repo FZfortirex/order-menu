@@ -11,6 +11,24 @@ class Order extends Model
         'additional_note', 'total_price', 'status', 'total_point'
     ];
 
+    public function indexDashboard()
+    {
+        $orders = Order::with('user')->get();
+        return view('dashboard', compact('orders'));
+    }
+
+    public function indexDekstop()
+    {
+        $orders = Order::with('user')->get();
+        return view('admin.list-order-desktop', compact('orders'));
+    }
+
+    public function indexMobile()
+    {
+        $orders = Order::with('user')->get();
+        return view('admin.list-order-mobile', compact('orders'));
+    }
+
     // Relasi dengan tabel Item
     public function items()
     {
@@ -28,4 +46,6 @@ class Order extends Model
     {
         return $this->belongsTo(RedeemPoint::class);
     }
+
+    
 }

@@ -160,18 +160,20 @@
         <div class="top-controls">
             <input type="text" placeholder="Type here" class="search-bar">
             <button class="btn">Search Account</button>
-            <p class="table-info">Available tables: <strong>33/36</strong></p>
+            <p class="table-info">Available tables: <strong class="text-green-600">{{ $availableTables }}/{{ $totalTables }}</strong></p>
             <button class="btn">Create Account</button>
         </div>
 
         <div class="orders-container">
+            @foreach ($orders as $order)
             <div class="order-card">
                 <div class="order-header">
                     <div class="avatar"></div>
                     <div>
-                        <p class="name">Nama</p>
-                        <p class="table">meja</p>
-                        <p class="price">Total Harga: 40rb</p>
+                        <p class="name">Nama : {{ $order->user->name }}</p>
+                        <p class="table">Meja: {{ $order->table ?? '-' }}</p>
+                        <p class="price">Harga: {{ number_format($order->total_price, 0, ',', '.') }} IDR</p>
+                        <p class="note">Catatan : {{ $order->additional_note }}</p>
                     </div>
                 </div>
                 <div class="order-actions">
@@ -181,38 +183,7 @@
                     <button class="btn done">Done</button>
                 </div>
             </div>
-            <div class="order-card">
-                <div class="order-header">
-                    <div class="avatar"></div>
-                    <div>
-                        <p class="name">Nama</p>
-                        <p class="table">meja</p>
-                        <p class="price">Total Harga: 40rb</p>
-                    </div>
-                </div>
-                <div class="order-actions">
-                    <button class="btn cancel">Cancel</button>
-                    <button class="btn process">Process</button>
-                    <button class="btn complete">Complete</button>
-                    <button class="btn done">Done</button>
-                </div>
-            </div>
-            <div class="order-card">
-                <div class="order-header">
-                    <div class="avatar"></div>
-                    <div>
-                        <p class="name">Nama</p>
-                        <p class="table">meja</p>
-                        <p class="price">Total Harga: 40rb</p>
-                    </div>
-                </div>
-                <div class="order-actions">
-                    <button class="btn cancel">Cancel</button>
-                    <button class="btn process">Process</button>
-                    <button class="btn complete">Complete</button>
-                    <button class="btn done">Done</button>
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
 
