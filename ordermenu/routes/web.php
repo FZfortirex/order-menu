@@ -74,10 +74,6 @@ Route::get('/menus', [MenuController::class, 'index']);
 Route::post('/tambah-pesanan', [MenuController::class, 'addToCart']);
 Route::get('/api/menus', [MenuController::class, 'apiMenus']);
 
-// Login routes
-Route::get('/loginAdmin', [LoginAdminController::class, 'showLoginForm'])->name('login')->middleware('guest');
-Route::post('/loginAdmin', [LoginAdminController::class, 'login']);
-Route::post('/logout', [LoginAdminController::class, 'logout'])->name('logout');
 // Dashboard route TANPA middleware auth
 Route::get('/listOrder', [ListOrderController::class, 'index'])->name('dashboard');
 Route::get('/accounts', [AccountController::class, 'index'])->name('accounts.index');
