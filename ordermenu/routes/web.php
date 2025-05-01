@@ -38,8 +38,6 @@ Route::get('/galeri/create', [GaleriController::class, 'create']);
 Route::post('/galeri/store', [GaleriController::class, 'store'])->name('galeri.store');
 Route::delete('/galeri/{id}', [GaleriController::class, 'destroy'])->name('galeri.destroy');
 
-Route::get('/kontak', [KontakController::class, 'index'])->name('kontak');
-
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
 // Menu Routes
@@ -52,6 +50,7 @@ Route::get('/reviews/{id}', [ReviewController::class, 'show'])->name('reviews.sh
 Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 
 Route::get('/kontak', [KontakController::class, 'index'])->name('kontak');
+Route::post('/kontak', [KontakController::class, 'store'])->name('kontak.store');
 
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 Route::get('/tukarpoin', [TukarPoinController::class, 'index'])->name('tukarpoin');
