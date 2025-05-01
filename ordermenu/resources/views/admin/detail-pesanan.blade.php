@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Pesanan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Animasi Fade In */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-white font-sans fade-in">
+
+    <!-- Navbar -->
+    @include('partials-admin.navbar')
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <div class="flex items-center justify-between mb-6">
+            <a href="/order-list" class="flex items-center text-black font-semibold text-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                BACK
+            </a>
+            <h1 class="text-2xl font-bold">Nama</h1>
+            <div class="w-6"></div> <!-- Placeholder biar posisi center -->
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left: Items -->
+            <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+                @for ($i = 0; $i < 4; $i++)
+                <div class="flex items-center bg-white shadow rounded-lg p-3 border">
+                    <img src="https://source.unsplash.com/80x80/?chicken" alt="Makanan" class="w-20 h-20 rounded-md object-cover mr-4">
+                    <div>
+                        <p class="font-semibold text-gray-800">Ayam Geprek</p>
+                        <p class="text-green-500 text-sm">+1 poin</p>
+                        <p class="text-gray-700 text-sm">Harga: 10rb</p>
+                        <p class="text-gray-700 text-sm">Packaging: Makan di tempat</p>
+                        <p class="text-gray-700 text-sm">Catatan: Jangan pedes pedes</p>
+                    </div>
+                </div>
+                @endfor
+            </div>
+
+            <!-- Right: Info Pesanan -->
+            <div class="bg-white shadow rounded-lg p-5 border space-y-4">
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-1">Meja</label>
+                    <input type="text" class="w-full border rounded-md p-2" value="4" readonly>
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-1">Catatan tambahan <span class="text-gray-400 text-sm">(Optional)</span></label>
+                    <textarea class="w-full border rounded-md p-2" rows="3" placeholder="Tambahkan sedikit pedas dan dipisah" readonly></textarea>
+                </div>
+                <div class="border-t pt-4">
+                    <h3 class="font-bold text-gray-700 mb-2">Riwayat Pembayaran</h3>
+                    <div class="flex justify-between text-gray-700">
+                        <span>Ayam Geprek x4</span>
+                        <span>Rp. 40.000</span>
+                    </div>
+                    <div class="flex justify-between font-semibold mt-2">
+                        <span>Total Pembayaran:</span>
+                        <span>Rp. 40.000</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tombol Proses & Complete -->
+    <div class="pt-4 flex justify-between space-x-2">
+        <form action="/order/proses" method="POST" class="w-1/2">
+            @csrf
+            <button type="submit" class="w-full bg-yellow-400 hover:bg-yellow-500 text-white font-semibold py-2 px-4 rounded-md">
+                Proses
+            </button>
+        </form>
+        <form action="/order/complete" method="POST" class="w-1/2">
+            @csrf
+            <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md">
+                Complete
+            </button>
+        </form>
+    </div>
+
+        <!-- Floating Chat Button -->
+<button id="toggleChat" class="fixed bottom-6 left-6 bg-green-500 hover:bg-green-600 text-white p-3 rounded-full shadow-lg z-50">
+    <!-- Icon Chat -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 3.866-3.582 7-8 7H5l-4 4V5c0-1.104.896-2 2-2h14c1.104 0 2 .896 2 2v7z" />
+    </svg>
+</button>
+
+<!-- Chat Box (Hidden by default) -->
+<div id="chatBox" class="fixed bottom-6 left-6 w-72 bg-white border rounded-lg shadow-lg overflow-hidden hidden z-50">
+    <div class="flex justify-between items-center bg-gray-100 p-2">
+        <span class="font-semibold">Message</span>
+        <button id="closeChat" class="text-gray-600 hover:text-red-500">&times;</button>
+    </div>
+    <div class="p-3 h-40 overflow-y-auto">
+        <div class="flex items-center mb-2">
+            <div class="w-6 h-6 bg-gray-300 rounded-full mr-2"></div>
+            <div class="bg-gray-100 p-2 rounded-md text-sm">Mohon ditunggu ya</div>
+        </div>
+    </div>
+    <div class="border-t flex p-2 items-center">
+        <input type="text" placeholder="Type here" class="flex-1 p-1 text-sm border-none focus:ring-0">
+        <button class="ml-2 bg-green-400 hover:bg-green-300 text-white p-2 rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+        </button>
+    </div>
+</div>
+
+
+    </div>
+
+    <!-- Footer -->
+    @include('partials.footer')
+
+    <script>
+    const toggleChat = document.getElementById('toggleChat');
+    const chatBox = document.getElementById('chatBox');
+    const closeChat = document.getElementById('closeChat');
+
+    toggleChat.addEventListener('click', () => {
+        chatBox.classList.remove('hidden');
+        toggleChat.classList.add('hidden');
+    });
+
+    closeChat.addEventListener('click', () => {
+        chatBox.classList.add('hidden');
+        toggleChat.classList.remove('hidden');
+    });
+</script>
+
+</body>
+</html>

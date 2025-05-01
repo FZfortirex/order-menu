@@ -17,6 +17,7 @@ use App\Http\Controllers\TukarPoinController;
 use App\Http\Controllers\LoginAdminController;
 use App\Http\Controllers\ListOrderController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\DetailPesananController;
 
 // Halaman Utama (Redirect ke login)
 Route::get('/', function () {
@@ -77,6 +78,8 @@ Route::get('/api/menus', [MenuController::class, 'apiMenus']);
 // Dashboard route TANPA middleware auth
 Route::get('/listOrder', [ListOrderController::class, 'index'])->name('dashboard');
 Route::get('/accounts', [AccountController::class, 'index'])->name('accounts.index');
+Route::get('/detail-pesanan/{id}', [ListOrderController::class, 'show'])->name('order.detail');
+Route::get('/detailPesanan', [DetailPesananController::class, 'list']);
 Route::get('/create-accounts', [AccountController::class, 'create'])->name('create-accounts.index');
 Route::post('/create-accounts', [AccountController::class, 'store'])->name('create-accounts.store');
 Route::delete('/delete-account/{id}', [AccountController::class, 'destroy'])->name('delete-account');
