@@ -23,11 +23,17 @@
             </div>
         </div>
 
+        <!-- Tombol -->
+        <div class="flex justify-start gap-4 mt-4">
+            <button class="w-auto border bg-white text-yellow-600 border border-yellow-500 font-semibold py-2 px-4 rounded-lg hover:bg-blue-50 transition">Process</button>
+            <button class="w-auto border bg-white text-yellow-600 border border-yellow-500 font-semibold py-2 px-4 rounded-lg hover:bg-green-50 transition">Complete</button>
+        </div>
+
         <!-- Order Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="order-list">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6" id="order-list">
             @foreach ($orders as $order)
                 <div class="relative bg-white rounded-lg shadow-lg p-5 hover:scale-105 transition-transform order-card cursor-pointer"
-     onclick="window.location.href='/detail-pesanan/{{ $order->id }}'">
+                     onclick="window.location.href='/detail-pesanan/{{ $order->id }}'">
 
                     <!-- Tombol Hapus -->
                     <button class="absolute top-2 right-2 text-red-500 hover:text-red-700 text-xl font-bold delete-btn">❌</button>
