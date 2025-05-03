@@ -53,44 +53,38 @@
             </div>
 
             <!-- Right: Info Pesanan -->
-            <div class="bg-white shadow rounded-lg p-5 border space-y-4">
-                <div>
-                    <label class="block text-gray-700 font-semibold mb-1">Meja</label>
-                    <input type="text" class="w-full border rounded-md p-2" value="4" readonly>
-                </div>
-                <div>
-                    <label class="block text-gray-700 font-semibold mb-1">Catatan tambahan <span class="text-gray-400 text-sm">(Optional)</span></label>
-                    <textarea class="w-full border rounded-md p-2" rows="3" placeholder="Tambahkan sedikit pedas dan dipisah" readonly></textarea>
-                </div>
-                <div class="border-t pt-4">
-                    <h3 class="font-bold text-gray-700 mb-2">Riwayat Pembayaran</h3>
-                    <div class="flex justify-between text-gray-700">
-                        <span>Ayam Geprek x4</span>
-                        <span>Rp. 40.000</span>
-                    </div>
-                    <div class="flex justify-between font-semibold mt-2">
-                        <span>Total Pembayaran:</span>
-                        <span>Rp. 40.000</span>
-                    </div>
-                </div>
-            </div>
+<div class="bg-white shadow rounded-lg p-5 border space-y-4">
+    <div>
+        <label class="block text-gray-700 font-semibold mb-1">Meja</label>
+        <input type="text" class="w-full border rounded-md p-2" value="4" readonly>
+    </div>
+    <div>
+        <label class="block text-gray-700 font-semibold mb-1">Catatan tambahan <span class="text-gray-400 text-sm">(Optional)</span></label>
+        <textarea class="w-full border rounded-md p-2" rows="3" placeholder="Tambahkan sedikit pedas dan dipisah" readonly></textarea>
+    </div>
+
+    <!-- Garis pemisah -->
+        <h3 class="font-bold text-gray-700 mb-2">Riwayat Pembayaran</h3>
+        <div class="flex justify-between text-gray-700">
+            <span>Ayam Geprek x4</span>
+            <span>Rp. 40.000</span>
+        </div>
+        <!-- Garis tebal -->
+        <div class="border-t-2 border-gray-400 my-4"></div>
+        <div class="flex justify-between font-semibold mt-2">
+            <span>Total Pembayaran:</span>
+            <span>Rp. 40.000</span>
         </div>
 
-        <!-- Tombol Proses & Complete -->
-    <div class="pt-4 flex justify-between space-x-2">
-        <form action="/order/proses" method="POST" class="w-1/2">
-            @csrf
-            <button type="submit" class="w-full bg-yellow-400 hover:bg-yellow-500 text-white font-semibold py-2 px-4 rounded-md">
-                Proses
-            </button>
-        </form>
-        <form action="/order/complete" method="POST" class="w-1/2">
-            @csrf
-            <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md">
-                Complete
-            </button>
-        </form>
-    </div>
+        <!-- Tombol -->
+        <div class="flex justify-between gap-2 mt-4">
+            <button class="flex-1 border border-blue-400 text-blue-500 font-semibold py-2 rounded-lg hover:bg-blue-50 transition">Process</button>
+            <button class="flex-1 border border-green-400 text-green-500 font-semibold py-2 rounded-lg hover:bg-green-50 transition">Complete</button>
+        </div>
+</div>
+
+            </div>
+        </div>
 
         <!-- Floating Chat Button -->
 <button id="toggleChat" class="fixed bottom-6 left-6 bg-green-500 hover:bg-green-600 text-white p-3 rounded-full shadow-lg z-50">

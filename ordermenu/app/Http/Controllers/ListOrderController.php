@@ -12,28 +12,8 @@ use App\Models\Order;
 class ListOrderController extends Controller
 {
     public function index(Request $request) {
-        // Data dummy orders
-        $orders = collect([
-            (object)[
-                'id' => 1,
-                'table_number' => 5,
-                'antrian' => 10,
-                'status' => 'ongoing',
-            ],
-            (object)[
-                'id' => 2,
-                'table_number' => 12,
-                'antrian' => 11,
-                'status' => 'finished',
-            ],
-            (object)[
-                'id' => 3,
-                'table_number' => 20,
-                'antrian' => 12,
-                'status' => 'ongoing',
-            ],
-            // Tambahkan data lain kalau mau
-        ]);
+        
+        $orders = Order::all();
 
         // Hitung jumlah meja yang sudah digunakan
         $usedTables = $orders->count();
