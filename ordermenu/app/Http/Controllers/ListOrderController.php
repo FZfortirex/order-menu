@@ -33,4 +33,28 @@ class ListOrderController extends Controller
             return view('admin.list-order-desktop', compact('orders', 'availableTables', 'totalTables'));
         }
     }
+
+    public function destroy($id)
+    {
+        $order = Order::findOrFail($id);
+        $order->delete();
+
+        return redirect()->back()->with('success', 'Order berhasil dihapus.');
+    }
+
+    public function showProcess()
+    {
+        $listOrder = Order::where('status', 'sedang dibuat')->get();
+        $availableTables = $this->getAvailableTables();
+        $totalTables = $this->getTotalTables();
+        return view('listOrder.process', compact('listOrder', 'availableTables', 'totalTables'));
+    }
+
+    public function showComplete()
+    {
+        $listOrder = Order::where('status', 'sudah dibuat')->get();
+        $availableTables = $this->getAvailableTables();
+        $totalTables = $this->getTotalTables();
+        return view('listOrder.complete', compact('listOrder', 'availableTables', 'totalTables'));
+    }
 }

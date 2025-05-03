@@ -16,7 +16,7 @@
     <div>
         @foreach ($orders as $order)
             <div>
-                <p>Nama: {{ $order->user->name }}</p>
+                <p>Antrian: {{ $order->id }}</p>
                 <p>Meja: {{ $order->table ?? '-' }}</p>
                 <p>Total Harga: {{ number_format($order->total_price, 0, ',', '.') }} Rp</p>
                 <p>Catatan : {{ $order->additional_note }}</p>

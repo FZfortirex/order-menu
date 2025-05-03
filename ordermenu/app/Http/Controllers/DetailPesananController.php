@@ -3,12 +3,46 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Order;
 
 class DetailPesananController extends Controller
 {
-    public function list()
+
+    public function show($id)
     {
-        // Jika ada data dinamis, bisa dikirim dari sini ke view
-        return view('admin.detail-pesanan'); // Pastikan nama file Blade-nya listpesanan.blade.php
+        $order = Order::with('items')->findOrFail($id);
+        return view('admin.detail-pesanan', compact('order'));
+    }
+
+    public function updateStatus(Request $request, Order $order)
+    {
+        $request->validate([
+            'status' => 'required|in:sedang dibuat,sudah dibuat',
+        ]);
+
+        // Update status pesanan
+        $order->status = $request->status;
+        $order->save();
+
+        return redirect()->route('order.detail', $order->id)
+                         ->with('success', 'Status pesanan telah diperbarui!');
+    }
+
+    public function done(Order $order)
+    {
+        $user = $order->user;
+        $totalPoint = 0;
+
+        foreach ($order->items as $item) {
+            $totalPoint += $item->menu->point ?? 0;
+        }
+
+        $user->my_points += $totalPoint;
+        $user->save();
+
+        $order->items()->delete();
+        $order->delete();
+
+        return redirect()->route('dashboard')->with('success', 'Pesanan selesai dan poin ditambahkan.');
     }
 }

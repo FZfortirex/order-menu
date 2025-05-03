@@ -76,9 +76,16 @@ Route::get('/api/menus', [MenuController::class, 'apiMenus']);
 
 // Dashboard route TANPA middleware auth
 Route::get('/listOrder', [ListOrderController::class, 'index'])->name('dashboard');
+Route::get('/listOrder/process', [ListOrderController::class, 'showProcess'])->name('listOrder.process');
+Route::get('/listOrder/complete', [ListOrderController::class, 'showComplete'])->name('listOrder.complete');
+
 Route::get('/accounts', [AccountController::class, 'index'])->name('accounts.index');
-Route::get('/detail-pesanan/{id}', [ListOrderController::class, 'show'])->name('order.detail');
-Route::get('/detailPesanan', [DetailPesananController::class, 'list']);
+
+Route::get('/order-detail/{id}', [DetailPesananController::class, 'show'])->name('order.detail');
+Route::patch('/orders/{order}/status', [DetailPesananController::class, 'updateStatus'])->name('orders.updateStatus');
+Route::delete('/orders/{order}', [ListOrderController::class, 'destroy'])->name('orders.destroy');
+Route::delete('/orders/{order}/done', [DetailPesananController::class, 'done'])->name('orders.done');
+
 Route::get('/create-accounts', [AccountController::class, 'create'])->name('create-accounts.index');
 Route::post('/create-accounts', [AccountController::class, 'store'])->name('create-accounts.store');
 Route::delete('/delete-account/{id}', [AccountController::class, 'destroy'])->name('delete-account');

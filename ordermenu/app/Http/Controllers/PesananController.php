@@ -40,22 +40,22 @@ class PesananController extends Controller
 
     // Hapus item dari pesanan
     public function remove($nama)
-{
-    $userId = auth()->id();
+    {
+        $userId = auth()->id();
 
-    $item = Item::whereHas('menu', function ($query) use ($nama) {
-        $query->where('name', $nama);
-    })->where('user_id', $userId)
-      ->whereNull('order_id') // pastikan hanya yang belum dikirim
-      ->first();
+        $item = Item::whereHas('menu', function ($query) use ($nama) {
+            $query->where('name', $nama);
+        })->where('user_id', $userId)
+        ->whereNull('order_id') // pastikan hanya yang belum dikirim
+        ->first();
 
-    if ($item) {
-        $item->delete();
-        return redirect()->back()->with('success', 'Item berhasil dihapus.');
+        if ($item) {
+            $item->delete();
+            return redirect()->back()->with('success', 'Item berhasil dihapus.');
+        }
+
+        return redirect()->back()->with('error', 'Item tidak ditemukan atau sudah dikirim.');
     }
-
-    return redirect()->back()->with('error', 'Item tidak ditemukan atau sudah dikirim.');
-}
 
 
     // Kirim pesanan
@@ -101,11 +101,6 @@ class PesananController extends Controller
         Item::where('user_id', $userId)
             ->whereNull('order_id')
             ->update(['order_id' => $order->id]);
-
-        // Tambahkan poin ke user
-        $user = User::find($userId);
-        $user->my_points += $totalPoint;
-        $user->save();
 
         return redirect('/menu')->with('success', 'Pesanan berhasil dikirim! Kamu dapat ' . $totalPoint . ' poin.');
     }
