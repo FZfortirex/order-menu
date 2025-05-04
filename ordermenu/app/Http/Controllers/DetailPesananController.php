@@ -16,9 +16,21 @@ class DetailPesananController extends Controller
 
     public function updateStatus(Request $request, Order $order)
     {
+        $order = Order::with('items.menu')->findOrFail($order->id);
+
         $request->validate([
             'status' => 'required|in:sedang dibuat,sudah dibuat',
         ]);
+
+        if ($request->status === 'sudah dibuat' && $order->status !== 'sudah dibuat') {
+            foreach ($order->items as $item) {
+                $menu = $item->menu;
+                if ($menu && $menu->stock >= $item->quantity) {
+                    $menu->stock -= $item->quantity;
+                    $menu->save();
+                }
+            }
+        }
 
         // Update status pesanan
         $order->status = $request->status;

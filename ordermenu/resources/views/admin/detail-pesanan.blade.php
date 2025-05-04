@@ -95,7 +95,7 @@
             <button type="submit" class="w-full 
                 {{ $order->status == 'sudah dibuat' ? 'border-4 border-green-400 bg-green-400 text-white' : 'border border-green-400 text-green-500' }} 
                 font-semibold py-2 rounded-lg hover:bg-green-50 transition">
-                Selesai
+                Siap
             </button>
         </form>
 
