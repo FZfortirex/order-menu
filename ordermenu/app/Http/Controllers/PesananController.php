@@ -110,9 +110,17 @@ class PesananController extends Controller
     public function index()
     {
         $userId = Auth::id();
-        $pesanan = Item::where('user_id', $userId)->with('menu')->get();
 
-        // Format data untuk ditampilkan di view
+        $pesanan = Item::where('user_id', $userId)
+                    ->where(function ($query) {
+                        $query->whereNull('order_id')
+                            ->orWhereHas('order', function ($q) {
+                                $q->where('status', '!=', 'selesai');
+                            });
+                    })
+                    ->with('menu')
+                    ->get();
+
         $pesanan = $pesanan->map(function ($item) {
             return [
                 'name'         => $item->menu->name ?? 'Menu Tidak Ditemukan',
@@ -124,7 +132,6 @@ class PesananController extends Controller
                 'total_price'  => 'Rp. ' . number_format($item->items_price, 0, ',', '.'),
             ];
         });
-
 
         $total = $pesanan->sum('items_price');
 

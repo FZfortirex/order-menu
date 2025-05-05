@@ -22,13 +22,19 @@ class DetailPesananController extends Controller
             'status' => 'required|in:sedang dibuat,sudah dibuat',
         ]);
 
-        if ($request->status === 'sudah dibuat' && $order->status !== 'sudah dibuat') {
+        if ($request->status === 'sedang dibuat' && $order->status !== 'sedang dibuat') {
             foreach ($order->items as $item) {
                 $menu = $item->menu;
-                if ($menu && $menu->stock >= $item->quantity) {
-                    $menu->stock -= $item->quantity;
-                    $menu->save();
+        
+                if (!$menu || $menu->stock < $item->quantity) {
+                    return back()->with('error', 'Stok untuk "' . $menu->name . '" tidak mencukupi.');
                 }
+            }
+        
+            foreach ($order->items as $item) {
+                $menu = $item->menu;
+                $menu->stock -= $item->quantity;
+                $menu->save();
             }
         }
 
@@ -52,8 +58,8 @@ class DetailPesananController extends Controller
         $user->my_points += $totalPoint;
         $user->save();
 
-        $order->items()->delete();
-        $order->delete();
+        $order->status = 'selesai';
+        $order->save();
 
         return redirect()->route('dashboard')->with('success', 'Pesanan selesai dan poin ditambahkan.');
     }

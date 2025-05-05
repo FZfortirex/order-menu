@@ -23,7 +23,7 @@
                         <p class="text-sm text-gray-500">Meja: {{ $order->table ?? '-' }}</p>
                         <p class="text-sm text-gray-500">Status: <strong class="text-green-600">{{ ucfirst($order->status) }}</strong></p>
                         @if (isset($order->total_price))
-                            <p class="text-sm text-gray-500">Harga: <strong class="text-red-600">{{ number_format($order->total_price, 0, ',', '.') }} Rp</strong></p>
+                            <p class="text-sm text-gray-500">Harga: <strong class="text-red-600">Rp. {{ number_format($order->total_price, 0, ',', '.') }}</strong></p>
                         @endif
                     </div>
                 </div>

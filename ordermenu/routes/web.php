@@ -76,6 +76,7 @@ Route::get('/api/menus', [MenuController::class, 'apiMenus']);
 
 // Dashboard route TANPA middleware auth
 Route::get('/listOrder', [ListOrderController::class, 'index'])->name('dashboard');
+Route::get('/listOrder/waiting', [ListOrderController::class, 'showWaiting']);
 Route::get('/listOrder/process', [ListOrderController::class, 'showProcess'])->name('listOrder.process');
 Route::get('/listOrder/complete', [ListOrderController::class, 'showComplete'])->name('listOrder.complete');
 

@@ -15,8 +15,11 @@ class ListOrderController extends Controller
         
         $orders = Order::all();
 
-        // Hitung jumlah meja yang sudah digunakan
-        $usedTables = $orders->count();
+        $activeOrders = $orders->filter(function ($order) {
+            return strtolower($order->status) !== 'selesai';
+        });
+        
+        $usedTables = $activeOrders->pluck('table')->filter()->unique()->count();
 
         // Total meja yang tersedia
         $totalTables = 36;
@@ -40,6 +43,14 @@ class ListOrderController extends Controller
         $order->delete();
 
         return redirect()->back()->with('success', 'Order berhasil dihapus.');
+    }
+
+    public function showWaiting()
+    {
+        $listOrder = Order::where('status', 'menunggu')->get();
+        $availableTables = $this->getAvailableTables();
+        $totalTables = $this->getTotalTables();
+        return view('listOrder.process', compact('listOrder', 'availableTables', 'totalTables'));
     }
 
     public function showProcess()
