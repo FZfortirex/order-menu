@@ -106,7 +106,6 @@ class PesananController extends Controller
     }
 
 
-    // Tampilkan daftar pesanan
     public function index()
     {
         $userId = Auth::id();
@@ -122,6 +121,11 @@ class PesananController extends Controller
                     ->get();
 
         $pesanan = $pesanan->map(function ($item) {
+            $filename = strtolower(str_replace(' ', '_', $item->menu->name)) . '.jpg';
+            $imagePath = public_path('images/' . $filename);
+            
+            $image = file_exists($imagePath) ? asset('images/' . $filename) : asset('images/default.png');
+
             return [
                 'name'         => $item->menu->name ?? 'Menu Tidak Ditemukan',
                 'desc'         => $item->note ?? '',
@@ -130,6 +134,7 @@ class PesananController extends Controller
                 'quantity'     => $item->quantity,
                 'items_price'  => $item->items_price,
                 'total_price'  => 'Rp. ' . number_format($item->items_price, 0, ',', '.'),
+                'image'        => $image, 
             ];
         });
 

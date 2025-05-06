@@ -10,7 +10,16 @@ class DetailPesananController extends Controller
 
     public function show($id)
     {
-        $order = Order::with('items')->findOrFail($id);
+        $order = Order::with('items.menu')->findOrFail($id);
+
+        foreach ($order->items as $item) {
+            $filename = strtolower(str_replace(' ', '_', $item->menu->name)) . '.jpg';
+            $imagePath = public_path('images/' . $filename);
+            $item->image_url = file_exists($imagePath)
+                ? asset('images/' . $filename)
+                : asset('images/default.png');
+        }
+        
         return view('admin.detail-pesanan', compact('order'));
     }
 

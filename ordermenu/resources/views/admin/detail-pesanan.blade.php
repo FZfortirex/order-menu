@@ -40,7 +40,7 @@
             <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
                 @foreach ($order->items as $item)
                 <div class="flex items-center bg-white shadow rounded-lg p-3 border">
-                    <img src="https://source.unsplash.com/80x80/?food" alt="Makanan" class="w-20 h-20 rounded-md object-cover mr-4">
+                    <img src="{{ $item->image_url }}" alt="{{ $item->menu->name }}" class="w-20 h-20 rounded-md object-cover mr-4">
                     <div>
                         <p class="font-semibold text-gray-800">{{ $item->menu->name ?? 'Menu' }}</p>
                         <p class="text-green-500 text-sm">+{{ $item->menu->point }} poin</p>
