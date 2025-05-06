@@ -21,7 +21,7 @@
         <div class="grid md:grid-cols-2 gap-8">
             <!-- Gambar -->
             <div>
-                <img src="{{ asset('storage/' . $menu->img) }}" alt="{{ $menu->name }}" class="w-full rounded-lg shadow">
+                <img src="/images/{{ $menu['image'] }}" alt="{{ $menu->name }}" class="w-full rounded-lg shadow">
             </div>
 
             <!-- Info & Review -->

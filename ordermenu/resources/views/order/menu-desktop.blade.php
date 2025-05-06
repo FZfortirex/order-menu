@@ -24,15 +24,15 @@
 
   {{-- Daftar Menu --}}
   <div class="container mx-auto px-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-    @foreach($menus as $item)
+    @foreach($menus as $menu)
     <div class="bg-white p-4 rounded-xl shadow-md flex items-center border border-black h-32">
-      <img src="/img/{{ $item['img'] }}" class="h-16 w-16 rounded-lg object-cover" alt="{{ $item['name'] }}">
+      <img src="/images/{{ $menu['image'] }}" class="h-16 w-16 rounded-lg object-cover" alt="{{ $menu['name'] }}">
       <div class="ml-4 flex-1">
-        <h3 class="font-bold text-lg">{{ $item['name'] }}</h3>
-        <p class="text-sm text-gray-600">{{ $item['desc'] }}</p>
+        <h3 class="font-bold text-lg">{{ $menu['name'] }}</h3>
+        <p class="text-sm text-gray-600">{{ $menu['desc'] }}</p>
         <div class="flex justify-between text-sm mt-2">
-          <span>Stok: {{ $item['stock'] }}</span>
-          <span class="font-semibold">Harga: {{ $item['price'] }}</span>
+          <span>Stok: {{ $menu['stock'] }}</span>
+          <span class="font-semibold">Harga: {{ $menu['price'] }}</span>
         </div>
       </div>
       <button class="ml-4 bg-yellow-400 px-4 py-2 rounded-full font-bold text-lg">+</button>

@@ -40,22 +40,22 @@ class PesananController extends Controller
 
     // Hapus item dari pesanan
     public function remove($nama)
-{
-    $userId = auth()->id();
+    {
+        $userId = auth()->id();
 
-    $item = Item::whereHas('menu', function ($query) use ($nama) {
-        $query->where('name', $nama);
-    })->where('user_id', $userId)
-      ->whereNull('order_id') // pastikan hanya yang belum dikirim
-      ->first();
+        $item = Item::whereHas('menu', function ($query) use ($nama) {
+            $query->where('name', $nama);
+        })->where('user_id', $userId)
+        ->whereNull('order_id') // pastikan hanya yang belum dikirim
+        ->first();
 
-    if ($item) {
-        $item->delete();
-        return redirect()->back()->with('success', 'Item berhasil dihapus.');
+        if ($item) {
+            $item->delete();
+            return redirect()->back()->with('success', 'Item berhasil dihapus.');
+        }
+
+        return redirect()->back()->with('error', 'Item tidak ditemukan atau sudah dikirim.');
     }
-
-    return redirect()->back()->with('error', 'Item tidak ditemukan atau sudah dikirim.');
-}
 
 
     // Kirim pesanan
@@ -102,23 +102,30 @@ class PesananController extends Controller
             ->whereNull('order_id')
             ->update(['order_id' => $order->id]);
 
-        // Tambahkan poin ke user
-        $user = User::find($userId);
-        $user->my_points += $totalPoint;
-        $user->save();
-
         return redirect('/menu')->with('success', 'Pesanan berhasil dikirim! Kamu dapat ' . $totalPoint . ' poin.');
     }
 
 
-    // Tampilkan daftar pesanan
     public function index()
     {
         $userId = Auth::id();
-        $pesanan = Item::where('user_id', $userId)->with('menu')->get();
 
-        // Format data untuk ditampilkan di view
+        $pesanan = Item::where('user_id', $userId)
+                    ->where(function ($query) {
+                        $query->whereNull('order_id')
+                            ->orWhereHas('order', function ($q) {
+                                $q->where('status', '!=', 'selesai');
+                            });
+                    })
+                    ->with('menu')
+                    ->get();
+
         $pesanan = $pesanan->map(function ($item) {
+            $filename = strtolower(str_replace(' ', '_', $item->menu->name)) . '.jpg';
+            $imagePath = public_path('images/' . $filename);
+            
+            $image = file_exists($imagePath) ? asset('images/' . $filename) : asset('images/default.png');
+
             return [
                 'name'         => $item->menu->name ?? 'Menu Tidak Ditemukan',
                 'desc'         => $item->note ?? '',
@@ -127,9 +134,9 @@ class PesananController extends Controller
                 'quantity'     => $item->quantity,
                 'items_price'  => $item->items_price,
                 'total_price'  => 'Rp. ' . number_format($item->items_price, 0, ',', '.'),
+                'image'        => $image, 
             ];
         });
-
 
         $total = $pesanan->sum('items_price');
 

@@ -12,15 +12,14 @@
     <div class="max-w-md mx-auto p-4">
         <h1 class="text-center text-2xl font-bold">Kontak</h1>
 
-        <form class="mt-4" id="contact-form">
-    <input type="text" id="name" placeholder="Nama Anda" class="w-full p-3 rounded-md bg-red-700 mb-3 text-white">
-    <input type="text" id="phone" placeholder="No.Telp" class="w-full p-3 rounded-md bg-red-700 mb-3 text-white">
-    <input type="email" id="email" placeholder="Email" class="w-full p-3 rounded-md bg-red-700 mb-3 text-white">
-    <input type="text" id="subject" placeholder="Subjek" class="w-full p-3 rounded-md bg-red-700 mb-3 text-white">
-    <textarea id="message" placeholder="Pesan" class="w-full p-3 rounded-md bg-red-700 mb-3 text-white h-32"></textarea>
-    <button type="button" id="send-wa" class="w-full bg-yellow-500 text-black p-3 rounded-md font-bold">Submit</button>
-    </form>
-
+        <form method="POST" action="{{ route('kontak.store') }}" class="mt-4" id="contact-form">
+                @csrf
+                <input type="text" name="name" placeholder="Nama Anda" class="w-full p-3 rounded-md bg-red-700 text-white">
+                <input type="text" name="number_phone" placeholder="No. Telp" class="w-full p-3 rounded-md bg-red-700 text-white">
+                <input type="email" name="email" placeholder="Email" class="w-full p-3 rounded-md bg-red-700 text-white">
+                <textarea name="message" placeholder="Pesan Anda" class="w-full p-3 rounded-md bg-red-700 text-white h-32"></textarea>
+                <button class="bg-yellow-500 text-black p-3 rounded-md font-bold">Submit</button>
+            </form>
     </div>
     <!-- Footer -->
     @include('partials.footer')

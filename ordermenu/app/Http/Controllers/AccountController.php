@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Customer; // Pastikan model Customer ada
+use App\Models\User; // Pastikan model Customer ada
 
 class AccountController extends Controller
 {
     public function index()
     {
         // Ambil semua pelanggan
-        $customers = Customer::all();
+        $customers = User::where('role', 'customer')->get();
         $totalCustomers = $customers->count();
 
 

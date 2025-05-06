@@ -17,6 +17,7 @@ use App\Http\Controllers\TukarPoinController;
 use App\Http\Controllers\LoginAdminController;
 use App\Http\Controllers\ListOrderController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\DetailPesananController;
 
 // Halaman Utama (Redirect ke login)
 Route::get('/', function () {
@@ -37,8 +38,6 @@ Route::get('/galeri/create', [GaleriController::class, 'create']);
 Route::post('/galeri/store', [GaleriController::class, 'store'])->name('galeri.store');
 Route::delete('/galeri/{id}', [GaleriController::class, 'destroy'])->name('galeri.destroy');
 
-Route::get('/kontak', [KontakController::class, 'index'])->name('kontak');
-
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
 // Menu Routes
@@ -51,6 +50,7 @@ Route::get('/reviews/{id}', [ReviewController::class, 'show'])->name('reviews.sh
 Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 
 Route::get('/kontak', [KontakController::class, 'index'])->name('kontak');
+Route::post('/kontak', [KontakController::class, 'store'])->name('kontak.store');
 
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 Route::get('/tukarpoin', [TukarPoinController::class, 'index'])->name('tukarpoin');
@@ -76,7 +76,17 @@ Route::get('/api/menus', [MenuController::class, 'apiMenus']);
 
 // Dashboard route TANPA middleware auth
 Route::get('/listOrder', [ListOrderController::class, 'index'])->name('dashboard');
+Route::get('/listOrder/waiting', [ListOrderController::class, 'showWaiting']);
+Route::get('/listOrder/process', [ListOrderController::class, 'showProcess'])->name('listOrder.process');
+Route::get('/listOrder/complete', [ListOrderController::class, 'showComplete'])->name('listOrder.complete');
+
 Route::get('/accounts', [AccountController::class, 'index'])->name('accounts.index');
+
+Route::get('/order-detail/{id}', [DetailPesananController::class, 'show'])->name('order.detail');
+Route::patch('/orders/{order}/status', [DetailPesananController::class, 'updateStatus'])->name('orders.updateStatus');
+Route::delete('/orders/{order}', [ListOrderController::class, 'destroy'])->name('orders.destroy');
+Route::delete('/orders/{order}/done', [DetailPesananController::class, 'done'])->name('orders.done');
+
 Route::get('/create-accounts', [AccountController::class, 'create'])->name('create-accounts.index');
 Route::post('/create-accounts', [AccountController::class, 'store'])->name('create-accounts.store');
 Route::delete('/delete-account/{id}', [AccountController::class, 'destroy'])->name('delete-account');

@@ -16,32 +16,24 @@
      <!-- Navbar -->
      @include('partials.navbar')
     <div class="max-w-4xl mx-auto p-8">
-
-
-
         <h1 class="text-3xl font-bold mb-6">KONTAK</h1>
 
         <div class="grid grid-cols-2 gap-8">
-            <form class="space-y-4">
-                <input type="text" placeholder="Nama Anda" class="w-full p-3 rounded-md bg-red-700 text-white">
-                <input type="text" placeholder="No. Telp" class="w-full p-3 rounded-md bg-red-700 text-white">
-                <input type="email" placeholder="Email" class="w-full p-3 rounded-md bg-red-700 text-white">
-                <input type="text" placeholder="Subjek" class="w-full p-3 rounded-md bg-red-700 text-white">
-                <textarea placeholder="Pesan Anda" class="w-full p-3 rounded-md bg-red-700 text-white h-32"></textarea>
+            <form method="POST" action="{{ route('kontak.store') }}" class="space-y-4">
+                @csrf
+                <input type="text" name="name" placeholder="Nama Anda" class="w-full p-3 rounded-md bg-red-700 text-white">
+                <input type="text" name="number_phone" placeholder="No. Telp" class="w-full p-3 rounded-md bg-red-700 text-white">
+                <input type="email" name="email" placeholder="Email" class="w-full p-3 rounded-md bg-red-700 text-white">
+                <textarea name="message" placeholder="Pesan Anda" class="w-full p-3 rounded-md bg-red-700 text-white h-32"></textarea>
                 <button class="bg-yellow-500 text-black p-3 rounded-md font-bold">Submit</button>
             </form>
-
         <div>
     <h2 class="text-lg font-bold mb-2">Lokasi Kampoeng Sawah</h2>
     <div id="map" style="height: 300px;"></div>
     <p class="mt-4">Jam Operasional:</p>
     <p>Senin-Minggu: <span class="text-red-400">09:00-19:00</span></p>
         </div>
-
-
         </div>
-
-
     </div>
      <!-- Footer -->
      @include('partials.footer')

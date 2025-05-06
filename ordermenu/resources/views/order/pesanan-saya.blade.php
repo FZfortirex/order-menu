@@ -16,7 +16,7 @@
     @forelse($pesanan as $item)
       <div class="flex justify-between items-center border rounded-xl p-3 bg-white shadow-md hover:shadow-lg transition">
         <div class="flex items-center gap-3">
-          <img src="{{ asset('img/' . strtolower(str_replace(' ', '-', $item['name'])) . '.png') }}" alt="{{ $item['name'] }}" class="w-16 h-16 rounded-md object-cover">
+          <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}" class="w-16 h-16 rounded-md object-cover">
           <div class="space-y-1">
             <h3 class="font-semibold text-base">{{ $item['name'] }}</h3>
             <p class="text-sm text-gray-600">{{ $item['desc'] ?? 'Harga: ' . $item['total_price'] }}</p>

@@ -60,7 +60,8 @@
         <div class="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-xl font-bold">👤</div>
         <div>
             <p class="font-semibold text-gray-800">{{ $customer->name }}</p>
-            <p class="text-sm text-gray-500">Kode Akses: {{ $customer->kode_akses }}</p>
+            <p class="text-sm text-gray-500">Email : {{ $customer->email }}</p>
+            <p class="text-sm text-gray-500">No. HP : {{ $customer->number_phone }}</p>
         </div>
     </div>
 </div>

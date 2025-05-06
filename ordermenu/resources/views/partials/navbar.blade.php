@@ -19,7 +19,7 @@
                 <button class="hover:underline">Opsi ▼</button>
                 <ul class="absolute hidden bg-[#5b130a] text-white p-2 rounded-md group-hover:block">
                     <li><a href="/menu" class="block py-1 px-3">Menu</a></li>
-                    <li><a href="/order" class="block py-1 px-3">Order</a></li>
+                    <li><a href="/order" class="block py-1 px-3">List Order</a></li>
                 </ul>
             </li>
         </ul>
