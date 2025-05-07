@@ -72,17 +72,6 @@ class PesananController extends Controller
         return redirect()->route('pesanan')->with('success', 'Pesanan berhasil dibatalkan.');
     }
 
-    public function resetPesanan()
-    {
-        $user = auth()->user();
-        
-        Item::where('user_id', $user->id)
-            ->whereNull('order_id')
-            ->delete();
-
-        return redirect('/menu');
-    }
-
     // Kirim pesanan
     public function submit(Request $request)
     {
@@ -126,7 +115,7 @@ class PesananController extends Controller
             ->whereNull('order_id')
             ->update(['order_id' => $order->id]);
 
-        return redirect('/menu')->with('success', 'Pesanan berhasil dikirim! Kamu dapat ' . $totalPoint . ' poin.')->with('order', $order);
+        return redirect('/pesanan')->with('success', 'Pesanan berhasil dikirim! Kamu dapat ' . $totalPoint . ' poin.')->with('order', $order);
     }
 
 

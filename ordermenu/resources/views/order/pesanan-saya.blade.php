@@ -47,8 +47,6 @@
       method="POST"
       class="space-y-4">
       @csrf
-
-      @if($status === null || $status === 'selesai' || $status === 'menunggu')
       <div>
         <label class="block text-sm font-medium">Meja</label>
         <input
@@ -81,8 +79,6 @@
           </div>
         </div>
       </div>
-      @endif
-
       <div class="mt-4 border-t pt-4 space-y-2 text-sm">
         <h4 class="font-medium">Riwayat Pembayaran</h4>
         @php $total = 0; @endphp

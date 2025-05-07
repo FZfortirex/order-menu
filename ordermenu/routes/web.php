@@ -69,7 +69,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/pesanan/submit', [PesananController::class, 'submit'])->name('pesanan.submit');
     Route::post('/pesanan/remove/{nama}', [PesananController::class, 'remove'])->name('pesanan.remove');
     Route::post('/pesanan/cancel/{id}', [PesananController::class, 'cancel'])->name('pesanan.cancel');
-    Route::get('/pesanan/reset', [PesananController::class, 'resetPesanan'])->name('pesanan.reset');
 });
 
 Route::get('/menus', [MenuController::class, 'index']);
