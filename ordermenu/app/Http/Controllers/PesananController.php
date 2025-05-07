@@ -11,7 +11,6 @@ use App\Models\Item;
 
 class PesananController extends Controller
 {
-    // Tambah item ke pesanan
     public function add(Request $request)
     {
         $request->validate([
@@ -22,23 +21,20 @@ class PesananController extends Controller
             'price'     => 'required|numeric',
         ]);
 
-        // Hitung total harga item
         $totalItemPrice = $request->price * $request->quantity;
 
-        // Simpan item ke database
         Item::create([
-            'user_id'     => auth()->id(), // user login
+            'user_id'     => auth()->id(), 
             'menu_id'     => $request->menu_id,
             'packaging'   => $request->packaging,
             'note'        => $request->note,
             'quantity'    => $request->quantity,
-            'items_price' => $totalItemPrice, // total harga dari item
+            'items_price' => $totalItemPrice, 
         ]);
 
         return redirect('/menu')->with('success', 'Item berhasil ditambahkan ke pesanan.');
     }
 
-    // Hapus item dari pesanan
     public function remove($nama)
     {
         $userId = auth()->id();
@@ -46,7 +42,7 @@ class PesananController extends Controller
         $item = Item::whereHas('menu', function ($query) use ($nama) {
             $query->where('name', $nama);
         })->where('user_id', $userId)
-        ->whereNull('order_id') // pastikan hanya yang belum dikirim
+        ->whereNull('order_id')
         ->first();
 
         if ($item) {
@@ -57,6 +53,35 @@ class PesananController extends Controller
         return redirect()->back()->with('error', 'Item tidak ditemukan atau sudah dikirim.');
     }
 
+    public function cancel($id)
+    {
+        $userId = auth()->id();
+
+        $order = Order::where('id', $id)
+                  ->where('user_id', $userId)
+                  ->first();
+
+        if (!$order) {
+            return redirect()->back()->with('error', 'Pesanan tidak ditemukan atau tidak bisa dibatalkan.');
+        }
+
+        Item::where('order_id', $order->id)->delete();
+
+        $order->delete();
+
+        return redirect()->route('pesanan')->with('success', 'Pesanan berhasil dibatalkan.');
+    }
+
+    public function resetPesanan()
+    {
+        $user = auth()->user();
+        
+        Item::where('user_id', $user->id)
+            ->whereNull('order_id')
+            ->delete();
+
+        return redirect('/menu');
+    }
 
     // Kirim pesanan
     public function submit(Request $request)
@@ -86,7 +111,6 @@ class PesananController extends Controller
             return optional($item->menu)->point * $item->quantity;
         });
 
-        // Buat order
         $order = Order::create([
             'user_id'         => $userId,
             'redeem_point_id' => null,
@@ -102,7 +126,7 @@ class PesananController extends Controller
             ->whereNull('order_id')
             ->update(['order_id' => $order->id]);
 
-        return redirect('/menu')->with('success', 'Pesanan berhasil dikirim! Kamu dapat ' . $totalPoint . ' poin.');
+        return redirect('/menu')->with('success', 'Pesanan berhasil dikirim! Kamu dapat ' . $totalPoint . ' poin.')->with('order', $order);
     }
 
 
@@ -140,6 +164,21 @@ class PesananController extends Controller
 
         $total = $pesanan->sum('items_price');
 
-        return view('order.pesanan-saya', compact('pesanan', 'total'));
+        $currentOrder = Order::where('user_id', $userId)
+                        ->latest()
+                        ->first();
+
+        $status = $currentOrder ? $currentOrder->status : null;
+        $currentOrderId = $currentOrder ? $currentOrder->id : null;
+
+        $order = Order::where('user_id', auth()->id())->latest()->first();
+
+        return view('order.pesanan-saya', [
+            'order' => $order,
+            'pesanan' => $pesanan, 
+            'status' => $order->status ?? null, 
+            'currentOrderId' => $order->id ?? null, 
+            'total' => $total, 
+        ]);
     }
 }
