@@ -45,9 +45,12 @@ Route::get('/menu', [MenuController::class, 'index'])->name('order.menu');
 Route::get('/menu/{id}', [MenuController::class, 'show'])->name('menu.detail');
 Route::get('/menu/{id}/reviews', [ReviewController::class, 'show'])->name('menu.reviews');
 
-Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 Route::get('/reviews/{id}', [ReviewController::class, 'show'])->name('reviews.show');
-Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+
+Route::middleware('auth')->group(function () {
+    Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+});
 
 Route::get('/kontak', [KontakController::class, 'index'])->name('kontak');
 Route::post('/kontak', [KontakController::class, 'store'])->name('kontak.store');

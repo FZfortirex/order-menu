@@ -48,15 +48,15 @@
                     <input type="hidden" name="menu_id" value="{{ $menu->id }}">
 
                     <label class="block text-sm mb-2 font-medium">Write Your Review</label>
-                    <div class="flex mb-2 text-yellow-400 text-xl">
-                        @for ($i = 1; $i <= 5; $i++)
-                            <label>
-                                <input type="radio" name="rating" value="{{ $i }}" class="hidden" required>
-                                <span class="cursor-pointer hover:text-yellow-300">★</span>
-                            </label>
-                        @endfor
+                    <div id="star-rating" class="flex space-x-1">
+                    @for ($i = 1; $i <= 5; $i++)
+                        <svg data-index="{{ $i }}" xmlns="http://www.w3.org/2000/svg" 
+                            class="w-5 h-5 star text-gray-300 hover:text-yellow-400 transition-colors duration-200 cursor-pointer"
+                            fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 .587l3.668 7.568 8.332 1.151-6.001 5.849 1.415 8.277L12 18.896l-7.414 4.536 1.415-8.277L.001 9.306l8.332-1.151z"/>
+                        </svg>
+                    @endfor
                     </div>
-
                     <textarea name="comment" class="w-full border rounded p-2" rows="3" placeholder="Tulis ulasanmu..." required></textarea>
                     <button type="submit" class="mt-3 px-4 py-2 bg-yellow-400 hover:bg-yellow-300 border border-black text-black rounded">
                         Kirim Review
@@ -84,9 +84,8 @@
                             </div>
                         </div>
 
-                        @if (auth()->id() === $review->user_id)
-                            <button onclick="hapusReview({{ $review->id }})"
-                                class="text-red-500 hover:text-red-700 text-sm ml-4">Hapus</button>
+                        @if ($user->id === $review->user_id)
+                            <button onclick="hapusReview({{ $review->id }}, this)" class="text-red-500 hover:text-red-700 text-sm mt-2">Hapus</button>
                         @endif
                     </div>
                 @endforeach
@@ -94,72 +93,117 @@
             </div>
         </div>
     </div>
-    <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Submit review pakai AJAX
-        const form = document.querySelector("#review-form");
-        form.addEventListener("submit", function (e) {
-            e.preventDefault();
+<script>
+    const stars = document.querySelectorAll('#star-rating .star');
+    let selectedRating = 0;
 
-            const formData = new FormData(form);
-            fetch(form.action, {
-                method: "POST",
-                headers: {
-                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
-                },
-                body: formData
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    // Menambahkan review baru ke halaman
-                    const reviewList = document.querySelector("#review-list");
-
-                    const newReview = document.createElement("div");
-                    newReview.className = "bg-white p-4 border rounded shadow flex items-start mt-4";
-                    newReview.innerHTML = `
-                        <div class="mr-3">
-                            <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-sm font-bold">
-                                ${data.review.user_initial}
-                            </div>
-                        </div>
-                        <div>
-                            <p class="font-semibold">${data.review.user_name}</p>
-                            <div class="text-yellow-400 text-sm">
-                                ${"★".repeat(data.review.rating)}${"☆".repeat(5 - data.review.rating)}
-                            </div>
-                            <p class="text-sm mt-1 text-gray-600">${data.review.comment}</p>
-                        </div>
-                    `;
-                    reviewList.prepend(newReview);
-                    form.reset();
-                }
-            })
-            .catch(err => console.error(err));
+    stars.forEach((star, i) => {
+        star.addEventListener('mouseover', () => {
+        stars.forEach((s, j) => {
+            s.classList.toggle('text-yellow-400', j <= i);
+            s.classList.toggle('text-gray-300', j > i);
+        });
         });
 
-        // Fungsi untuk hapus review
-        window.hapusReview = function(id) {
-            if (!confirm("Yakin mau dihapus?")) return;
+        star.addEventListener('mouseout', () => {
+        stars.forEach((s, j) => {
+            s.classList.toggle('text-yellow-400', j < selectedRating);
+            s.classList.toggle('text-gray-300', j >= selectedRating);
+        });
+        });
 
-            fetch(`/reviews/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
-                    'Accept': 'application/json'
-                }
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    // Hapus elemen review dari halaman
-                    const reviewElement = event.target.closest('.bg-white');
-                    reviewElement.remove();
-                }
-            })
-            .catch(err => console.error(err));
-        };
+        star.addEventListener('click', () => {
+        selectedRating = i + 1;
+        });
     });
-    </script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+    // Submit review pakai AJAX
+    const form = document.querySelector("#review-form");
+    const stars = document.querySelectorAll('#star-rating .star');
+    let selectedRating = 0;
+
+    stars.forEach((star, i) => {
+        star.addEventListener('click', () => {
+            selectedRating = i + 1;
+        });
+    });
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        const menuId = formData.get("menu_id");
+        const comment = formData.get("comment");
+
+        fetch("{{ route('reviews.store') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+            },
+            body: JSON.stringify({
+                menu_id: menuId,
+                rating: selectedRating,
+                comment: comment,
+            })
+        })
+        .then(async res => {
+            if (res.ok) {
+                return res.json();
+            } else {
+                console.log("Error:", await res.text());
+            }
+        })
+        .then(data => {
+            if (data.success) {
+                const reviewList = document.querySelector("#review-list");
+
+                const newReview = document.createElement("div");
+                newReview.className = "bg-white p-4 border rounded shadow flex items-start mt-4";
+                newReview.innerHTML = `
+                    <div class="mr-3">
+                        <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-sm font-bold">
+                            ${data.review.user_initial}
+                        </div>
+                    </div>
+                    <div>
+                        <p class="font-semibold">${data.review.user_name}</p>
+                        <div class="text-yellow-400 text-sm">
+                            ${"★".repeat(data.review.rating)}${"☆".repeat(5 - data.review.rating)}
+                        </div>
+                        <p class="text-sm mt-1 text-gray-600">${data.review.comment}</p>
+                    </div>
+                `;
+
+                reviewList.prepend(newReview);
+                form.reset();
+                selectedRating = 0;
+            }
+        })
+        .catch(error => console.error("Request failed", error));
+        });
+    });
+
+    window.hapusReview = function(id, el) {
+        if (!confirm("Yakin mau dihapus?")) return;
+
+        fetch(`/reviews/${id}`, {
+            method: "DELETE",
+            headers: {
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+                "Accept": "application/json"
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                const reviewElement = el.closest('.bg-white');
+                reviewElement.remove();
+            }
+        })
+        .catch(err => console.error(err));
+    };
+</script>
 </body>
 </html>
