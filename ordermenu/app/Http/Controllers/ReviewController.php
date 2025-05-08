@@ -54,13 +54,16 @@ class ReviewController extends Controller
         // Hitung rata-rata rating menu
         $menu->average_rating = $menu->reviews->avg('rating');
 
-        return view('user.review', compact('menu'));
+        $user = auth()->user();
+
+        return view('user.review', compact('menu', 'user'));
     }
 
     public function destroy(Review $review)
     {
-        // Pastikan hanya user yang membuat review bisa menghapusnya
-        if (auth()->id() !== $review->user_id) {
+        $user = auth()->user();
+
+        if ($user->id  !== $review->user_id) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
