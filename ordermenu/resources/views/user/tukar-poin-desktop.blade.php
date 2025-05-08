@@ -30,7 +30,7 @@
       <div class="flex justify-between items-start">
         <div>
           <h2 class="text-xl font-semibold">Total Poin Kamu</h2>
-          <p class="text-2xl font-bold mt-1">20 poin</p>
+          <p class="text-2xl font-bold mt-1">{{ $user->my_points }} poin</p>
           <div class="flex space-x-6 mt-2 text-sm">
             <div>Poin Dasar<br><span class="font-semibold">10 poin</span></div>
             <div class="border-l border-gray-400 pl-4">Poin Bonus<br><span class="font-semibold">10 poin</span></div>

@@ -43,11 +43,14 @@
     <div class="flex flex-col sm:flex-row flex-grow min-h-[calc(100vh-160px)] border rounded-lg overflow-hidden mt-4">
       <!-- Kolom Kiri -->
       <div class="bg-maroon text-white w-full sm:w-1/3 flex flex-col items-center justify-center p-8">
-        <div class="w-24 h-24 rounded-full bg-gray-300 mb-6"></div>
-        <div class="text-lg font-semibold">{{ strtoupper(substr($user->name, 0, 1)) }} </div>
-        <div class="text-sm text-gray-300">Nomer Telephone</div>
-        <div class="text-sm text-gray-300">Email</div>
-      </div>
+  <div class="w-24 h-24 rounded-full bg-black text-white flex items-center justify-center mb-6 text-3xl font-bold">
+    {{ strtoupper(substr($user->name, 0, 1)) }}
+  </div>
+  <div class="text-lg font-semibold">{{ $user->name }}</div>
+  <div class="text-sm text-gray-300">Nomer Telephone : {{ $user->number_phone ?? 'Belum terisi' }}</div>
+  <div class="text-sm text-gray-300">Email : {{ $user->email ?? 'Belum terisi' }}</div>
+</div>
+
 
       <!-- Kolom Kanan -->
       <div class="bg-white w-full sm:w-2/3 p-10 flex flex-col justify-between border-l">
@@ -56,11 +59,11 @@
             <div class="text-3xl font-bold">$</div>
             <div class="text-xl font-semibold">{{ $user->my_points }} poin</div>
           </div>
-          <a href="#" class="text-sm text-white bg-maroon px-4 py-2 rounded flex items-center">
+          <a href="/tukarpoin" class="text-sm text-white bg-maroon px-4 py-2 rounded flex items-center">
             Tukar Poin <span class="ml-2 text-lg">➤</span>
           </a>
         </div>
-        <div class="text-2xl font-bold mt-8">20 poin</div>
+        <div class="text-2xl font-bold mt-8">{{ $user->my_points }} poin</div>
         <hr class="mt-6 border-gray-300" />
       </div>
     </div>

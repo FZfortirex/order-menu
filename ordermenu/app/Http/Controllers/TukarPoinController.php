@@ -13,7 +13,8 @@ class TukarPoinController extends Controller
     public function index()
     {
         $rewards = Reward::all();
-        return view('user.tukar-poin-desktop', compact('rewards'));
+        $user = auth()->user();
+        return view('user.tukar-poin-desktop', compact('rewards', 'user'));
     }
 
     public function tukar(Request $request, $id)
