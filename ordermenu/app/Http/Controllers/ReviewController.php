@@ -36,14 +36,16 @@ class ReviewController extends Controller
         return response()->json([
             'success' => true,
             'review' => [
+                'id' => $newReview->id, // <-- Tambah ini
+                'user_id' => $newReview->user_id, // <-- Tambah ini
                 'user_name' => $newReview->user->name,
                 'user_initial' => strtoupper(substr($newReview->user->name, 0, 1)),
                 'rating' => $newReview->rating,
                 'comment' => $newReview->comment,
             ],
-            'average_rating' => $averageRating,  // Rating rata-rata baru
-            'review_count' => $newReview->menu->reviews()->count(), // Jumlah review
-        ]);
+            'average_rating' => $averageRating,
+            'review_count' => $newReview->menu->reviews()->count(),
+        ]);        
     }
 
     public function show($id)
