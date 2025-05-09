@@ -36,8 +36,8 @@ class ReviewController extends Controller
         return response()->json([
             'success' => true,
             'review' => [
-                'id' => $newReview->id, // <-- Tambah ini
-                'user_id' => $newReview->user_id, // <-- Tambah ini
+                'id' => $newReview->id, 
+                'user_id' => $newReview->user_id, 
                 'user_name' => $newReview->user->name,
                 'user_initial' => strtoupper(substr($newReview->user->name, 0, 1)),
                 'rating' => $newReview->rating,
