@@ -47,7 +47,7 @@ class AuthController extends Controller
                 Session::put('admin_logged_in', true);
                 return redirect()->route('dashboard');
             } else {
-                return redirect()->intended('/welcome'); 
+                return redirect()->intended('/menu');
             }
 
             return back()->withErrors(['msg' => 'Username atau Password salah!']);
