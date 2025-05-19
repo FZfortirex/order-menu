@@ -49,7 +49,16 @@
   <div class="text-lg font-semibold">{{ $user->name }}</div>
   <div class="text-sm text-gray-300">Nomer Telephone : {{ $user->number_phone ?? 'Belum terisi' }}</div>
   <div class="text-sm text-gray-300">Email : {{ $user->email ?? 'Belum terisi' }}</div>
-</div>
+  <a href="{{ route('logoutAccount') }}"
+    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+    class="mt-4 inline-block bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-4 py-2 rounded">
+    Logout
+  </a>
+
+  <form id="logout-form" action="{{ route('logoutAccount') }}" method="POST" class="hidden">
+      @csrf
+  </form>
+  </div>
 
 
       <!-- Kolom Kanan -->
