@@ -65,10 +65,12 @@
 
     <!-- Garis pemisah -->
         <h3 class="font-bold text-gray-700 mb-2">Riwayat Pembayaran</h3>
-        <div class="flex justify-between text-gray-700">
-            <span>{{ $order->items->first()->menu->name ?? 'Item' }} x{{ $order->items->sum('quantity') }}</span>
-            <span>Rp. {{ number_format($order->total_price, 0, ',', '.') }}</span>
-        </div>
+        @foreach ($order->items as $item)
+            <div class="flex justify-between text-gray-700">
+                <span>{{ $item->menu->name ?? 'Item' }} x{{ $item->quantity }}</span>
+                <span>Rp. {{ number_format($item->items_price * $item->quantity, 0, ',', '.') }}</span>
+            </div>
+        @endforeach
         <!-- Garis tebal -->
         <div class="border-t-2 border-gray-400 my-4"></div>
         <div class="flex justify-between font-semibold mt-2">

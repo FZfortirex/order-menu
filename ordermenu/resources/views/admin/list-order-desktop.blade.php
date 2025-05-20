@@ -47,11 +47,11 @@
                     </form>
 
                     <div class="flex items-center gap-4 mb-4">
-                        <div class="w-14 h-14 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-xl font-bold">
+                        <div class="w-20 aspect-square rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-xl font-bold">
                             👤
                         </div>
                         <div>
-                            <p class="font-semibold text-gray-800"> Antrian: {{ $loop->iteration }}</p>
+                            <p class="font-semibold text-gray-800"> Nama: {{ $order->user->name ?? '-' }}</p>
                             <p class="text-sm text-gray-500">Meja: {{ $order->table ?? '-' }}</p>
                             <p class="text-sm text-gray-500">Status: <strong class="text-blue-600">{{ ucfirst($order->status) }}</strong></p>
                             @if (isset($order->total_price))
@@ -61,10 +61,6 @@
                                 <p class="text-sm text-gray-500">Catatan: {{ $order->additional_note }}</p>
                             @endif
                         </div>
-                    </div>
-
-                    <div class="flex flex-wrap gap-2 justify-between mt-4">
-                        <button class="status-btn done flex-1 bg-white text-yellow-600 border border-yellow-500 px-3 py-1 rounded-md hover:bg-yellow-100 transition">Done</button>
                     </div>
                 </div>
             @endforeach

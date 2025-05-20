@@ -15,11 +15,11 @@
         @forelse ($listOrder as $order)
             <div class="relative bg-white rounded-lg shadow-lg p-5 hover:scale-105 transition-transform">
                 <div class="flex items-center gap-4 mb-4">
-                    <div class="w-14 h-14 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-xl font-bold">
-                        ✅
+                    <div class="w-20 aspect-square rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-xl font-bold">
+                        👤
                     </div>
                     <div>
-                        <p class="font-semibold text-gray-800">Antrian: {{ $loop->iteration }}</p>
+                        <p class="font-semibold text-gray-800">Nama: {{ $order->user->name ?? '-' }}</p>
                         <p class="text-sm text-gray-500">Meja: {{ $order->table ?? '-' }}</p>
                         <p class="text-sm text-gray-500">Status: <strong class="text-green-600">{{ ucfirst($order->status) }}</strong></p>
                         @if (isset($order->total_price))
