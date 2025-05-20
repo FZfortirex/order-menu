@@ -14,82 +14,62 @@
 <body class="flex flex-col min-h-screen bg-white font-sans">
 
   <!-- Navbar -->
-  <div class="bg-maroon text-white text-xs px-6 py-6 flex justify-between items-center">
-    <div class="flex space-x-4">
-      <a href="#">Home</a>
-      <a href="#">Galeri</a>
-    </div>
-    <div class="text-center text-[10px] font-semibold tracking-widest">
-      <img src="logo.png" alt="Logo" class="mx-auto h-6 mb-1" />
-      Kampoeng Sawah
-    </div>
-    <div class="flex space-x-2 items-center">
-      <a href="#">Kontak</a>
-      <a href="#">Opsi <span class="inline-block rotate-180 text-sm">▾</span></a>
-    </div>
-  </div>
+  @include('partials.navbar')
 
   <!-- Back dan Judul -->
-  <div class="flex justify-between items-center px-6 py-6 border-b">
-    <button class="text-sm font-medium flex items-center">
-      <a href="{{ url('/menu') }}" class="text-base font-medium">&#x2190; BACK</a>
-    </button>
-    <span class="text-sm font-bold">Profile</span>
-    <div></div>
+  <div class="flex justify-between items-center px-6 py-4 border-b bg-gray-50 shadow-sm">
+    <a href="{{ url('/menu') }}" class="text-sm font-medium text-maroon hover:underline flex items-center">
+      &#x2190; <span class="ml-1">Back</span>
+    </a>
+    <span class="text-base font-bold text-gray-700">Profile</span>
+    <div class="w-12"></div> <!-- spacer -->
   </div>
 
   <!-- Konten Utama -->
-  <main class="flex-grow flex flex-col px-12 py-12">
-    <div class="flex flex-col sm:flex-row flex-grow min-h-[calc(100vh-160px)] border rounded-lg overflow-hidden mt-4">
+  <main class="flex-grow flex flex-col px-6 sm:px-12 py-10">
+    <div class="flex flex-col sm:flex-row border rounded-lg overflow-hidden shadow-lg">
+
       <!-- Kolom Kiri -->
-      <div class="bg-maroon text-white w-full sm:w-1/3 flex flex-col items-center justify-center p-8">
-  <div class="w-24 h-24 rounded-full bg-black text-white flex items-center justify-center mb-6 text-3xl font-bold">
-    {{ strtoupper(substr($user->name, 0, 1)) }}
-  </div>
-  <div class="text-lg font-semibold">{{ $user->name }}</div>
-  <div class="text-sm text-gray-300">Nomer Telephone : {{ $user->number_phone ?? 'Belum terisi' }}</div>
-  <div class="text-sm text-gray-300">Email : {{ $user->email ?? 'Belum terisi' }}</div>
-  <a href="{{ route('logoutAccount') }}"
-    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-    class="mt-4 inline-block bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-4 py-2 rounded">
-    Logout
-  </a>
+      <div class="bg-maroon text-white w-full sm:w-1/3 flex flex-col items-center justify-center p-8 space-y-4">
+        <div class="w-24 h-24 rounded-full bg-black text-white flex items-center justify-center text-3xl font-bold shadow-md">
+          {{ strtoupper(substr($user->name, 0, 1)) }}
+        </div>
+        <div class="text-lg font-semibold text-center">{{ $user->name }}</div>
+        <div class="text-sm text-gray-300 text-center">Nomer Telepon: <br> {{ $user->number_phone ?? 'Belum terisi' }}</div>
+        <div class="text-sm text-gray-300 text-center">Email: <br> {{ $user->email ?? 'Belum terisi' }}</div>
 
-  <form id="logout-form" action="{{ route('logoutAccount') }}" method="POST" class="hidden">
-      @csrf
-  </form>
-  </div>
+        <a href="{{ route('logoutAccount') }}"
+          onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+          class="mt-4 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-5 py-2 rounded transition-all duration-300">
+          Logout
+        </a>
 
+        <form id="logout-form" action="{{ route('logoutAccount') }}" method="POST" class="hidden">
+          @csrf
+        </form>
+      </div>
 
       <!-- Kolom Kanan -->
       <div class="bg-white w-full sm:w-2/3 p-10 flex flex-col justify-between border-l">
         <div class="flex justify-between items-center">
           <div class="flex items-center space-x-2">
-            <div class="text-3xl font-bold">$</div>
-            <div class="text-xl font-semibold">{{ $user->my_points }} poin</div>
+            <span class="text-3xl font-bold text-black-500">$</span>
+            <span class="text-xl font-semibold text-gray-800">{{ $user->my_points }} Poin</span>
           </div>
-          <a href="/tukarpoin" class="text-sm text-white bg-maroon px-4 py-2 rounded flex items-center">
+          <a href="/tukarpoin" class="text-sm bg-maroon hover:bg-[#4f1410] text-white px-4 py-2 rounded transition-all duration-300 flex items-center">
             Tukar Poin <span class="ml-2 text-lg">➤</span>
           </a>
         </div>
-        <div class="text-2xl font-bold mt-8">{{ $user->my_points }} poin</div>
+        <div class="text-2xl font-bold mt-10 text-gray-700">{{ $user->my_points }} Poin</div>
         <hr class="mt-6 border-gray-300" />
       </div>
+
     </div>
   </main>
 
   <!-- Footer -->
-  <footer class="bg-black text-white text-center text-xs py-6">
-    <img src="logo-mini.png" alt="Logo" class="mx-auto mb-1 h-6" />
-    <div class="text-yellow-400 font-semibold mb-1">Kampoeng Sawah</div>
-    <div class="flex justify-center space-x-4 mb-1">
-      <a href="#">Home</a>
-      <a href="#">Galeri</a>
-      <a href="#">Kontak</a>
-      <a href="#">Opsi</a>
-    </div>
-    <div class="text-gray-400 text-[10px]">© 2025 kampoengsawahsystem</div>
-  </footer>
+  <!-- Footer -->
+  @include('partials.footer')
 
 </body>
 </html>

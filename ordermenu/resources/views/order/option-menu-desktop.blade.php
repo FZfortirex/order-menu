@@ -65,7 +65,7 @@
             </div>
           </div>
           <button type="submit" class="bg-yellow-400 text-black rounded-xl w-full py-2 font-semibold flex items-center justify-between px-4">
-            Tambahkan : <span id="totalPrice">{{ $menu->price }}rb</span> <i class="fas fa-shopping-cart"></i>
+            Tambahkan : <span id="totalPrice">Rp {{ $menu->price }}</span> <i class="fas fa-shopping-cart"></i>
           </button>
         </form>
         </div>
