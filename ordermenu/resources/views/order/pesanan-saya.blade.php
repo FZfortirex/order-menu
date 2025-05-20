@@ -59,7 +59,7 @@
       </div>
 
       <div>
-        <label class="block text-sm font-medium">Catatan tambahan</label>
+        <label class="block text-sm font-medium">Catatan tambahan ( Opsional )</label>
         <textarea name="catatan" rows="3"
           class="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-yellow-400"
           {{ in_array($status, ['menunggu', 'sedang dibuat', 'sudah dibuat']) ? 'readonly' : '' }}>{{ old('additional_note', $order->additional_note ?? '') }}</textarea>
