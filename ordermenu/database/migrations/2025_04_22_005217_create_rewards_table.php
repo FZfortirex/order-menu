@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('rewards', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->integer('poin_dibutuhkan');
+            $table->string('name');
+            $table->integer('points_required');
+            $table->string('type');
+            $table->integer('value');
+            $table->integer('stock');
             $table->timestamps();
         });
 

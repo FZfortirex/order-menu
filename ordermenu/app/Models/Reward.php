@@ -6,9 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reward extends Model
 {
-    public function tukarPoin()
-{
-    return $this->hasMany(TukarPoin::class);
-}
-
+    protected $fillable = [
+        'name', 'points_required', 'type', 'value', 'stock'
+    ];
 }
