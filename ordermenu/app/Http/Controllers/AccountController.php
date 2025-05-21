@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User; // Pastikan model Customer ada
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class AccountController extends Controller
 {
@@ -26,22 +27,25 @@ class AccountController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi data form
-        $validated = $request->validate([
+        $request->validate([
             'name' => 'required|string|max:255',
-            'kode_akses' => 'required|string|max:255|unique:customers',
+            'email' => 'required|email|unique:users,email',
+            'number_phone' => 'required|string|max:20',
+            'password' => 'required|string|min:6',
+            'role' => 'in:customer',
         ]);
 
-        // Menyimpan data akun pelanggan ke database
-        Customer::create([
-            'name' => $validated['name'],
-            'kode_akses' => $validated['kode_akses'],
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'number_phone' => $request->number_phone,
+            'password' => Hash::make($request->password),
+            'role' => $request->role,
         ]);
 
-        // Redirect setelah berhasil menyimpan data
-        return redirect()->route('accounts.index')->with('success', 'Akun berhasil dibuat!');
-
+        return redirect()->back()->with('success', 'Akun pelanggan berhasil dibuat!');
     }
+
 
     public function destroy($id)
 {
