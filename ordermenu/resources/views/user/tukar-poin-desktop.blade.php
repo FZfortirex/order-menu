@@ -14,6 +14,19 @@
   <!-- Navbar -->
   @include('partials.navbar')
 
+  <div class="mx-6 mt-4">
+    @if(session('success'))
+      <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded">
+        {{ session('success') }}
+      </div>
+    @endif
+
+    @if(session('error'))
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded">
+        {{ session('error') }}
+      </div>
+    @endif
+  </div>
   <!-- Header -->
   <header class="flex justify-between items-center px-6 py-4 border-b shadow-sm bg-gray-50">
     <a href="{{ url('/profile') }}" class="text-maroon text-sm font-semibold flex items-center hover:underline">
@@ -36,7 +49,10 @@
             <div class="border-l pl-4 border-gray-400">Poin Bonus<br><span class="font-semibold text-black">10 poin</span></div>
           </div>
         </div>
-        <a href="#" class="text-red-600 text-sm font-medium hover:underline mt-2">Riwayat &gt;</a>
+        <div class="mt-2 flex flex-col space-y-2">
+          <a href="#" class="text-red-600 text-sm font-medium hover:underline">Riwayat &gt;</a>
+          <a href="{{ route('my-discount.index') }}" class="text-green-700 text-sm font-medium hover:underline">Lihat Discount Saya &gt;</a>
+        </div>
       </div>
     </div>
   </section>
@@ -53,13 +69,19 @@
 
   <!-- Voucher List -->
   <section class="px-6 mt-8 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-    <!-- Contoh 1 Voucher -->
+    @foreach($rewards as $reward)
     <div class="border rounded-lg shadow hover:shadow-lg transition p-4 flex flex-col items-center">
-      <img src="https://via.placeholder.com/100x100.png?text=10%25+OFF" alt="Diskon 10%" class="mb-3 rounded">
-      <p class="text-center text-sm font-medium mb-1">Diskon 10%</p>
-      <span class="text-xs text-gray-500 mb-3">50 poin</span>
-      <button class="bg-yellow-400 text-black px-4 py-1 rounded w-full text-sm font-semibold hover:brightness-95">Tukar</button>
+      <img src="https://via.placeholder.com/100x100.png?text={{ urlencode($reward->name) }}" alt="{{ $reward->name }}" class="mb-3 rounded">
+      <p class="text-center text-sm font-medium mb-1">{{ $reward->name }}</p>
+      <span class="text-xs text-gray-500 mb-3">{{ $reward->points_required }} poin</span>
+      <form action="{{ route('tukarpoin.store') }}" method="POST">
+        @csrf
+        <input type="hidden" name="reward_id" value="{{ $reward->id }}">
+        <button type="submit" class="bg-yellow-400 text-black px-4 py-1 rounded w-full text-sm font-semibold hover:brightness-95">Tukar</button>
+      </form>
     </div>
+    @endforeach
+
 
     <!-- Tambahkan kartu voucher lain jika perlu -->
   </section>

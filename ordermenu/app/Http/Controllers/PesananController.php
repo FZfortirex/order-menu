@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Session;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Item;
+use App\Models\UserDiscount;
 
 class PesananController extends Controller
 {
@@ -65,6 +66,13 @@ class PesananController extends Controller
             return redirect()->back()->with('error', 'Pesanan tidak ditemukan atau tidak bisa dibatalkan.');
         }
 
+        if ($order->user_discount_id) {
+        UserDiscount::where('id', $order->user_discount_id)->update([
+            'is_used' => false,
+            'order_id' => null, 
+        ]);
+    }
+
         Item::where('order_id', $order->id)->delete();
 
         $order->delete();
@@ -93,19 +101,37 @@ class PesananController extends Controller
         }
 
         // Hitung total harga
-        $totalHarga = $items->sum('items_price');
+        $totalHarga = $items->sum(function($item) {
+            return ($item->items_price ?? 0) * ($item->quantity ?? 1);
+        });
 
         // Hitung total point dari menu.point * quantity
         $totalPoint = $items->sum(function ($item) {
             return optional($item->menu)->point * $item->quantity;
         });
 
+        $userDiscountId = null;
+        if ($request->voucher) {
+            $userDiscount = UserDiscount::where('user_id', $userId)
+                ->whereHas('reward', function ($query) use ($request) {
+                    $query->where('name', $request->voucher);
+                })
+                ->where('is_used', false)
+                ->first();
+
+            if (!$userDiscount) {
+                return redirect()->back()->with('error', 'Voucher tidak valid atau sudah digunakan.');
+            }
+
+            $userDiscountId = $userDiscount->id;
+        }
+
         $order = Order::create([
             'user_id'         => $userId,
-            'redeem_point_id' => null,
+            'user_discount_id' => $userDiscountId,
             'table'           => $request->meja,
             'additional_note' => $request->catatan,
-            'total_price'     => $totalHarga,
+            'total_price'     => $request->final_total,
             'status'          => 'menunggu',
             'total_point'     => $totalPoint,
         ]);
@@ -115,6 +141,13 @@ class PesananController extends Controller
             ->whereNull('order_id')
             ->update(['order_id' => $order->id]);
 
+        if ($userDiscountId) {
+            UserDiscount::where('id', $userDiscountId)->update([
+                'is_used' => true,
+                'order_id' => $order->id,
+            ]);
+        }
+
         return redirect('/pesanan')->with('success', 'Pesanan berhasil dikirim! Kamu dapat ' . $totalPoint . ' poin.')->with('order', $order);
     }
 
@@ -122,6 +155,11 @@ class PesananController extends Controller
     public function index()
     {
         $userId = Auth::id();
+
+        $vouchers = UserDiscount::where('user_id', $userId)
+        ->where('is_used', false)
+        ->with('reward')
+        ->get();
 
         $pesanan = Item::where('user_id', $userId)
                     ->where(function ($query) {
@@ -159,8 +197,11 @@ class PesananController extends Controller
 
         $status = $currentOrder ? $currentOrder->status : null;
         $currentOrderId = $currentOrder ? $currentOrder->id : null;
-
-        $order = Order::where('user_id', auth()->id())->latest()->first();
+        
+        $order = Order::with('userDiscount.reward')
+        ->where('user_id', $userId)
+        ->latest()
+        ->first();
 
         return view('order.pesanan-saya', [
             'order' => $order,
@@ -168,6 +209,7 @@ class PesananController extends Controller
             'status' => $order->status ?? null, 
             'currentOrderId' => $order->id ?? null, 
             'total' => $total, 
+            'vouchers' => $vouchers,
         ]);
     }
 }

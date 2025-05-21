@@ -39,7 +39,6 @@
     @endforelse
   </div>
 
-
   <!-- Detail Pemesanan -->
   <div class="bg-white border border-gray-200 rounded-xl shadow-md p-6">
     <form
@@ -57,33 +56,42 @@
           class="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-yellow-400"
           {{ in_array($status, ['menunggu', 'sedang dibuat', 'sudah dibuat']) ? 'readonly' : '' }}>
       </div>
-
       <div>
         <label class="block text-sm font-medium">Catatan tambahan ( Opsional )</label>
         <textarea name="catatan" rows="3"
           class="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-yellow-400"
           {{ in_array($status, ['menunggu', 'sedang dibuat', 'sudah dibuat']) ? 'readonly' : '' }}>{{ old('additional_note', $order->additional_note ?? '') }}</textarea>
       </div>
-
       <div>
+      @if ($status === 'menunggu' && isset($order->userDiscount))
+        <label class="block text-sm font-medium">Voucher Waroeng Sawah</label>
+        <div class="mt-1 px-4 py-2 border rounded-md text-sm text-gray-700">
+          🎫 {{ $order->userDiscount->reward->name ?? '-' }}
+        </div>
+      @else
         <label class="block text-sm font-medium">Voucher Waroeng Sawah</label>
         <div class="relative mt-1">
-          <select name="voucher"
+          <select id="voucherSelect" name="voucher"
             class="w-full px-10 py-2 border rounded-md appearance-none focus:outline-none focus:ring-1 focus:ring-yellow-400"
             {{ $status !== null && $status !== 'selesai' ? 'disabled' : '' }}>
             <option value="">Pilih Voucher</option>
-            <option value="diskon10" {{ isset($order->voucher) && $order->voucher == 'diskon10' ? 'selected' : '' }}>Diskon 10%</option>
+            @foreach ($vouchers as $voucher)
+              <option value="{{ $voucher->reward->name }}"
+                data-diskon="{{ $voucher->reward->value ?? 0 }}"
+                {{ old('voucher', $order->userDiscount->reward->name ?? '') == $voucher->reward->name ? 'selected' : '' }}>
+                {{ $voucher->reward->name }}
+              </option>
+            @endforeach
           </select>
           <div class="absolute top-2.5 left-3">
             <span class="text-yellow-500">🎫</span>
           </div>
         </div>
+      @endif
       </div>
       <div class="mt-4 border-t pt-4 space-y-2 text-sm">
         <h4 class="font-medium">Riwayat Pembayaran</h4>
-        @php $total = 0; @endphp
         @foreach($pesanan as $item)
-          @php $total += intval($item['items_price'] ?? 0); @endphp
           <div class="flex justify-between">
             <span>{{ $item['name'] }} x {{ $item['quantity'] ?? 1 }}</span>
             <span>Rp. {{ number_format($item['items_price'] ?? 0) }}</span>
@@ -91,7 +99,18 @@
         @endforeach
         <div class="flex justify-between font-semibold pt-2 border-t">
           <span>Total Pembayaran :</span>
-          <span>Rp. {{ number_format($total) }}</span>
+          <div class="flex justify-between font-semibold text-yellow-600" id="discountDetail" style="display:none;">
+            <!-- detail diskon -->
+          </div>
+          <span id="totalPriceFix">
+            Rp. {{ number_format($status === 'menunggu' ? ($order->total_price ?? 0) : $total) }}
+
+            @if ($status === 'menunggu' && isset($order->userDiscount->reward->name))
+              <small style="color: green;">(Diskon: {{ $order->userDiscount->reward->name }})</small>
+            @endif
+          </span>
+          <input type="hidden" name="final_total" id="finalTotalInput"
+            value="{{ $status === 'menunggu' ? ($order->total_price ?? 0) : $total }}">
         </div>
       </div>
 
@@ -114,9 +133,39 @@
         Sedang Memesan
       </button>
     @endif
-
     </form>
   </div>
-
 </div>
 @endsection
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const voucherSelect = document.getElementById("voucherSelect");
+    const totalValue = {{ $total }};
+    const totalPriceFix = document.getElementById("totalPriceFix");
+    const discountDetail = document.getElementById("discountDetail");
+    const finalTotalInput = document.getElementById("finalTotalInput");
+
+    voucherSelect.addEventListener("change", function () {
+      const selectedOption = voucherSelect.options[voucherSelect.selectedIndex];
+      const discountPercent = parseFloat(selectedOption.getAttribute("data-diskon")) || 0;
+
+      let newTotal = totalValue;
+      if (discountPercent > 0) {
+        newTotal = totalValue - (totalValue * discountPercent / 100);
+        discountDetail.style.display = "flex";
+        discountDetail.innerHTML = `
+          <span>${new Intl.NumberFormat('id-ID').format(totalValue)}</span>
+          <span> - ${discountPercent}% = </span>
+          <span>Rp. ${new Intl.NumberFormat('id-ID').format(newTotal)}</span>
+        `;
+      } else {
+        discountDetail.style.display = "none";
+        newTotal = totalValue;
+      }
+
+      totalPriceFix.textContent = "Rp. " + new Intl.NumberFormat('id-ID').format(newTotal);
+      finalTotalInput.value = Math.round(newTotal);
+    });
+  });
+</script>

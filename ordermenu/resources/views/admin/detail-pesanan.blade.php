@@ -68,9 +68,17 @@
         @foreach ($order->items as $item)
             <div class="flex justify-between text-gray-700">
                 <span>{{ $item->menu->name ?? 'Item' }} x{{ $item->quantity }}</span>
-                <span>Rp. {{ number_format($item->items_price * $item->quantity, 0, ',', '.') }}</span>
+                <span>Rp. {{ number_format($item['items_price'] ?? 0) }}</span>
             </div>
         @endforeach
+
+        @if($order->userDiscount)
+            <div class="flex justify-between text-green-600 font-semibold mt-2">
+                <span>Voucher Diskon</span>
+                <span>Diskon {{ number_format($order->userDiscount->reward->value ?? 0, 0, ',', '.') }} %</span>
+            </div>
+        @endif
+
         <!-- Garis tebal -->
         <div class="border-t-2 border-gray-400 my-4"></div>
         <div class="flex justify-between font-semibold mt-2">

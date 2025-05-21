@@ -3,45 +3,51 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\TukarPoin;
 use App\Models\Reward;
 use App\Models\User;
+use App\Models\UserDiscount;
 use Illuminate\Support\Facades\Auth;
 
 class TukarPoinController extends Controller
 {
     public function index()
     {
-        $rewards = Reward::all();
         $user = auth()->user();
-        return view('user.tukar-poin-desktop', compact('rewards', 'user'));
+        $rewards = Reward::where(function ($query) {
+            $query->whereNull('stock')->orWhere('stock', '>', 0);
+        })->get();
+
+        return view('user.tukar-poin-desktop', compact('user', 'rewards'));
     }
 
-    public function tukar(Request $request, $id)
+    public function store(Request $request)
     {
-        $reward = Reward::findOrFail($id);
-        $user = Auth::user();
+        $user = auth()->user();
+        $reward = Reward::findOrFail($request->reward_id);
 
-        if ($user->poin < $reward->poin_dibutuhkan) {
-            return redirect()->back()->with('error', 'Poin tidak cukup untuk menukar reward ini.');
+        if ($user->my_points < $reward->points_required) {
+            return redirect()->back()->with('error', 'Poin kamu tidak cukup.');
         }
 
-        // Kurangi poin user
-        $user->poin -= $reward->poin_dibutuhkan;
+        if (!is_null($reward->stock) && $reward->stock <= 0) {
+            return redirect()->back()->with('error', 'Stok reward habis.');
+        }
+
+        $user->my_points -= $reward->points_required;
         $user->save();
 
-        // Simpan riwayat penukaran
-        TukarPoin::create([
-            'user_id' => $user->id,
+        if (!is_null($reward->stock)) {
+            $reward->stock -= 1;
+            $reward->save();
+        }
+
+        UserDiscount::create([
+            'user_id'   => $user->id,
             'reward_id' => $reward->id,
+            'is_used'   => false,
+            'order_id'  => null, 
         ]);
 
-        return redirect()->back()->with('success', 'Berhasil menukar poin dengan reward: ' . $reward->nama);
-    }
-
-    public function riwayat()
-    {
-        $riwayat = TukarPoin::where('user_id', Auth::id())->with('reward')->latest()->get();
-        return view('tukar-poin.riwayat', compact('riwayat'));
+        return redirect()->back()->with('success', 'Reward berhasil ditukar!');
     }
 }

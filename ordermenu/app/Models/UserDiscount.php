@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserDiscounts extends Model
+class UserDiscount extends Model
 {
     protected $fillable = [
         'user_id', 'reward_id', 'is_used', 'order_id'
