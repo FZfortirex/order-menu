@@ -63,10 +63,10 @@
           {{ in_array($status, ['menunggu', 'sedang dibuat', 'sudah dibuat']) ? 'readonly' : '' }}>{{ old('additional_note', $order->additional_note ?? '') }}</textarea>
       </div>
       <div>
-      @if ($status === 'menunggu' && isset($order->userDiscount))
+      @if ($status === 'menunggu' || $status === 'sedang dibuat' || $status === 'sudah dibuat')
         <label class="block text-sm font-medium">Voucher Waroeng Sawah</label>
         <div class="mt-1 px-4 py-2 border rounded-md text-sm text-gray-700">
-          🎫 {{ $order->userDiscount->reward->name ?? '-' }}
+          🎫 {{ optional(optional($order->userDiscount)->reward)->name ?? '-' }}
         </div>
       @else
         <label class="block text-sm font-medium">Voucher Waroeng Sawah</label>
@@ -78,7 +78,7 @@
             @foreach ($vouchers as $voucher)
               <option value="{{ $voucher->reward->name }}"
                 data-diskon="{{ $voucher->reward->value ?? 0 }}"
-                {{ old('voucher', $order->userDiscount->reward->name ?? '') == $voucher->reward->name ? 'selected' : '' }}>
+                {{ old('voucher', optional(optional($order->userDiscount)->reward)->name ?? '') == $voucher->reward->name ? 'selected' : '' }}>
                 {{ $voucher->reward->name }}
               </option>
             @endforeach
@@ -103,10 +103,14 @@
             <!-- detail diskon -->
           </div>
           <span id="totalPriceFix">
-            Rp. {{ number_format($status === 'menunggu' ? ($order->total_price ?? 0) : $total) }}
+            @if ($status === 'menunggu' || $status === 'sedang dibuat' || $status === 'sudah dibuat')
+                Rp. {{ number_format($order->total_price ?? 0, 0, ',', '.') }}
+            @else
+                Rp. {{ number_format($total ?? 0, 0, ',', '.') }}
+            @endif
 
-            @if ($status === 'menunggu' && isset($order->userDiscount->reward->name))
-              <small style="color: green;">(Diskon: {{ $order->userDiscount->reward->name }})</small>
+            @if (in_array($status, ['menunggu', 'sedang dibuat', 'sudah dibuat']) && optional(optional($order->userDiscount)->reward)->name)
+              <small style="color: green;">({{ optional(optional($order->userDiscount)->reward)->name }})</small>
             @endif
           </span>
           <input type="hidden" name="final_total" id="finalTotalInput"
@@ -155,9 +159,7 @@
         newTotal = totalValue - (totalValue * discountPercent / 100);
         discountDetail.style.display = "flex";
         discountDetail.innerHTML = `
-          <span>${new Intl.NumberFormat('id-ID').format(totalValue)}</span>
-          <span> - ${discountPercent}% = </span>
-          <span>Rp. ${new Intl.NumberFormat('id-ID').format(newTotal)}</span>
+          <span>${new Intl.NumberFormat('id-ID').format(totalValue)} - ${discountPercent}% = ${new Intl.NumberFormat('id-ID').format(newTotal)}</span>
         `;
       } else {
         discountDetail.style.display = "none";

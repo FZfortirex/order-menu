@@ -64,9 +64,15 @@
               <button type="button" onclick="updateQty(1)" class="text-xl bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center">➕</button>
             </div>
           </div>
-          <button type="submit" class="bg-yellow-400 text-black rounded-xl w-full py-2 font-semibold flex items-center justify-between px-4">
-            Tambahkan : <span id="totalPrice">Rp {{ $menu->price }}</span> <i class="fas fa-shopping-cart"></i>
-          </button>
+          @if(is_null($status) || $status === 'selesai')
+            <button type="submit" class="bg-yellow-400 text-black rounded-xl w-full py-2 font-semibold flex items-center justify-between px-4">
+              Tambahkan : <span id="totalPrice">Rp {{ $menu->price }}</span> <i class="fas fa-shopping-cart"></i>
+            </button>
+          @else
+            <button type="button" class="w-full bg-gray-300 text-gray-700 font-semibold py-2 rounded-md cursor-not-allowed" disabled>
+              Batalkan Pesanan Dulu
+            </button>
+          @endif
         </form>
         </div>
       </div>
@@ -99,8 +105,10 @@
       qty += change;
       if (qty < 1) qty = 1;
       document.getElementById('qty').innerText = qty;
-      document.getElementById('totalPrice').innerText = (qty * price) + 'rb';
       document.getElementById('quantity').value = qty;
+
+      const total = qty * price;
+      document.getElementById('totalPrice').innerText = 'Rp ' + total;
     }
   </script>
 </body>

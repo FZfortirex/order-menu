@@ -17,7 +17,7 @@
 
         <!-- Top Controls -->
         <div class="flex flex-wrap justify-between items-center gap-4 mb-8">
-            <input type="text" placeholder="Cari pesanan..." class="px-4 py-2 border rounded-md w-64 shadow-sm focus:ring focus:ring-red-300">
+            <input type="text" id="search" placeholder="Cari pesanan..." class="w-1/3 p-2 border rounded" oninput="searchOrders()">
             <div class="ml-auto text-gray-700">
                 Available tables: <strong class="text-green-600">{{ $availableTables }}/{{ $totalTables }}</strong>
             </div>
@@ -36,6 +36,7 @@
             @foreach ($orders as $order)
             <div class="relative bg-white rounded-lg shadow-lg p-5 hover:scale-105 transition-transform order-card cursor-pointer"
                 data-status="{{ strtolower($order->status) }}"
+                data-name="{{ strtolower($order->user->name ?? '-') }}"
                 onclick="window.location.href='/order-detail/{{ $order->id }}'">
 
 
@@ -79,8 +80,10 @@
 
     <!-- JavaScript -->
     <script>
+    let currentStatus = "menunggu";
 
     function filterOrders(status, btn) {
+        currentStatus = status;
         const cards = document.querySelectorAll(".order-card");
 
         cards.forEach(card => {
@@ -120,6 +123,22 @@
                 btn.classList.add("bg-yellow-500", "text-white");
             }
         }
+        searchOrders(); // panggil search agar sinkron setelah filter
+    }
+
+    function searchOrders() {
+        const input = document.getElementById('search').value.toLowerCase();
+        const cards = document.querySelectorAll(".order-card");
+        cards.forEach(card => {
+            const name = card.getAttribute("data-name");
+            const status = card.getAttribute("data-status");
+
+            if (name.includes(input) && status === currentStatus) {
+                card.style.display = "block";
+            } else {
+                card.style.display = "none";
+            }
+        });
     }
 
     // code untuk load otomatis ke filter semua
