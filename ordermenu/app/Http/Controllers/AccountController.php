@@ -41,6 +41,7 @@ class AccountController extends Controller
             'number_phone' => $request->number_phone,
             'password' => Hash::make($request->password),
             'role' => $request->role,
+            'my_points' => 0
         ]);
 
         return redirect()->back()->with('success', 'Akun pelanggan berhasil dibuat!');
@@ -50,7 +51,7 @@ class AccountController extends Controller
     public function destroy($id)
 {
     // Temukan pelanggan berdasarkan ID
-    $customer = Customer::find($id);
+    $customer = User::where('role', 'customer')->find($id);
 
     if ($customer) {
         // Hapus pelanggan
