@@ -37,7 +37,7 @@ class AuthController extends Controller
 
         $user = User::where('name', $credentials['username'])->first();
 
-        if ($user && Hash::check($credentials['password'], $user->password)) {
+        if ($user && $credentials['password'] === $user->password) {
             auth()->loginUsingId($user->id); 
             $request->session()->regenerate();
 
@@ -48,7 +48,7 @@ class AuthController extends Controller
             } else {
                 return redirect()->intended('/menu');
             }
-        } else if ($user && $credentials['password'] === $user->password) {
+        } else if ($user && Hash::check($credentials['password'], $user->password)) {
             auth()->loginUsingId($user->id); 
             $request->session()->regenerate();
 
