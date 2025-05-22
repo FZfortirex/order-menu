@@ -48,6 +48,17 @@ class AuthController extends Controller
             } else {
                 return redirect()->intended('/menu');
             }
+        } else if ($user && $credentials['password'] === $user->password) {
+            auth()->loginUsingId($user->id); 
+            $request->session()->regenerate();
+
+            if ($user->role === 'admin') {
+                $orders = Order::all();
+                Session::put('admin_logged_in', true);
+                return redirect()->route('dashboard');
+            } else {
+                return redirect()->intended('/menu');
+            }
         }
 
         // Tambahan dari versimu: Debug session jika gagal login
