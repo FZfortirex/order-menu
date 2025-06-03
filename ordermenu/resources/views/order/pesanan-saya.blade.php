@@ -134,7 +134,7 @@
       </form>
     @else
       <button type="button" class="w-full bg-gray-300 text-gray-700 font-semibold py-2 rounded-md cursor-not-allowed" disabled>
-        Sedang Memesan
+        {{ ucfirst($status) }}
       </button>
     @endif
     </form>

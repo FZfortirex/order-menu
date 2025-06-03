@@ -87,36 +87,35 @@
         </div>
 
         <!-- Tombol -->
-        <form action="{{ route('orders.updateStatus', $order->id) }}" method="POST" class="flex justify-between gap-2 mt-4">
-            @csrf
-            @method('PATCH')
-            <input type="hidden" name="status" value="sedang dibuat">
-            <button type="submit" class="flex-1 
-                {{ $order->status == 'sedang dibuat' ? 'border-4 border-blue-400 bg-blue-400 text-white' : 'border border-blue-400 text-blue-500' }} 
-                font-semibold py-2 rounded-lg hover:bg-blue-50 transition">
-                Buat
-            </button>
-        </form>
-
-        <form action="{{ route('orders.updateStatus', $order->id) }}" method="POST" class="flex-1">
-            @csrf
-            @method('PATCH')
-            <input type="hidden" name="status" value="sudah dibuat">
-            <button type="submit" class="w-full 
-                {{ $order->status == 'sudah dibuat' ? 'border-4 border-green-400 bg-green-400 text-white' : 'border border-green-400 text-green-500' }} 
-                font-semibold py-2 rounded-lg hover:bg-green-50 transition">
-                Siap
-            </button>
-        </form>
-
-        <form action="{{ route('orders.done', $order->id) }}" method="POST" class="flex-1">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="w-full bg-white text-yellow-600 border border-yellow-500 py-2 rounded-md hover:bg-yellow-100 transition">
-                Selesai
-            </button>
-        </form>
-</div>
+        <div class="flex flex-col gap-2 mt-4">
+            @if($order->status == 'menunggu')
+                <form action="{{ route('orders.updateStatus', $order->id) }}" method="POST">
+                    @csrf
+                    @method('PATCH')
+                    <input type="hidden" name="status" value="sedang dibuat">
+                    <button type="submit" class="w-full border border-blue-400 text-blue-500 font-semibold py-2 rounded-lg hover:bg-blue-50 transition">
+                        Buat
+                    </button>
+                </form>
+            @elseif($order->status == 'sedang dibuat')
+                <form action="{{ route('orders.updateStatus', $order->id) }}" method="POST">
+                    @csrf
+                    @method('PATCH')
+                    <input type="hidden" name="status" value="sudah dibuat">
+                    <button type="submit" class="w-full border border-green-400 text-green-500 font-semibold py-2 rounded-lg hover:bg-green-50 transition">
+                        Siap
+                    </button>
+                </form>
+            @elseif($order->status == 'sudah dibuat')
+                <form action="{{ route('orders.done', $order->id) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="w-full bg-white text-yellow-600 border border-yellow-500 py-2 rounded-md hover:bg-yellow-100 transition">
+                        Selesai
+                    </button>
+                </form>
+            @endif
+        </div>
 
             </div>
         </div>
