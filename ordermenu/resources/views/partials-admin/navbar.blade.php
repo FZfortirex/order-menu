@@ -2,7 +2,7 @@
     <div class="container mx-auto flex items-center justify-between md:justify-center relative">
         <!-- Menu Kiri -->
         <ul class="hidden md:flex space-x-6 text-sm absolute left-0">
-            <li><a href="{{ route('dashboard') }}" class="hover:underline">List Menu</a></li>
+            <li><a href="{{ route('dashboard') }}" class="text-white hover:underline">List Menu</a></li>
         </ul>
 
         <!-- Logo di Tengah -->
@@ -13,7 +13,7 @@
 
         <!-- Menu Kanan -->
         <ul class="hidden md:flex space-x-6 text-sm absolute right-0">
-            <li><a href="/accounts" class="hover:underline">Accounts</a></li>
+            <li><a href="/accounts" class="text-white hover:underline">Accounts</a></li>
         </ul>
 
         <!-- Tombol Menu Mobile -->
