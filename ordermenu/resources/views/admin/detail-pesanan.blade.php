@@ -93,7 +93,7 @@
                     @csrf
                     @method('PATCH')
                     <input type="hidden" name="status" value="sedang dibuat">
-                    <button type="submit" class="w-full border border-blue-400 text-blue-500 font-semibold py-2 rounded-lg hover:bg-blue-50 transition">
+                    <button type="submit" class="w-full border bg-white text-yellow-600 border-yellow-500 font-semibold py-2 rounded-lg hover:bg-blue-50 transition">
                         Buat
                     </button>
                 </form>
@@ -102,7 +102,7 @@
                     @csrf
                     @method('PATCH')
                     <input type="hidden" name="status" value="sudah dibuat">
-                    <button type="submit" class="w-full border border-green-400 text-green-500 font-semibold py-2 rounded-lg hover:bg-green-50 transition">
+                    <button type="submit" class="w-full border bg-white text-yellow-600 border-yellow-500 font-semibold py-2 rounded-lg hover:bg-green-50 transition">
                         Siap
                     </button>
                 </form>

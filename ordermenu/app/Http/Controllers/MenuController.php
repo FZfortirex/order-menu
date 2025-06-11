@@ -18,7 +18,15 @@ class MenuController extends Controller
 
     public function apiMenus()
     {
-        return response()->json(Menu::all());
+        $menus = Menu::withAvg('reviews', 'rating')->get();
+
+        // Rename agar tetap bisa diakses sebagai 'rating' di frontend
+        $menus->each(function ($menu) {
+            $menu->rating = round($menu->reviews_avg_rating ?? 0, 1);
+            unset($menu->reviews_avg_rating);
+        });
+
+        return response()->json($menus);
     }
 
     public function makanan()

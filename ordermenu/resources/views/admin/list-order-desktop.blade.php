@@ -26,9 +26,9 @@
 
             <!-- Tombol -->
             <div class="flex justify-start gap-4 mt-4">
-                <button onclick="filterOrders('menunggu', this)" id="btn-menunggu" class="filter-btn w-auto border border-black text-white bg-black font-semibold py-2 px-4 rounded-lg transition">Menunggu</button>
-                <button onclick="filterOrders('sedang dibuat', this)" class="filter-btn w-auto border border-blue-500 text-blue-600 bg-white font-semibold py-2 px-4 rounded-lg transition">Sedang Dibuat</button>
-                <button onclick="filterOrders('sudah dibuat', this)" class="filter-btn w-auto border border-green-500 text-green-600 bg-white font-semibold py-2 px-4 rounded-lg transition">Sudah Dibuat</button>
+                <button onclick="filterOrders('menunggu', this)" id="btn-menunggu" class="filter-btn w-auto border border-yellow-500 text-yellow-600 bg-white font-semibold py-2 px-4 rounded-lg transition">Menunggu</button>
+                <button onclick="filterOrders('sedang dibuat', this)" class="filter-btn w-auto border border-yellow-500 text-yellow-600 bg-white font-semibold py-2 px-4 rounded-lg transition">Sedang Dibuat</button>
+                <button onclick="filterOrders('sudah dibuat', this)" class="filter-btn w-auto border border-yellow-500 text-yellow-600 bg-white font-semibold py-2 px-4 rounded-lg transition">Sudah Dibuat</button>
                 <button onclick="filterOrders('selesai', this)" class="filter-btn w-auto border border-yellow-500 text-yellow-600 bg-white font-semibold py-2 px-4 rounded-lg transition">Selesai</button>
             </div>
 
@@ -95,31 +95,31 @@
 
         document.querySelectorAll(".filter-btn").forEach(button => {
             button.classList.remove(
-                "bg-black", "bg-blue-500", "bg-green-500", "bg-yellow-500", // tambahkan yellow
-                "text-white", "text-black", "text-blue-600", "text-green-600", "text-yellow-600" // tambahkan yellow
+                "bg-yellow-500", // tambahkan yellow
+                "text-yellow-600" // tambahkan yellow
             );
 
             if (button.textContent.includes("Menunggu")) {
-                button.classList.add("bg-white", "text-black");
+                button.classList.add("bg-white", "text-yellow-600");
             } else if (button.textContent.includes("Sedang Dibuat")) {
-                button.classList.add("bg-white", "text-blue-600");
+                button.classList.add("bg-white", "text-yellow-600");
             } else if (button.textContent.includes("Sudah Dibuat")) {
-                button.classList.add("bg-white", "text-green-600");
+                button.classList.add("bg-white", "text-yellow-600");
             } else if (button.textContent.includes("Selesai")) { // tambahkan kondisi untuk selesai
-                button.classList.add("bg-white", "text-yellow-600", "border", "border-yellow-500");
+                button.classList.add("bg-white", "text-yellow-600");
             }
         });
 
         if (btn) {
             if (status === 'menunggu') {
-                btn.classList.remove("bg-white", "text-black");
-                btn.classList.add("bg-black", "text-white");
+                btn.classList.remove("bg-white", "text-yellow-600");
+                btn.classList.add("bg-yellow-500", "text-white");
             } else if (status === 'sedang dibuat') {
-                btn.classList.remove("bg-white", "text-blue-600");
-                btn.classList.add("bg-blue-500", "text-white");
+                btn.classList.remove("bg-white", "text-yellow-600");
+                btn.classList.add("bg-yellow-500", "text-white");
             } else if (status === 'sudah dibuat') {
-                btn.classList.remove("bg-white", "text-green-600");
-                btn.classList.add("bg-green-500", "text-white");
+                btn.classList.remove("bg-white", "text-yellow-600");
+                btn.classList.add("bg-yellow-500", "text-white");
             } else if (status === 'selesai') { // tambahkan kondisi untuk selesai
                 btn.classList.remove("bg-white", "text-yellow-600");
                 btn.classList.add("bg-yellow-500", "text-white");
