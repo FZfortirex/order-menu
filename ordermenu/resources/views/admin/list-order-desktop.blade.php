@@ -6,65 +6,67 @@
     <title>List Menu Orders</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 font-sans">
+<body class="bg-gray-100 font-sans min-h-screen flex flex-col">
 
     <!-- Navbar -->
     @include('partials-admin.navbar')
 
     <!-- Container -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">List Menu Orders</h2>
+    <div class="flex-grow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">List Menu Orders</h2>
 
-        <!-- Top Controls -->
-        <div class="flex flex-wrap justify-between items-center gap-4 mb-8">
-            <input type="text" id="search" placeholder="Cari pesanan..." class="w-1/3 p-2 border rounded" oninput="searchOrders()">
-            <div class="ml-auto text-gray-700">
-                Available tables: <strong class="text-green-600">{{ $availableTables }}/{{ $totalTables }}</strong>
+            <!-- Top Controls -->
+            <div class="flex flex-wrap justify-between items-center gap-4 mb-8">
+                <input type="text" id="search" placeholder="Cari pesanan..." class="w-1/3 p-2 border rounded" oninput="searchOrders()">
+                <div class="ml-auto text-gray-700">
+                    Available tables: <strong class="text-green-600">{{ $availableTables }}/{{ $totalTables }}</strong>
+                </div>
             </div>
-        </div>
 
-        <!-- Tombol -->
-        <div class="flex justify-start gap-4 mt-4">
-            <button onclick="filterOrders('menunggu', this)" id="btn-menunggu" class="filter-btn w-auto border border-black text-white bg-black font-semibold py-2 px-4 rounded-lg transition">Menunggu</button>
-            <button onclick="filterOrders('sedang dibuat', this)" class="filter-btn w-auto border border-blue-500 text-blue-600 bg-white font-semibold py-2 px-4 rounded-lg transition">Sedang Dibuat</button>
-            <button onclick="filterOrders('sudah dibuat', this)" class="filter-btn w-auto border border-green-500 text-green-600 bg-white font-semibold py-2 px-4 rounded-lg transition">Sudah Dibuat</button>
-            <button onclick="filterOrders('selesai', this)" class="filter-btn w-auto border border-yellow-500 text-yellow-600 bg-white font-semibold py-2 px-4 rounded-lg transition">Selesai</button>
-        </div>
+            <!-- Tombol -->
+            <div class="flex justify-start gap-4 mt-4">
+                <button onclick="filterOrders('menunggu', this)" id="btn-menunggu" class="filter-btn w-auto border border-black text-white bg-black font-semibold py-2 px-4 rounded-lg transition">Menunggu</button>
+                <button onclick="filterOrders('sedang dibuat', this)" class="filter-btn w-auto border border-blue-500 text-blue-600 bg-white font-semibold py-2 px-4 rounded-lg transition">Sedang Dibuat</button>
+                <button onclick="filterOrders('sudah dibuat', this)" class="filter-btn w-auto border border-green-500 text-green-600 bg-white font-semibold py-2 px-4 rounded-lg transition">Sudah Dibuat</button>
+                <button onclick="filterOrders('selesai', this)" class="filter-btn w-auto border border-yellow-500 text-yellow-600 bg-white font-semibold py-2 px-4 rounded-lg transition">Selesai</button>
+            </div>
 
-        <!-- Order Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6" id="order-list">
-            @foreach ($orders as $order)
-            <div class="relative bg-white rounded-lg shadow-lg p-5 hover:scale-105 transition-transform order-card cursor-pointer"
-                data-status="{{ strtolower($order->status) }}"
-                data-name="{{ strtolower($order->user->name ?? '-') }}"
-                onclick="window.location.href='/order-detail/{{ $order->id }}'">
+            <!-- Order Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6" id="order-list">
+                @foreach ($orders as $order)
+                <div class="relative bg-white rounded-lg shadow-lg p-5 hover:scale-105 transition-transform order-card cursor-pointer"
+                    data-status="{{ strtolower($order->status) }}"
+                    data-name="{{ strtolower($order->user->name ?? '-') }}"
+                    onclick="window.location.href='/order-detail/{{ $order->id }}'">
 
 
-                    <!-- Tombol Hapus -->
-                    <form action="{{ route('orders.destroy', $order->id) }}" method="POST" class="absolute top-2 right-2" onclick="event.stopPropagation();">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="text-red-500 hover:text-red-700 text-xl font-bold delete-btn">❌</button>
-                    </form>
+                        <!-- Tombol Hapus -->
+                        <form action="{{ route('orders.destroy', $order->id) }}" method="POST" class="absolute top-2 right-2" onclick="event.stopPropagation();">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-500 hover:text-red-700 text-xl font-bold delete-btn">❌</button>
+                        </form>
 
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="w-20 aspect-square rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-xl font-bold">
-                            👤
-                        </div>
-                        <div>
-                            <p class="font-semibold text-gray-800"> Nama: {{ $order->user->name ?? '-' }}</p>
-                            <p class="text-sm text-gray-500">Meja: {{ $order->table ?? '-' }}</p>
-                            <p class="text-sm text-gray-500">Status: <strong class="text-blue-600">{{ ucfirst($order->status) }}</strong></p>
-                            @if (isset($order->total_price))
-                                <p class="text-sm text-gray-500">Harga: <strong class="text-red-600">Rp. {{ number_format($order->total_price, 0, ',', '.') }}</strong></p>
-                            @endif
-                            @if (isset($order->additional_note))
-                                <p class="text-sm text-gray-500">Catatan: {{ $order->additional_note }}</p>
-                            @endif
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-20 aspect-square rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-xl font-bold">
+                                👤
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-800"> Nama: {{ $order->user->name ?? '-' }}</p>
+                                <p class="text-sm text-gray-500">Meja: {{ $order->table ?? '-' }}</p>
+                                <p class="text-sm text-gray-500">Status: <strong class="text-blue-600">{{ ucfirst($order->status) }}</strong></p>
+                                @if (isset($order->total_price))
+                                    <p class="text-sm text-gray-500">Harga: <strong class="text-red-600">Rp. {{ number_format($order->total_price, 0, ',', '.') }}</strong></p>
+                                @endif
+                                @if (isset($order->additional_note))
+                                    <p class="text-sm text-gray-500">Catatan: {{ $order->additional_note }}</p>
+                                @endif
+                            </div>
                         </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
         </div>
     </div>
 

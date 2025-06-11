@@ -9,7 +9,7 @@
     .bg-maroon { background-color: #601B16; }
   </style>
 </head>
-<body class="bg-white text-black font-sans">
+<body class="min-h-screen flex flex-col bg-white text-black font-sans">
 
   @include('partials.navbar')
 
@@ -21,7 +21,7 @@
     <div class="w-10"></div>
   </header>
 
-  <main class="mx-6 mt-6">
+  <main class="mx-6 mt-6 flex-grow">
     @if(session('success'))
       <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded mb-4">
         {{ session('success') }}

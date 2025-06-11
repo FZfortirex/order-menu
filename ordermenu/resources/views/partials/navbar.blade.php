@@ -1,5 +1,5 @@
 <nav class="bg-[#731b0c] p-4">
-<div class="container mx-auto grid grid-cols-3 items-center h-16 text-white bg-[#751f11] px-8">
+<div class="container mx-auto grid grid-cols-3 items-center h-16 text-white bg-[#731b0c] px-8">
   <!-- Kiri: Home & Galeri -->
   <div class="flex gap-x-20 text-sm justify-center justify-self-center">
     <a href="{{ route('welcome') }}" class="cursor-pointer">Home</a>

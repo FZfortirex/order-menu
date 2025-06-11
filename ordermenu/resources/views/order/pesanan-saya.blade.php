@@ -14,7 +14,7 @@
   <!-- Daftar Pesanan -->
   <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
     @forelse($pesanan as $item)
-      <div class="relative flex justify-between items-center border rounded-xl p-3 bg-white shadow-md hover:shadow-lg transition">
+      <div class="relative flex items-center border rounded-xl p-3 bg-white shadow-md hover:shadow-lg transition w-full max-h-[160px] overflow-hidden">
         <div class="flex items-center gap-3">
           <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}" class="w-16 h-16 rounded-md object-cover">
           <div class="space-y-1">
