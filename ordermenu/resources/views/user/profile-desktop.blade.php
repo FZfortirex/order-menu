@@ -51,6 +51,7 @@
 
       <!-- Kolom Kanan -->
       <div class="bg-white w-full sm:w-2/3 p-10 flex flex-col justify-between border-l">
+        <!-- Bagian Poin -->
         <div class="flex justify-between items-center">
           <div class="flex items-center space-x-2">
             <span class="text-3xl font-bold text-black-500">$</span>
@@ -60,14 +61,48 @@
             Tukar Poin <span class="ml-2 text-lg">➤</span>
           </a>
         </div>
+
         <div class="text-2xl font-bold mt-10 text-gray-700">{{ $user->my_points }} Poin</div>
         <hr class="mt-6 border-gray-300" />
+
+        <!-- Bagian History Pembelian -->
+        <div class="mt-6">
+          <h2 class="text-lg font-semibold text-gray-700 mb-4">Riwayat Pembelian</h2>
+
+          <ul class="space-y-4 max-h-72 overflow-y-auto pr-2">
+  <li class="border p-4 rounded-md hover:bg-gray-50 transition">
+    <a href="/riwayat/1" class="flex justify-between items-center w-full">
+      <div>
+        <div class="font-medium text-gray-800">Nomor Meja 1</div>
+        <div class="text-sm text-gray-500">12 Juli 2025 14:30</div>
       </div>
+      <div class="text-maroon font-semibold">Rp50.000</div>
+    </a>
+  </li>
+  <li class="border p-4 rounded-md hover:bg-gray-50 transition">
+    <a href="/riwayat/2" class="flex justify-between items-center w-full">
+      <div>
+        <div class="font-medium text-gray-800">Nomor Meja 2</div>
+        <div class="text-sm text-gray-500">10 Juli 2025 09:15</div>
+      </div>
+      <div class="text-maroon font-semibold">Rp120.000</div>
+    </a>
+  </li>
+  <li class="border p-4 rounded-md hover:bg-gray-50 transition">
+    <a href="/riwayat/3" class="flex justify-between items-center w-full">
+      <div>
+        <div class="font-medium text-gray-800">Nomor Meja 9</div>
+        <div class="text-sm text-gray-500">5 Juli 2025 17:50</div>
+      </div>
+      <div class="text-maroon font-semibold">Rp75.000</div>
+    </a>
+  </li>
+</ul>
+
 
     </div>
   </main>
 
-  <!-- Footer -->
   <!-- Footer -->
   @include('partials.footer')
 

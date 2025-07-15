@@ -68,6 +68,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/orders/{order}/done', [DetailPesananController::class, 'done'])->name('orders.done');
 });
 
+
+Route::get('/riwayat/{id}', function($id){
+    // sementara dummy aja view kosong
+    return view('user.history-desktop', ['id' => $id]);
+});
+
+
 Route::get('/galeri', [GaleriController::class, 'index'])->name('galeri');
 Route::get('/galeri/create', [GaleriController::class, 'create']);
 Route::post('/galeri/store', [GaleriController::class, 'store'])->name('galeri.store');

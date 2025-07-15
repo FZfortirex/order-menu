@@ -2,93 +2,101 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Kampoeng Sawah</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    .active-category {
-      background-color: #facc15;
-      border: none;
-    }
-  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
-<div class="p-4 bg-white min-h-screen">
-  <a href="{{ url('/menu') }}" class="text-black text-lg font-semibold flex items-center mb-4">
-    <i class="fas fa-arrow-left mr-2"></i> BACK
-  </a>
+<body class="bg-white min-h-screen font-sans text-gray-800">
 
-  <!-- Gambar -->
-  <img src="/images/{{ $menu->image }}" class="w-full rounded-xl mb-4" alt="{{ $menu->name }}">
+  <div class="p-4 max-w-md mx-auto">
+    <!-- Tombol Kembali -->
+    <a href="{{ url('/menu') }}" class="text-black text-lg font-semibold flex items-center mb-4">
+      <i class="fas fa-arrow-left mr-2"></i> Kembali
+    </a>
 
-  <!-- Nama dan Review -->
-  <div class="flex justify-between items-center mb-2">
-    <h1 class="text-xl font-bold">{{ $menu->name }}</h1>
-    <span class="text-blue-500 text-xs border rounded-full px-2 py-1 flex items-center">
-      <i class="fas fa-star mr-1"></i> Reviews
-    </span>
-  </div>
+    <!-- Gambar Menu -->
+    <img src="/images/{{ $menu->image }}" alt="{{ $menu->name }}" class="w-full rounded-xl mb-4 shadow" />
 
-  <!-- Deskripsi -->
-  <p class="text-gray-600 text-sm mb-4">{{ $menu->desc }}</p>
+    <!-- Nama Menu & Review -->
+    <div class="flex justify-between items-center mb-2">
+      <h1 class="text-xl font-bold tracking-wide">{{ $menu->name }}</h1>
+      <a href="{{ route('menu.reviews', $menu->id) }}" class="text-blue-500 text-sm border rounded-full px-2 py-1 flex items-center hover:bg-blue-100 transition">
+          <i class="fas fa-star mr-1"></i> Reviews
+          </a>
+      </span>
+    </div>
 
-  <!-- Packaging -->
-  <p class="text-sm font-semibold">Packaging</p>
-  <label class="flex items-center space-x-2 text-sm my-1">
-    <input type="checkbox"> <span>Dibungkus</span>
-  </label>
-  <label class="flex items-center space-x-2 text-sm mb-3">
-    <input type="checkbox"> <span>Makan di tempat</span>
-  </label>
+    <!-- Deskripsi -->
+    <p class="text-sm text-gray-600 leading-relaxed mb-4">{{ $menu->desc }}</p>
 
-  <!-- Catatan -->
-  <div class="mb-4">
-    <p class="text-sm font-semibold">Catatan <span class="text-gray-400 font-normal">(Opsional)</span></p>
-    <p class="text-xs text-gray-500 mb-1">Contoh: tambahkan sedikit sambal saja</p>
-    <textarea class="w-full border rounded-lg p-2 text-sm" rows="3" placeholder="Tulis catatan di sini..."></textarea>
-  </div>
+    <!-- Packaging (Radio button lebih sesuai) -->
+    <div class="mb-4">
+      <p class="text-sm font-semibold mb-2">Packaging</p>
+      <div class="flex flex-col gap-2 text-sm">
+        <label class="inline-flex items-center gap-2">
+          <input type="radio" name="packaging" class="accent-yellow-400" />
+          Dibungkus
+        </label>
+        <label class="inline-flex items-center gap-2">
+          <input type="radio" name="packaging" class="accent-yellow-400" />
+          Makan di tempat
+        </label>
+      </div>
+    </div>
 
-  <!-- Jumlah & Harga -->
-  <div class="flex items-center justify-between mb-4">
-    <p class="text-sm">{{ $menu->name }}</p>
-    <div class="flex items-center space-x-4">
-      <button onclick="updateQty(-1)" class="text-xl bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center">➖</button>
-      <span id="qty" class="text-base font-semibold">1</span>
-      <button onclick="updateQty(1)" class="text-xl bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center">➕</button>
+    <!-- Catatan -->
+    <div class="mb-4">
+      <p class="text-sm font-semibold">Catatan <span class="text-gray-400 font-normal">(Opsional)</span></p>
+      <p class="text-xs text-gray-500 mb-1">Contoh: tambahkan sedikit sambal saja</p>
+      <textarea rows="3" class="w-full border rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" placeholder="Tulis catatan di sini..."></textarea>
+    </div>
+
+    <!-- Jumlah & Harga -->
+    <div class="flex items-center justify-between mb-4">
+      <p class="text-sm font-medium">{{ $menu->name }}</p>
+      <div class="flex items-center space-x-4">
+        <button onclick="updateQty(-1)" class="text-xl bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-300">-</button>
+        <span id="qty" class="text-base font-semibold">1</span>
+        <button onclick="updateQty(1)" class="text-xl bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-300">+</button>
+      </div>
+    </div>
+
+    <!-- Tambah ke Keranjang -->
+    <button class="bg-yellow-400 text-black rounded-xl w-full py-3 font-semibold flex items-center justify-between px-4 hover:bg-yellow-300 transition">
+      Tambahkan : <span id="totalPrice">Rp {{ number_format($menu->price, 0, ',', '.') }}</span>
+      <i class="fas fa-shopping-cart"></i>
+    </button>
+
+    <!-- Menu Lainnya -->
+    <div class="mt-10">
+      <h3 class="text-lg font-semibold mb-4">Menu Lainnya</h3>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+        @foreach($menus as $m)
+        <a href="{{ route('menu.detail', $m->id) }}" class="border rounded-xl shadow hover:shadow-md transition duration-200 bg-white overflow-hidden">
+          <img src="/images/{{ $m->image }}" alt="{{ $m->name }}" class="w-full h-32 object-cover" />
+          <div class="p-2">
+            <p class="font-semibold text-sm truncate">{{ $m->name }}</p>
+            <p class="text-xs text-gray-500">Rp {{ number_format($m->price, 0, ',', '.') }}</p>
+          </div>
+        </a>
+        @endforeach
+      </div>
     </div>
   </div>
 
-  <!-- Tombol Tambah -->
-  <button class="bg-yellow-400 text-black rounded-xl w-full py-3 font-semibold flex items-center justify-between px-4">
-    Tambahkan : <span id="totalPrice">{{ $menu->price }}rb</span> <i class="fas fa-shopping-cart"></i>
-  </button>
+  <script>
+    let qty = 1;
+    const price = {{ $menu->price }};
 
-  <!-- Menu lainnya -->
-  <div class="mt-10">
-    <h3 class="text-lg font-semibold mb-4">Menu Lainnya</h3>
-    <div class="grid grid-cols-1 gap-4">
-      @foreach($menus as $m)
-      <a href="{{ route('menu.detail', $m->id) }}" class="border rounded-xl shadow hover:shadow-md transition duration-200 bg-white overflow-hidden">
-        <img src="/images/{{ $m->image }}" class="w-full h-36 object-cover" alt="{{ $m->name }}">
-        <div class="p-2">
-          <p class="font-semibold text-sm">{{ $m->name }}</p>
-          <p class="text-xs text-gray-500">{{ $m->price }}rb</p>
-        </div>
-      </a>
-      @endforeach
-    </div>
-  </div>
-</div>
+    function updateQty(change) {
+      qty += change;
+      if (qty < 1) qty = 1;
+      document.getElementById('qty').innerText = qty;
+      document.getElementById('totalPrice').innerText = 'Rp ' + (qty * price).toLocaleString('id-ID');
+    }
+  </script>
 
-<script>
-  let qty = 1;
-  const price = {{ $menu->price }};
-
-  function updateQty(change) {
-    qty += change;
-    if (qty < 1) qty = 1;
-    document.getElementById('qty').innerText = qty;
-    document.getElementById('totalPrice').innerText = (qty * price) + 'rb';
-  }
-</script>
+</body>
+</html>

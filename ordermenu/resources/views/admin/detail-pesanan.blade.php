@@ -81,8 +81,8 @@
             @csrf
             @method('PATCH')
             <input type="hidden" name="status" value="sedang dibuat">
-            <button type="submit" class="flex-1 
-                {{ $order->status == 'sedang dibuat' ? 'border-4 border-blue-400 bg-blue-400 text-white' : 'border border-blue-400 text-blue-500' }} 
+            <button type="submit" class="flex-1
+                {{ $order->status == 'sedang dibuat' ? 'border-4 border-blue-400 bg-blue-400 text-white' : 'border border-blue-400 text-blue-500' }}
                 font-semibold py-2 rounded-lg hover:bg-blue-50 transition">
                 Buat
             </button>
@@ -92,8 +92,8 @@
             @csrf
             @method('PATCH')
             <input type="hidden" name="status" value="sudah dibuat">
-            <button type="submit" class="w-full 
-                {{ $order->status == 'sudah dibuat' ? 'border-4 border-green-400 bg-green-400 text-white' : 'border border-green-400 text-green-500' }} 
+            <button type="submit" class="w-full
+                {{ $order->status == 'sudah dibuat' ? 'border-4 border-green-400 bg-green-400 text-white' : 'border border-green-400 text-green-500' }}
                 font-semibold py-2 rounded-lg hover:bg-green-50 transition">
                 Siap
             </button>

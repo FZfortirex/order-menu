@@ -1,36 +1,49 @@
-<!-- resources/views/user/galeri-mobile.blade.php -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Galeri Tempat (Mobile)</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-100 min-h-screen flex flex-col">
+
     <!-- Navbar -->
     @include('partials.navbar')
-    <div class="container mx-auto p-4">
-        <h1 class="text-xl font-bold mb-4 text-center">Galeri Tempat (Mobile)</h1>
 
-        {{-- KOTAK UPLOAD --}}
-        @include('partials.upload-box')
+    <main class="flex-grow container mx-auto px-4 py-6">
+        <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">Galeri Tempat (Mobile)</h1>
 
+        {{-- Foto Statis (2 kolom biar pas di mobile) --}}
+        <div class="grid grid-cols-2 gap-4 mb-8">
+            <img src="{{ asset('images/foto-tempat1.png') }}" alt="Tempat 1" class="w-full aspect-square object-cover rounded shadow">
+            <img src="{{ asset('images/foto-tempat2.png') }}" alt="Tempat 2" class="w-full aspect-square object-cover rounded shadow">
+            <img src="{{ asset('images/foto-tempat3.png') }}" alt="Tempat 3" class="w-full aspect-square object-cover rounded shadow">
+            <img src="{{ asset('images/foto-tempat4.png') }}" alt="Tempat 4" class="w-full aspect-square object-cover rounded shadow">
+        </div>
+
+        {{-- Galeri dari Database (2 kolom) --}}
         <div class="grid grid-cols-2 gap-4">
             @forelse($galeri as $foto)
-                <div class="rounded overflow-hidden shadow bg-white">
-                    <img class="w-full h-32 object-cover" src="{{ asset('storage/galeri/' . $foto->nama_file) }}" alt="Foto Tempat">
-                    <div class="px-2 py-1">
-                        <p class="text-xs text-gray-700">{{ $foto->deskripsi }}</p>
+                <div class="rounded-lg overflow-hidden shadow-md bg-white hover:shadow-lg transition-shadow duration-300">
+                    <img
+                      class="w-full aspect-square object-cover"
+                      src="{{ asset('storage/galeri/' . $foto->nama_file) }}"
+                      alt="Foto Tempat"
+                      loading="lazy"
+                    >
+                    <div class="px-3 py-2">
+                        <p class="text-sm text-gray-700 truncate" title="{{ $foto->deskripsi }}">{{ $foto->deskripsi }}</p>
                     </div>
                 </div>
             @empty
-                <p class="col-span-2 text-center text-gray-500">Belum ada foto yang diunggah.</p>
             @endforelse
         </div>
-    </div>
-<!-- Footer -->
-@include('partials.footer')
+    </main>
+
+    <!-- Footer -->
+    @include('partials.footer')
+
 </body>
 </html>

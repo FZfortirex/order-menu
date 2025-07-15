@@ -43,7 +43,7 @@ class MenuController extends Controller
         // Ambil 3 menu acak lainnya, kecuali yang sedang ditampilkan
         $menus = Menu::where('id', '!=', $id)
                     ->inRandomOrder()
-                    ->limit(3)
+                    ->limit(6)
                     ->get();
 
         // Deteksi apakah perangkat yang digunakan adalah mobile

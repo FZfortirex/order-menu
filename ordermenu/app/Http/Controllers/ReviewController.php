@@ -36,8 +36,8 @@ class ReviewController extends Controller
         return response()->json([
             'success' => true,
             'review' => [
-                'id' => $newReview->id, 
-                'user_id' => $newReview->user_id, 
+                'id' => $newReview->id,
+                'user_id' => $newReview->user_id,
                 'user_name' => $newReview->user->name,
                 'user_initial' => strtoupper(substr($newReview->user->name, 0, 1)),
                 'rating' => $newReview->rating,
@@ -45,21 +45,26 @@ class ReviewController extends Controller
             ],
             'average_rating' => $averageRating,
             'review_count' => $newReview->menu->reviews()->count(),
-        ]);        
+        ]);
     }
 
-    public function show($id)
-    {
-        // Ambil menu beserta relasi review dan user
-        $menu = Menu::with(['reviews.user'])->findOrFail($id);
-        
-        // Hitung rata-rata rating menu
-        $menu->average_rating = $menu->reviews->avg('rating');
+    public function show(Request $request, $id)
+{
+    // Ambil menu beserta relasi review dan user
+    $menu = Menu::with(['reviews.user'])->findOrFail($id);
 
-        $user = auth()->user();
+    // Hitung rata-rata rating menu
+    $menu->average_rating = $menu->reviews->avg('rating');
 
-        return view('user.review', compact('menu', 'user'));
-    }
+    $user = auth()->user();
+
+    // Cek apakah device mobile
+    $isMobile = $request->header('User-Agent') && preg_match('/Mobile|Android|iPhone|iPad/', $request->header('User-Agent'));
+
+    // Tampilkan view sesuai device
+    return view($isMobile ? 'user.review-mobile' : 'user.review-desktop', compact('menu', 'user'));
+}
+
 
     public function destroy(Review $review)
     {
