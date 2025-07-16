@@ -22,6 +22,10 @@
             <img src="{{ asset('images/foto-tempat2.png') }}" alt="Tempat 2" class="w-full aspect-square object-cover rounded shadow">
             <img src="{{ asset('images/foto-tempat3.png') }}" alt="Tempat 3" class="w-full aspect-square object-cover rounded shadow">
             <img src="{{ asset('images/foto-tempat4.png') }}" alt="Tempat 4" class="w-full aspect-square object-cover rounded shadow">
+            <img src="{{ asset('images/kmsawah.jpg') }}" alt="Tempat 5" class="w-full aspect-square object-cover rounded shadow">
+            <img src="{{ asset('images/kmsawah2.jpeg') }}" alt="Tempat 6" class="w-full aspect-square object-cover rounded shadow">
+            <img src="{{ asset('images/kmsawah3.jpeg') }}" alt="Tempat 7" class="w-full aspect-square object-cover rounded shadow">
+            <img src="{{ asset('images/kmsawah4.jpg') }}" alt="Tempat 8" class="w-full aspect-square object-cover rounded shadow">
         </div>
 
 
