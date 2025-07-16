@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Models\UserDiscount;
 
 class DetailPesananController extends Controller
 {
 
     public function show($id)
     {
-        $order = Order::with('items.menu')->findOrFail($id);
+        $order = Order::with(['items.menu', 'userDiscount.reward'])->findOrFail($id);
 
         foreach ($order->items as $item) {
             $filename = strtolower(str_replace(' ', '_', $item->menu->name)) . '.jpg';
@@ -69,6 +70,8 @@ class DetailPesananController extends Controller
 
         $order->status = 'selesai';
         $order->save();
+
+        UserDiscount::where('order_id', $order->id)->update(['is_used' => 1]);
 
         return redirect()->route('dashboard')->with('success', 'Pesanan selesai dan poin ditambahkan.');
     }

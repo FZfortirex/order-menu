@@ -100,7 +100,7 @@
               <div class="mt-2 text-yellow-400 text-sm">${stars}</div>
             </div>
             <button
-              onclick='event.stopPropagation(); addToCart(${JSON.stringify(item)})'
+              onclick="goToDetail(${item.id})"
               class="ml-4 bg-yellow-400 px-3 py-1 rounded-full flex items-center justify-center text-sm font-bold border border-black hover:bg-yellow-300 transition">
               +
             </button>
@@ -122,22 +122,6 @@
         const title = item.querySelector("h3").innerText.toLowerCase();
         item.style.display = title.includes(input) ? "flex" : "none";
       });
-    }
-
-    function addToCart(item) {
-      fetch("/tambah-pesanan", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
-        },
-        body: JSON.stringify(item)
-      })
-      .then(res => res.json())
-      .then(data => {
-        alert(item.name + " ditambahkan ke Pesanan Saya (Server)");
-      })
-      .catch(err => console.error("Error:", err));
     }
 
     document.addEventListener("DOMContentLoaded", () => {

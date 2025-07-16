@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Menu;
+use App\Models\Order;
 
 class MenuController extends Controller
 {
@@ -17,7 +18,15 @@ class MenuController extends Controller
 
     public function apiMenus()
     {
-        return response()->json(Menu::all());
+        $menus = Menu::withAvg('reviews', 'rating')->get();
+
+        // Rename agar tetap bisa diakses sebagai 'rating' di frontend
+        $menus->each(function ($menu) {
+            $menu->rating = round($menu->reviews_avg_rating ?? 0, 1);
+            unset($menu->reviews_avg_rating);
+        });
+
+        return response()->json($menus);
     }
 
     public function makanan()
@@ -46,6 +55,12 @@ class MenuController extends Controller
                     ->limit(6)
                     ->get();
 
+        $userId = auth()->id();
+        $order = Order::where('user_id', $userId)
+                    ->latest()
+                    ->first();
+        $status = $order ? $order->status : null;
+
         // Deteksi apakah perangkat yang digunakan adalah mobile
         $userAgent = $request->header('User-Agent');
         $isMobile = $userAgent && preg_match('/Mobile|Android|iPhone|iPad/', $userAgent);
@@ -53,6 +68,6 @@ class MenuController extends Controller
         // Tampilkan view sesuai perangkat
         $view = $isMobile ? 'order.option-menu-mobile' : 'order.option-menu-desktop';
 
-        return view($view, compact('menu', 'menus'));
+        return view($view, compact('menu', 'menus', 'status'));
     }
 }

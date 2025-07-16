@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     protected $fillable = [
-        'user_id', 'redeem_point_id', 'table', 
+        'user_id', 'user_discount_id', 'table', 
         'additional_note', 'total_price', 'status', 'total_point'
     ];
 
@@ -41,11 +41,9 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    // Relasi dengan redeem_point_id
-    public function redeemPoint()
+    public function userDiscount()
     {
-        return $this->belongsTo(RedeemPoint::class);
+        return $this->belongsTo(UserDiscount::class);
     }
 
-    
 }

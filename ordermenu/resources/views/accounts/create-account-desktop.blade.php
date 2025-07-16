@@ -12,11 +12,11 @@
     @include('partials-admin.navbar')
 
     <!-- Container -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Buat Akun Pelanggan</h2>
 
         @if(session('success'))
-            <div class="mb-4 text-green-600">
+            <div class="mb-4 text-green-600 font-semibold">
                 {{ session('success') }}
             </div>
         @endif
@@ -34,15 +34,34 @@
             </div>
 
             <div class="mb-4">
-                <label for="kode_akses" class="block text-gray-700 font-semibold">Kode Akses</label>
-                <input type="text" name="kode_akses" id="kode_akses" class="w-full px-4 py-2 border rounded-md" placeholder="Kode akses pelanggan" required>
-                @error('kode_akses')
+                <label for="email" class="block text-gray-700 font-semibold">Email</label>
+                <input type="email" name="email" id="email" class="w-full px-4 py-2 border rounded-md" placeholder="Email pelanggan" required>
+                @error('email')
                     <p class="text-red-500 text-sm">{{ $message }}</p>
                 @enderror
             </div>
 
+            <div class="mb-4">
+                <label for="number_phone" class="block text-gray-700 font-semibold">Nomor HP</label>
+                <input type="text" name="number_phone" id="number_phone" class="w-full px-4 py-2 border rounded-md" placeholder="08xxxxxxxxxx" required>
+                @error('number_phone')
+                    <p class="text-red-500 text-sm">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="mb-4">
+                <label for="password" class="block text-gray-700 font-semibold">Password</label>
+                <input type="password" name="password" id="password" class="w-full px-4 py-2 border rounded-md" placeholder="Password pelanggan" required>
+                @error('password')
+                    <p class="text-red-500 text-sm">{{ $message }}</p>
+                @enderror
+            </div>
+            
+            <!-- Role -->
+            <input type="hidden" name="role" value="customer">
+
             <div class="flex justify-center mt-6">
-                <button type="submit" class="bg-blue-600 text-white font-semibold px-6 py-2 rounded-lg shadow hover:bg-blue-700 transition duration-200">
+                <button type="submit" class="bg-yellow-400 text-white font-semibold px-6 py-2 rounded-lg shadow hover:bg-yellow-500 transition duration-200">
                     Buat Akun
                 </button>
             </div>

@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('redeem_points', function (Blueprint $table) {
+        Schema::create('user_discounts', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id'); 
-            $table->string('title');
-            $table->integer('point_trade'); 
+            $table->integer('reward_id'); 
+            $table->boolean('is_used')->default(false);
+            $table->integer('order_id')->nullable(); 
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('redeem_points');
+        Schema::dropIfExists('user_discounts');
     }
 };

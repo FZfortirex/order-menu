@@ -35,11 +35,10 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        // Cari user berdasarkan username
         $user = User::where('name', $credentials['username'])->first();
 
         if ($user && $credentials['password'] === $user->password) {
-            auth()->loginUsingId($user->id); // Login pakai ID
+            auth()->loginUsingId($user->id); 
             $request->session()->regenerate();
 
             if ($user->role === 'admin') {
@@ -49,10 +48,18 @@ class AuthController extends Controller
             } else {
                 return redirect()->intended('/menu');
             }
+        } else if ($user && Hash::check($credentials['password'], $user->password)) {
+            auth()->loginUsingId($user->id); 
+            $request->session()->regenerate();
 
-            return back()->withErrors(['msg' => 'Username atau Password salah!']);
+            if ($user->role === 'admin') {
+                $orders = Order::all();
+                Session::put('admin_logged_in', true);
+                return redirect()->route('dashboard');
+            } else {
+                return redirect()->intended('/menu');
+            }
         }
-
 
         // Tambahan dari versimu: Debug session jika gagal login
         session()->put('login_attempt', [

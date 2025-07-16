@@ -17,6 +17,7 @@ use App\Http\Controllers\LoginAdminController;
 use App\Http\Controllers\ListOrderController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\DetailPesananController;
+use App\Http\Controllers\MyDiscountController;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
 Route::get('/welcome', [WelcomeController::class, 'index'])->name('welcome');
@@ -37,6 +38,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
     Route::get('/tukarpoin', [TukarPoinController::class, 'index'])->name('tukarpoin');
+    Route::post('/tukarpoin', [TukarPoinController::class, 'store'])->name('tukarpoin.store');
+
+    Route::get('/my-discount', [MyDiscountController::class, 'index'])->name('my-discount.index');
 
     Route::get('/order/makanan', [MenuController::class, 'makanan'])->name('makanan');
     Route::get('/order/minuman', [MenuController::class, 'minuman'])->name('minuman');

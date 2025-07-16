@@ -1,5 +1,5 @@
 <nav class="bg-[#731b0c] p-4">
-<div class="container mx-auto grid grid-cols-3 items-center h-16 text-white bg-[#751f11] px-8">
+<div class="container mx-auto grid grid-cols-3 items-center h-16 text-white bg-[#731b0c] px-8">
   <!-- Kiri: Home & Galeri -->
   <div class="flex gap-x-20 text-sm justify-center justify-self-center">
     <a href="{{ route('welcome') }}" class="cursor-pointer">Home</a>
@@ -18,8 +18,8 @@
     <div class="relative group">
       <button class="cursor-pointer">Opsi ▼</button>
       <ul class="absolute hidden bg-[#5b130a] text-white p-2 rounded-md group-hover:block right-0 top-full z-10 min-w-[120px]">
-        <li><a href="/menu" class="block py-1 px-3 hover:bg-[#72231a]">Menu</a></li>
-        <li><a href="/order" class="block py-1 px-3 hover:bg-[#72231a]">List Order</a></li>
+        <li><a href="{{ auth()->check() ? route('order.menu') : route('loginAccount') }}" class="block py-1 px-3 hover:bg-[#72231a]">Menu</a></li>
+        <li><a href="{{ auth()->check() ? route('pesanan') : route('loginAccount') }}" class="block py-1 px-3 hover:bg-[#72231a]">List Order</a></li>
       </ul>
     </div>
   </div>
@@ -35,8 +35,8 @@
         <a href="{{ route('welcome') }}" class="block py-2 px-4">Home</a>
         <a href="/galeri" class="block py-2 px-4">Galeri</a>
         <a href="{{ route('kontak') }}" class="block py-2 px-4">Kontak</a>
-        <a href="/menu" class="block py-2 px-4">Menu</a>
-        <a href="/order" class="block py-2 px-4">Order</a>
+        <a href="{{ auth()->check() ? route('order.menu') : route('loginAccount') }}" class="block py-2 px-4">Menu</a>
+        <a href="{{ auth()->check() ? route('pesanan') : route('loginAccount') }}" class="block py-2 px-4">Order</a>
     </div>
 </nav>
 

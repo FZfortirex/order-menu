@@ -10,10 +10,11 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
 
-    public function tukarPoin()
-{
-    return $this->hasMany(TukarPoin::class);
-}
+    public function discounts()
+    {
+        return $this->hasMany(UserDiscount::class);
+    }
+
 
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
