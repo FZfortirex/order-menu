@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::get('/riwayat/{id}', [ProfileController::class, 'show']);
 
     Route::get('/tukarpoin', [TukarPoinController::class, 'index'])->name('tukarpoin');
     Route::post('/tukarpoin', [TukarPoinController::class, 'store'])->name('tukarpoin.store');
@@ -71,13 +72,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/orders/{order}', [ListOrderController::class, 'destroy'])->name('orders.destroy');
     Route::delete('/orders/{order}/done', [DetailPesananController::class, 'done'])->name('orders.done');
 });
-
-
-Route::get('/riwayat/{id}', function($id){
-    // sementara dummy aja view kosong
-    return view('user.history-desktop', ['id' => $id]);
-});
-
 
 Route::get('/galeri', [GaleriController::class, 'index'])->name('galeri');
 Route::get('/galeri/create', [GaleriController::class, 'create']);

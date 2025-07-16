@@ -23,47 +23,6 @@
 
     <!-- Main Content -->
     <main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
-        @php
-        // Dummy data
-        $items = collect([
-            (object)[
-                'menu' => (object)[
-                    'name' => 'Nasi Goreng Special',
-                    'point' => 20
-                ],
-                'image_url' => 'https://via.placeholder.com/80',
-                'items_price' => 25000,
-                'packaging' => 'Box',
-                'note' => 'Tidak pedas',
-                'quantity' => 2
-            ],
-            (object)[
-                'menu' => (object)[
-                    'name' => 'Ayam Bakar',
-                    'point' => 15
-                ],
-                'image_url' => 'https://via.placeholder.com/80',
-                'items_price' => 30000,
-                'packaging' => 'Plastik',
-                'note' => 'Paha atas',
-                'quantity' => 1
-            ],
-        ]);
-
-        $order = (object)[
-            'user' => (object)[
-                'name' => 'John Doe'
-            ],
-            'table' => 'A12',
-            'additional_note' => 'Tolong cepat ya, saya lapar.',
-            'items' => $items,
-            'total_price' => $items->sum(function($item) {
-                return $item->items_price * $item->quantity;
-            })
-        ];
-        @endphp
-
         <div class="flex items-center justify-between mb-6">
             <a href="/profile" class="flex items-center text-black font-semibold text-lg">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -79,7 +38,7 @@
             <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
                 @foreach ($order->items as $item)
                 <div class="flex bg-white shadow rounded-lg p-4 border">
-                    <img src="{{ $item->image_url }}" alt="{{ $item->menu->name }}" class="w-20 h-20 rounded-md object-cover mr-4">
+                    <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}" class="w-16 h-16 rounded-md object-cover">
                     <div>
                         <p class="font-semibold text-gray-800">{{ $item->menu->name ?? 'Menu' }}</p>
                         <p class="text-green-500 text-sm">+{{ $item->menu->point }} poin</p>

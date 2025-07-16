@@ -70,36 +70,22 @@
           <h2 class="text-lg font-semibold text-gray-700 mb-4">Riwayat Pembelian</h2>
 
           <ul class="space-y-4 max-h-72 overflow-y-auto pr-2">
-  <li class="border p-4 rounded-md hover:bg-gray-50 transition">
-    <a href="/riwayat/1" class="flex justify-between items-center w-full">
-      <div>
-        <div class="font-medium text-gray-800">Nomor Meja 1</div>
-        <div class="text-sm text-gray-500">12 Juli 2025 14:30</div>
-      </div>
-      <div class="text-maroon font-semibold">Rp50.000</div>
-    </a>
-  </li>
-  <li class="border p-4 rounded-md hover:bg-gray-50 transition">
-    <a href="/riwayat/2" class="flex justify-between items-center w-full">
-      <div>
-        <div class="font-medium text-gray-800">Nomor Meja 2</div>
-        <div class="text-sm text-gray-500">10 Juli 2025 09:15</div>
-      </div>
-      <div class="text-maroon font-semibold">Rp120.000</div>
-    </a>
-  </li>
-  <li class="border p-4 rounded-md hover:bg-gray-50 transition">
-    <a href="/riwayat/3" class="flex justify-between items-center w-full">
-      <div>
-        <div class="font-medium text-gray-800">Nomor Meja 9</div>
-        <div class="text-sm text-gray-500">5 Juli 2025 17:50</div>
-      </div>
-      <div class="text-maroon font-semibold">Rp75.000</div>
-    </a>
-  </li>
-</ul>
-
-
+          @foreach ($orders as $order)
+          <li class="border p-4 rounded-md hover:bg-gray-50 transition">
+              <a href="/riwayat/{{ $order->id }}" class="flex justify-between items-center w-full">
+                  <div>
+                      <div class="font-medium text-gray-800">Pesanan Selesai</div>
+                      <div class="text-sm text-gray-500">
+                          Waktu Pesanan: {{ \Carbon\Carbon::parse($order->updated_at)->translatedFormat('d F Y H:i') }}
+                      </div>
+                  </div>
+                  <div class="text-maroon font-semibold">
+                      Rp{{ number_format($order->total_price, 0, ',', '.') }}
+                  </div>
+              </a>
+          </li>
+          @endforeach
+      </ul>
     </div>
   </main>
 
