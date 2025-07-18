@@ -12,13 +12,13 @@ use App\Models\Order;
 class ListOrderController extends Controller
 {
     public function index(Request $request) {
-        
+
         $orders = Order::all();
 
         $activeOrders = $orders->filter(function ($order) {
             return strtolower($order->status) !== 'selesai';
         });
-        
+
         $usedTables = $activeOrders->pluck('table')->filter()->unique()->count();
 
         // Total meja yang tersedia

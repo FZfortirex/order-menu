@@ -34,7 +34,7 @@
 
     <!-- Tombol Filter -->
     <div class="flex justify-start gap-4 mt-4">
-      <button onclick="filterOrders('menunggu', this)" id="btn-menunggu" class="filter-btn w-auto border border-black text-white bg-black font-semibold py-2 px-4 rounded-lg transition">Menunggu</button>
+      <button onclick="filterOrders('menunggu', this)" id="btn-menunggu" class="filter-btn w-auto border border-yellow-500 bg-white font-semibold py-2 px-4 rounded-lg transition">Menunggu</button>
       <button onclick="filterOrders('sedang dibuat', this)" class="filter-btn w-auto border border-yellow-500 text-blue-600 bg-white font-semibold py-2 px-4 rounded-lg transition">Sedang Dibuat</button>
       <button onclick="filterOrders('sudah dibuat', this)" class="filter-btn w-auto border border-yellow-500 text-green-600 bg-white font-semibold py-2 px-4 rounded-lg transition">Sudah Dibuat</button>
       <button onclick="filterOrders('selesai', this)" class="filter-btn w-auto border border-yellow-500 text-yellow-600 bg-white font-semibold py-2 px-4 rounded-lg transition">Selesai</button>
@@ -107,7 +107,7 @@
         );
 
         if (button.textContent.includes("Menunggu")) {
-          button.classList.add("bg-white", "text-black");
+          button.classList.add("bg-white", "text-yellow-600");
         } else if (button.textContent.includes("Sedang Dibuat")) {
           button.classList.add("bg-white", "text-yellow-600");
         } else if (button.textContent.includes("Sudah Dibuat")) {
@@ -119,8 +119,8 @@
 
       if (btn) {
         if (status === 'menunggu') {
-          btn.classList.remove("bg-white", "text-black");
-          btn.classList.add("bg-black", "text-white");
+          btn.classList.remove("bg-white", "text-yellow-600");
+          btn.classList.add("bg-yellow-500", "text-white");
         } else if (status === 'sedang dibuat') {
           btn.classList.remove("bg-white", "text-yellow-600");
           btn.classList.add("bg-yellow-500", "text-white");

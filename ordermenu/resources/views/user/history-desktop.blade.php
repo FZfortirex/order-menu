@@ -19,7 +19,7 @@
 <body class="bg-gray-100 font-sans fade-in min-h-screen flex flex-col">
 
     <!-- Navbar -->
-    @include('partials-admin.navbar')
+    @include('partials.navbar')
 
     <!-- Main Content -->
     <main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -35,21 +35,25 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- Left: Items -->
-            <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
                 @foreach ($order->items as $item)
-                <div class="flex bg-white shadow rounded-lg p-4 border">
-                    <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}" class="w-16 h-16 rounded-md object-cover">
-                    <div>
+                <div class="inline-flex items-start bg-white shadow rounded-lg p-3 border w-fit">
+                    <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}" class="w-16 h-16 rounded-md object-cover mr-3">
+                    <div class="text-sm text-gray-700">
                         <p class="font-semibold text-gray-800">{{ $item->menu->name ?? 'Menu' }}</p>
-                        <p class="text-green-500 text-sm">+{{ $item->menu->point }} poin</p>
-                        <p class="text-gray-700 text-sm">Harga Satuan: Rp. {{ number_format($item->items_price, 0, ',', '.') }}</p>
-                        <p class="text-gray-700 text-sm">Jumlah: {{ $item->quantity }}</p>
-                        <p class="text-gray-700 text-sm">Subtotal: Rp. {{ number_format($item->items_price * $item->quantity, 0, ',', '.') }}</p>
-                        <p class="text-gray-700 text-sm">Packaging: {{ $item->packaging }}</p>
-                        <p class="text-gray-700 text-sm">Catatan: {{ $item->note }}</p>
+                        <p class="text-green-500 text-xs">+{{ $item->menu->point }} poin</p>
+                        <p>Harga Satuan: Rp. {{ number_format($item->items_price, 0, ',', '.') }}</p>
+                        <p>Jumlah: {{ $item->quantity }}</p>
+                        <p>Subtotal: Rp. {{ number_format($item->items_price * $item->quantity, 0, ',', '.') }}</p>
+                        <p>Packaging: {{ $item->packaging }}</p>
+                        @if (!empty($item->note))
+    <p>Catatan: {{ $item->note }}</p>
+@endif
+
                     </div>
                 </div>
                 @endforeach
+
             </div>
 
             <!-- Right: Info Pesanan -->
@@ -80,13 +84,6 @@
             </div>
         </div>
     </main>
-
-    <!-- Floating Chat Button -->
-    <button id="toggleChat" class="fixed bottom-6 left-6 bg-green-500 hover:bg-green-600 text-white p-3 rounded-full shadow-lg z-50">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 3.866-3.582 7-8 7H5l-4 4V5c0-1.104.896-2 2-2h14c1.104 0 2 .896 2 2v7z" />
-        </svg>
-    </button>
 
     <!-- Footer -->
     @include('partials.footer')

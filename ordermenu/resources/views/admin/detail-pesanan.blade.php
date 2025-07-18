@@ -91,8 +91,8 @@
             @method('PATCH')
             <input type="hidden" name="status" value="sedang dibuat">
             <button type="submit" class="flex-1
-                {{ $order->status == 'sedang dibuat' ? 'border-4 border-blue-400 bg-blue-400 text-white' : 'border border-blue-400 text-blue-500' }}
-                font-semibold py-2 rounded-lg hover:bg-blue-50 transition">
+                {{ $order->status == 'sedang dibuat' ? 'border-4 border-yellow-600 bg-yellow-600 text-white' : 'border border-yellow-600 text-yellow-500' }}
+                font-semibold py-2 rounded-lg hover:bg-yellow-600 transition">
                 Buat
             </button>
         </form>
@@ -102,8 +102,8 @@
             @method('PATCH')
             <input type="hidden" name="status" value="sudah dibuat">
             <button type="submit" class="w-full
-                {{ $order->status == 'sudah dibuat' ? 'border-4 border-green-400 bg-green-400 text-white' : 'border border-green-400 text-green-500' }}
-                font-semibold py-2 rounded-lg hover:bg-green-50 transition">
+                {{ $order->status == 'sudah dibuat' ? 'border-4 border-yellow-600 bg-yellow-600 text-white' : 'border border-yellow-600 text-yellow-500' }}
+                font-semibold py-2 rounded-lg hover:bg-yellow-600 transition">
                 Siap
             </button>
         </form>
