@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Mobile_Detect;
 use Jenssegers\Agent\Agent; // Tambahkan package ini
 use App\Models\Order;
-//use App\Models\Order; // Pastikan model Order sudah ada
+use Carbon\Carbon;
 
 class ListOrderController extends Controller
 {
@@ -27,13 +27,49 @@ class ListOrderController extends Controller
         // Jumlah meja yang tersedia
         $availableTables = $totalTables - $usedTables;
 
+        $salesByDay = array_fill(0, 7, 0);
+        $completedOrdersByDay = array_fill(0, 7, 0);
+
+        foreach ($orders as $order) {
+            if ($order->updated_at) {
+                $dayIndex = Carbon::parse($order->updated_at)->dayOfWeek;
+
+                if (strtolower($order->status) === 'selesai') {
+                    $completedOrdersByDay[$dayIndex] += 1;
+                    if ($order->total_price) {
+                        $salesByDay[$dayIndex] += $order->total_price;
+                    }
+                }
+            }
+        }
+
+        $orderedSales = [
+            $salesByDay[1], 
+            $salesByDay[2],
+            $salesByDay[3],
+            $salesByDay[4],
+            $salesByDay[5],
+            $salesByDay[6],
+            $salesByDay[0], 
+        ];
+
+        $orderedCompletedOrders = [
+            $completedOrdersByDay[1], 
+            $completedOrdersByDay[2],
+            $completedOrdersByDay[3],
+            $completedOrdersByDay[4],
+            $completedOrdersByDay[5],
+            $completedOrdersByDay[6],
+            $completedOrdersByDay[0], 
+        ];
+
         $agent = new Agent();
         $userAgent = $request->header('User-Agent');
 
         if ($agent->isMobile()) {
-            return view('admin.list-order-mobile', compact('orders', 'availableTables', 'totalTables'));
+            return view('admin.list-order-mobile', compact('orders', 'availableTables', 'totalTables', 'orderedSales', 'orderedCompletedOrders'));
         } else {
-            return view('admin.list-order-desktop', compact('orders', 'availableTables', 'totalTables'));
+            return view('admin.list-order-desktop', compact('orders', 'availableTables', 'totalTables', 'orderedSales', 'orderedCompletedOrders'));
         }
     }
 

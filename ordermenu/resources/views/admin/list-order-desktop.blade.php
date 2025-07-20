@@ -92,6 +92,53 @@
 
   <!-- JavaScript -->
   <script>
+    // Chart.js grafik mingguan
+    const salesData = @json($orderedSales);
+    const completedOrdersData = @json($orderedCompletedOrders);
+
+    new Chart(document.getElementById('salesChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
+            datasets: [{
+                label: 'Total Penjualan (IDR)',
+                data: salesData,
+                backgroundColor: 'rgba(251, 191, 36, 0.7)',
+                borderColor: 'rgba(251, 191, 36, 1)',
+                borderWidth: 1,
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return 'Rp ' + new Intl.NumberFormat('id-ID').format(value);
+                        }
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const value = context.parsed.y;
+                            const index = context.dataIndex;
+                            const completed = completedOrdersData[index];
+                            return [
+                                'Rp ' + new Intl.NumberFormat('id-ID').format(value),
+                                'Order selesai: ' + completed
+                            ];
+                        }
+                    }
+                }
+            }
+        }
+    });
     function filterOrders(status, btn) {
       const cards = document.querySelectorAll(".order-card");
 
@@ -138,50 +185,6 @@
       const defaultBtn = document.getElementById("btn-menunggu");
       filterOrders("menunggu", defaultBtn);
     });
-
-    // Chart.js grafik mingguan
-const ctx = document.getElementById('salesChart').getContext('2d');
-new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
-    datasets: [{
-      label: 'Total Penjualan (IDR)',
-      data: [500000, 700000, 600000, 800000, 550000, 900000, 750000],
-      backgroundColor: 'rgba(251, 191, 36, 0.7)', // kuning
-      borderColor: 'rgba(251, 191, 36, 1)',      // kuning solid
-      borderWidth: 1,
-      borderRadius: 6
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: true, // Biar proporsional dan tidak menjulur tinggi
-    scales: {
-      y: {
-        beginAtZero: true,
-        ticks: {
-          callback: function(value) {
-            return 'Rp ' + new Intl.NumberFormat('id-ID').format(value);
-          }
-        }
-      }
-    },
-    plugins: {
-      tooltip: {
-        callbacks: {
-          label: function(context) {
-            return 'Rp ' + new Intl.NumberFormat('id-ID').format(context.parsed.y);
-          }
-        }
-      },
-      legend: {
-        display: true
-      }
-    }
-  }
-});
-
   </script>
 </body>
 </html>
