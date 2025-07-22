@@ -33,7 +33,7 @@
           <h2 class="text-lg font-bold mb-2">Lokasi Kampoeng Sawah</h2>
           <div id="map" style="height: 300px;" class="rounded"></div>
           <p class="mt-4">Jam Operasional:</p>
-          <p>Senin–Minggu: <span class="text-yellow-300">09:00–19:00</span></p>
+          <p>Senin–Minggu: <span class="text-yellow-300">09:00–21:00</span></p>
         </div>
       </div>
     </div>
