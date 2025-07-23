@@ -18,20 +18,46 @@
     <div class="max-w-4xl mx-auto p-8">
       <h1 class="text-3xl font-bold mb-6">KONTAK</h1>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
         <!-- Form -->
-        <form method="POST" action="{{ route('kontak.store') }}" class="space-y-4">
-          @csrf
-          <input type="text" name="name" placeholder="Nama Anda" class="w-full p-3 rounded-md bg-red-700 text-white" />
-          <input type="text" name="number_phone" placeholder="No. Telp" class="w-full p-3 rounded-md bg-red-700 text-white" />
-          <input type="email" name="email" placeholder="Email" class="w-full p-3 rounded-md bg-red-700 text-white" />
-          <textarea name="message" placeholder="Pesan Anda" class="w-full p-3 rounded-md bg-red-700 text-white h-32"></textarea>
-          <button class="bg-yellow-500 text-black p-3 rounded-md font-bold">Submit</button>
-        </form>
+        <div class="bg-red-800 bg-opacity-80 p-6 rounded-lg shadow-lg">
+          <form method="POST" action="{{ route('kontak.store') }}" class="space-y-4">
+            @csrf
+            <input
+              type="text"
+              name="name"
+              placeholder="Nama Anda"
+              class="w-full p-3 rounded-md bg-red-700 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            />
+            <input
+              type="text"
+              name="number_phone"
+              placeholder="No. Telp"
+              class="w-full p-3 rounded-md bg-red-700 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              class="w-full p-3 rounded-md bg-red-700 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
+            />
+            <textarea
+              name="message"
+              placeholder="Pesan Anda"
+              class="w-full p-3 rounded-md bg-red-700 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-yellow-400 h-32"
+            ></textarea>
+            <button
+              class="bg-yellow-400 hover:bg-yellow-300 text-black p-3 rounded-md font-bold transition duration-200 w-full"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
 
         <!-- Map -->
         <div>
           <h2 class="text-lg font-bold mb-2">Lokasi Kampoeng Sawah</h2>
-          <div id="map" style="height: 300px;" class="rounded"></div>
+          <div id="map" style="height: 300px;" class="rounded shadow-lg"></div>
           <p class="mt-4">Jam Operasional:</p>
           <p>Senin–Minggu: <span class="text-yellow-300">09:00–21:00</span></p>
         </div>
@@ -42,6 +68,7 @@
   <!-- Footer -->
   @include('partials.footer')
 
+  <!-- Leaflet Map Script -->
   <script>
     var map = L.map('map').setView([-6.865679899765911, 110.82454083667585], 13);
 

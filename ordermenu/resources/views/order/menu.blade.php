@@ -19,28 +19,31 @@
   <!-- NAVBAR -->
   @include('partials.navbar')
 
-<!-- CAROUSEL PROMO DISKON -->
+  <!-- CAROUSEL PROMO DISKON -->
 <div class="container mx-auto px-2 mt-8">
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-    <div class="h-64 w-full flex items-center justify-center overflow-hidden rounded-xl">
-      <img src="{{ asset('images/diskon1.jpg') }}" alt="Promo 1" class="h-full object-contain border border-black rounded-xl">
+    <!-- Gambar 1 -->
+    <div class="relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
+      <img src="{{ asset('images/diskon1.jpg') }}" alt="Promo 1"
+        class="w-full h-full object-cover group-hover:scale-105 transition duration-300 ease-in-out" />
     </div>
-    <div class="h-64 w-full flex items-center justify-center overflow-hidden rounded-xl">
-      <img src="{{ asset('images/diskon5.jpg') }}" alt="Promo 2" class="h-full object-contain border border-black rounded-xl">
+    <!-- Gambar 2 -->
+    <div class="relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
+      <img src="{{ asset('images/diskon5.jpg') }}" alt="Promo 2"
+        class="w-full h-full object-cover group-hover:scale-105 transition duration-300 ease-in-out" />
     </div>
-    <div class="h-64 w-full flex items-center justify-center overflow-hidden rounded-xl">
-      <img src="{{ asset('images/diskon3.jpg') }}" alt="Promo 3" class="h-full object-contain border border-black rounded-xl">
+    <!-- Gambar 3 -->
+    <div class="relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
+      <img src="{{ asset('images/diskon3.jpg') }}" alt="Promo 3"
+        class="w-full h-full object-cover group-hover:scale-105 transition duration-300 ease-in-out" />
     </div>
-    <div class="h-64 w-full flex items-center justify-center overflow-hidden rounded-xl">
-      <img src="{{ asset('images/diskon4.jpg') }}" alt="Promo 4" class="h-full object-contain border border-black rounded-xl">
+    <!-- Gambar 4 -->
+    <div class="relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
+      <img src="{{ asset('images/diskon4.jpg') }}" alt="Promo 4"
+        class="w-full h-full object-cover group-hover:scale-105 transition duration-300 ease-in-out" />
     </div>
   </div>
 </div>
-
-
-
-
-
 
 
   <!-- KATEGORI -->
