@@ -20,17 +20,27 @@
   @include('partials.navbar')
 
   <!-- CAROUSEL PROMO DISKON -->
-  <!-- CAROUSEL PROMO DISKON -->
-<div class="container mx-auto px-4 mt-1">
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-    <div class="h-48 w-full bg-white flex items-center justify-center overflow-hidden rounded-xl shadow">
-      <img src="{{ asset('images/diskon1.jpg') }}" alt="Promo 1" class="h-full object-contain">
+<div class="container mx-auto px-2 mt-8">
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+    <!-- Gambar 1 -->
+    <div class="relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
+      <img src="{{ asset('images/diskon1.jpg') }}" alt="Promo 1"
+        class="w-full h-full object-cover group-hover:scale-105 transition duration-300 ease-in-out" />
     </div>
-    <div class="h-48 w-full bg-white flex items-center justify-center overflow-hidden rounded-xl shadow">
-      <img src="{{ asset('images/diskon2.jpg') }}" alt="Promo 2" class="h-full object-contain">
+    <!-- Gambar 2 -->
+    <div class="relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
+      <img src="{{ asset('images/diskon5.jpg') }}" alt="Promo 2"
+        class="w-full h-full object-cover group-hover:scale-105 transition duration-300 ease-in-out" />
     </div>
-    <div class="h-48 w-full bg-white flex items-center justify-center overflow-hidden rounded-xl shadow">
-      <img src="{{ asset('images/diskon3.jpg') }}" alt="Promo 3" class="h-full object-contain">
+    <!-- Gambar 3 -->
+    <div class="relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
+      <img src="{{ asset('images/diskon3.jpg') }}" alt="Promo 3"
+        class="w-full h-full object-cover group-hover:scale-105 transition duration-300 ease-in-out" />
+    </div>
+    <!-- Gambar 4 -->
+    <div class="relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
+      <img src="{{ asset('images/diskon4.jpg') }}" alt="Promo 4"
+        class="w-full h-full object-cover group-hover:scale-105 transition duration-300 ease-in-out" />
     </div>
   </div>
 </div>
