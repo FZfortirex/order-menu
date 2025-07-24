@@ -26,8 +26,8 @@
             @csrf
 
             <div class="mb-4">
-                <label for="name" class="block text-gray-700 font-semibold">Nama</label>
-                <input type="text" name="name" id="name" class="w-full px-4 py-2 border rounded-md" placeholder="Nama pelanggan" required>
+                <label for="name" class="block text-gray-700 font-semibold">Nama / Nomor Meja</label>
+                <input type="text" name="name" id="name" class="w-full px-4 py-2 border rounded-md" placeholder="Nama pelanggan / Nomor Meja" required>
                 @error('name')
                     <p class="text-red-500 text-sm">{{ $message }}</p>
                 @enderror
@@ -35,7 +35,7 @@
 
             <div class="mb-4">
                 <label for="email" class="block text-gray-700 font-semibold">Email</label>
-                <input type="email" name="email" id="email" class="w-full px-4 py-2 border rounded-md" placeholder="Email pelanggan" required>
+                <input type="email" name="email" id="email" class="w-full px-4 py-2 border rounded-md" placeholder="Email pelanggan">
                 @error('email')
                     <p class="text-red-500 text-sm">{{ $message }}</p>
                 @enderror
@@ -43,7 +43,7 @@
 
             <div class="mb-4">
                 <label for="number_phone" class="block text-gray-700 font-semibold">Nomor HP</label>
-                <input type="text" name="number_phone" id="number_phone" class="w-full px-4 py-2 border rounded-md" placeholder="08xxxxxxxxxx" required>
+                <input type="text" name="number_phone" id="number_phone" class="w-full px-4 py-2 border rounded-md" placeholder="08xxxxxxxxxx">
                 @error('number_phone')
                     <p class="text-red-500 text-sm">{{ $message }}</p>
                 @enderror
@@ -51,7 +51,7 @@
 
             <div class="mb-4">
                 <label for="password" class="block text-gray-700 font-semibold">Password</label>
-                <input type="password" name="password" id="password" class="w-full px-4 py-2 border rounded-md" placeholder="Password pelanggan" required>
+                <input type="password" name="password" id="password" class="w-full px-4 py-2 border rounded-md" placeholder="Password pelanggan">
                 @error('password')
                     <p class="text-red-500 text-sm">{{ $message }}</p>
                 @enderror

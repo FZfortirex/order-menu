@@ -34,6 +34,7 @@
       </div>
       <button type="submit" class="w-full bg-yellow-400 text-[#731b0c] font-bold py-3 rounded-md hover:bg-yellow-300">Login</button>
     </form>
+    <p class="mt-6 text-sm text-gray-200">Belum punya akun? <a href="{{ route('loginTable.show') }}" class="text-yellow-400 hover:underline">Masuk di sini</a></p>
   </div>
 </body>
 </html>

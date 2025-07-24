@@ -25,7 +25,7 @@
             <p class="mt-4 text-lg max-w-xl mx-auto">
                 Nikmati pengalaman kuliner terbaik dengan pelayanan modern dan cepat!
             </p>
-            <a href="{{ auth()->check() ? route('order.menu') : route('loginAccount') }}">
+            <a href="{{ auth()->check() ? route('order.menu') : route('loginTable.show') }}">
                 <button class="bg-yellow-400 text-[#731b0c] px-6 py-2 mt-6 rounded-full font-bold btn-hover">
                     Lihat Menu
                 </button>

@@ -15,13 +15,7 @@
   <!-- Kanan: Kontak & Opsi -->
   <div class="flex gap-x-20 text-sm justify-center justify-self-center">
     <a href="{{ route('kontak') }}" class="cursor-pointer">Kontak</a>
-    <div class="relative group">
-      <button class="cursor-pointer">Opsi ▼</button>
-      <ul class="absolute hidden bg-[#5b130a] text-white p-2 rounded-md group-hover:block right-0 top-full z-10 min-w-[120px]">
-        <li><a href="{{ auth()->check() ? route('order.menu') : route('loginAccount') }}" class="block py-1 px-3 hover:bg-[#72231a]">Menu</a></li>
-        <li><a href="{{ auth()->check() ? route('pesanan') : route('loginAccount') }}" class="block py-1 px-3 hover:bg-[#72231a]">List Order</a></li>
-      </ul>
-    </div>
+    <a href="{{ auth()->check() ? route('order.menu') : route('loginAccount') }}" class="cursor-pointer">Menu</a>
   </div>
 
   <!-- Tombol Mobile (kalau perlu) -->

@@ -50,7 +50,6 @@
           </div>
         </div>
         <div class="mt-2 flex flex-col space-y-2">
-          <a href="#" class="text-red-600 text-sm font-medium hover:underline">Riwayat &gt;</a>
           <a href="{{ route('my-discount.index') }}" class="text-green-700 text-sm font-medium hover:underline">Lihat Discount Saya &gt;</a>
         </div>
       </div>

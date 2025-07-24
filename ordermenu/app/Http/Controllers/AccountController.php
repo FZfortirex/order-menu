@@ -29,9 +29,9 @@ class AccountController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'number_phone' => 'required|string|max:20',
-            'password' => 'required|string|min:6',
+            'email' => 'nullable|email|unique:users,email',
+            'number_phone' => 'nullable|string|max:20',
+            'password' => 'nullable|string',
             'role' => 'in:customer',
         ]);
 

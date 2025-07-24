@@ -25,6 +25,43 @@ class AuthController extends Controller
         return view($isMobile ? 'auth.login-mobile' : 'auth.login-desktop');
     }
 
+    public function showLoginTable()
+    {
+        return view('auth.login-table');
+    }
+
+    public function loginTable(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|string',
+            'password' => 'nullable|string',
+        ]);
+
+        $user = User::where('name', $request->username)->first();
+
+        if ($user) {
+            $inputPassword = $request->password ?? '';
+            $dbPassword = $user->password ?? '';
+
+            if ($dbPassword === '' || $dbPassword === null) {
+                auth()->loginUsingId($user->id);
+                $request->session()->regenerate();
+                $request->session()->put('username', $user->name);
+                return redirect()->intended('/menu');
+            }
+
+            if (Hash::check($inputPassword, $dbPassword)) {
+                auth()->loginUsingId($user->id);
+                $request->session()->regenerate();
+                $request->session()->put('username', $user->name);
+                return redirect()->intended('/menu');
+            }
+        }
+
+        return back()->withErrors([
+            'username' => 'Akun tidak ditemukan atau tidak valid.',
+        ]);
+    }
 
     // Login Pakai Database
     public function login(Request $request)

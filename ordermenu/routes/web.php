@@ -23,6 +23,9 @@ use App\Http\Controllers\RekapController;
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
 Route::get('/welcome', [WelcomeController::class, 'index'])->name('welcome');
 
+Route::get('/login-table', [AuthController::class, 'showLoginTable'])->name('loginTable.show');
+Route::post('/login-table', [AuthController::class, 'loginTable'])->name('loginTable');
+
 Route::get('/loginAccount', [AuthController::class, 'showLogin'])->name('loginAccount');
 Route::post('/loginAccount', [AuthController::class, 'login']);
 Route::post('/logoutAccount', [AuthController::class, 'logout'])->name('logoutAccount')->middleware('auth');
