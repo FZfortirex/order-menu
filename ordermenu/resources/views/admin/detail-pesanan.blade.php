@@ -39,16 +39,19 @@
             <!-- Left: Items -->
             <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
                 @foreach ($order->items as $item)
-                <div class="flex items-center bg-white shadow rounded-lg p-3 border">
-                    <img src="{{ $item->image_url }}" alt="{{ $item->menu->name }}" class="w-20 h-20 rounded-md object-cover mr-4">
-                    <div>
-                        <p class="font-semibold text-gray-800">{{ $item->menu->name ?? 'Menu' }}</p>
-                        <p class="text-green-500 text-sm">+{{ $item->menu->point }} poin</p>
-                        <p class="text-gray-700 text-sm">Harga: Rp. {{ number_format($item->items_price, 0, ',', '.') }}</p>
-                        <p class="text-gray-700 text-sm">Packaging: {{ $item->packaging }}</p>
-                        <p class="text-gray-700 text-sm">Catatan: {{ $item->note }}</p>
-                    </div>
-                </div>
+                <div class="flex flex-col items-center justify-center bg-white shadow p-3 border w-[400px] h-[240px] rounded-xl">
+
+
+    <img src="{{ $item->image_url }}" alt="{{ $item->menu->name }}" class="w-14 h-14 rounded-md object-cover mr-3">
+    <div>
+        <p class="font-semibold text-gray-800 text-sm">{{ $item->menu->name ?? 'Menu' }}</p>
+        <p class="text-green-500 text-xs">+{{ $item->menu->point }} poin</p>
+        <p class="text-gray-700 text-xs">Harga: Rp. {{ number_format($item->items_price, 0, ',', '.') }}</p>
+        <p class="text-gray-700 text-xs">Packaging: {{ $item->packaging }}</p>
+        <p class="text-gray-700 text-xs">Catatan: {{ $item->note }}</p>
+    </div>
+</div>
+
                 @endforeach
             </div>
 

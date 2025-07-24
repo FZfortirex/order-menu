@@ -29,7 +29,7 @@
           <form method="POST" action="{{ route('pesanan.remove', $item['name']) }}">
             @csrf
             <button type="submit" class="absolute top-2 right-2 text-red-600 text-xl font-bold hover:text-red-800 rounded-full" title="Hapus">
-              <span class="bg-red-100 p-1 rounded-full">✖</span> 
+              <span class="bg-red-100 p-1 rounded-full">✖</span>
             </button>
           </form>
         @endif

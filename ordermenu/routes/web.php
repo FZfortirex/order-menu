@@ -18,6 +18,7 @@ use App\Http\Controllers\ListOrderController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\DetailPesananController;
 use App\Http\Controllers\MyDiscountController;
+use App\Http\Controllers\RekapController;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
 Route::get('/welcome', [WelcomeController::class, 'index'])->name('welcome');
@@ -71,6 +72,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/orders/{order}/status', [DetailPesananController::class, 'updateStatus'])->name('orders.updateStatus');
     Route::delete('/orders/{order}', [ListOrderController::class, 'destroy'])->name('orders.destroy');
     Route::delete('/orders/{order}/done', [DetailPesananController::class, 'done'])->name('orders.done');
+
+    Route::get('/rekap-penjualan', [RekapController::class, 'grafikPenjualan'])->name('rekap.penjualan');
 });
 
 Route::get('/galeri', [GaleriController::class, 'index'])->name('galeri');
