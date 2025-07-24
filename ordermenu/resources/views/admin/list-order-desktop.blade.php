@@ -61,8 +61,17 @@
                                 👤
                             </div>
                             <div>
-                                <p class="font-semibold text-gray-800"> Nama: {{ $order->user->name ?? '-' }}</p>
-                                <p class="text-sm text-gray-500">Meja: {{ $order->table ?? '-' }}</p>
+                                @php
+                                    $isNumeric = isset($order->user->name) && is_numeric($order->user->name);
+                                @endphp
+
+                                @if ($isNumeric)
+                                    <p class="font-semibold text-gray-800">Nama: Customer</p>
+                                    <p class="text-sm text-gray-500">Meja: {{ $order->user->name }}</p>
+                                @else
+                                    <p class="font-semibold text-gray-800">Nama: {{ $order->user->name ?? '-' }}</p>
+                                    <p class="text-sm text-gray-500">Meja: {{ $order->table ?? '-' }}</p>
+                                @endif
                                 <p class="text-sm text-gray-500">Status: <strong class="text-blue-600">{{ ucfirst($order->status) }}</strong></p>
                                 @if (isset($order->total_price))
                                     <p class="text-sm text-gray-500">Harga: <strong class="text-red-600">Rp. {{ number_format($order->total_price, 0, ',', '.') }}</strong></p>

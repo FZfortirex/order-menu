@@ -48,13 +48,18 @@
       @csrf
       <div>
         <label class="block text-sm font-medium">Meja</label>
+        @php
+          $userNameIsNumber = Auth::check() && is_numeric(Auth::user()->name);
+          $mejaValue = $userNameIsNumber ? Auth::user()->name : old('table', $order->table ?? '');
+        @endphp
+
         <input
           type="number"
           name="meja"
-          value="{{ old('table', $order->table ?? '') }}"
+          value="{{ $mejaValue }}"
           placeholder="Contoh: 4"
           class="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-yellow-400"
-          {{ in_array($status, ['menunggu', 'sedang dibuat', 'sudah dibuat']) ? 'readonly' : '' }}>
+          {{ $userNameIsNumber || in_array($status, ['menunggu', 'sedang dibuat', 'sudah dibuat']) ? 'readonly' : '' }}>
       </div>
       <div>
         <label class="block text-sm font-medium">Catatan tambahan ( Opsional )</label>
