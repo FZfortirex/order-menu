@@ -88,71 +88,53 @@
             <span>Total Pembayaran:</span>
             <span>Rp. {{ number_format($order->total_price, 0, ',', '.') }}</span>
         </div>
-        <!-- Tombol -->
-        <form action="{{ route('orders.updateStatus', $order->id) }}" method="POST" class="flex justify-between gap-2 mt-4">
-            @csrf
-            @method('PATCH')
-            <input type="hidden" name="status" value="sedang dibuat">
-            <button type="submit" class="flex-1
-                {{ $order->status == 'sedang dibuat' ? 'border-4 border-yellow-600 bg-yellow-600 text-white' : 'border border-yellow-600 text-yellow-500' }}
-                font-semibold py-2 rounded-lg hover:bg-yellow-600 transition">
-                Buat
-            </button>
-        </form>
-
-        <form action="{{ route('orders.updateStatus', $order->id) }}" method="POST" class="flex-1">
-            @csrf
-            @method('PATCH')
-            <input type="hidden" name="status" value="sudah dibuat">
-            <button type="submit" class="w-full
-                {{ $order->status == 'sudah dibuat' ? 'border-4 border-yellow-600 bg-yellow-600 text-white' : 'border border-yellow-600 text-yellow-500' }}
-                font-semibold py-2 rounded-lg hover:bg-yellow-600 transition">
-                Siap
-            </button>
-        </form>
-
-        <form action="{{ route('orders.done', $order->id) }}" method="POST" class="flex-1">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="w-full bg-white text-yellow-600 border border-yellow-500 py-2 rounded-md hover:bg-yellow-100 transition">
-                Selesai
-            </button>
-        </form>
-</div>
+                <!-- Tombol -->
+        <div class="flex flex-col gap-2 mt-4">
+            @if($order->status == 'menunggu')
+                <form action="{{ route('orders.updateStatus', $order->id) }}" method="POST">
+                    @csrf
+                    @method('PATCH')
+                    <input type="hidden" name="status" value="sedang dibuat">
+                    <button type="submit" class="w-full border bg-white text-yellow-600 border-yellow-500 font-semibold py-2 rounded-lg hover:bg-blue-50 transition">
+                        Buat
+                    </button>
+                </form>
+            @elseif($order->status == 'sedang dibuat')
+                <form action="{{ route('orders.updateStatus', $order->id) }}" method="POST">
+                    @csrf
+                    @method('PATCH')
+                    <input type="hidden" name="status" value="sudah dibuat">
+                    <button type="submit" class="w-full border bg-white text-yellow-600 border-yellow-500 font-semibold py-2 rounded-lg hover:bg-green-50 transition">
+                        Siap
+                    </button>
+                </form>
+            @elseif($order->status == 'sudah dibuat')
+                <form action="{{ route('orders.done', $order->id) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="w-full bg-white text-yellow-600 border border-yellow-500 py-2 rounded-md hover:bg-yellow-100 transition">
+                        Selesai
+                    </button>
+                </form>
+            @endif
+            <div class="text-center mt-2 text-sm font-semibold text-yellow-600">
+                Status:
+                @if($order->status == 'menunggu')
+                    <span>Menunggu</span>
+                @elseif($order->status == 'sedang dibuat')
+                    <span>Sedang Dibuat</span>
+                @elseif($order->status == 'sudah dibuat')
+                    <span>Siap</span>
+                @elseif($order->status == 'selesai')
+                    <span>Selesai</span>
+                @else
+                    <span>Tidak Diketahui</span>
+                @endif
             </div>
         </div>
 
-        <!-- Floating Chat Button -->
-<button id="toggleChat" class="fixed bottom-6 left-6 bg-green-500 hover:bg-green-600 text-white p-3 rounded-full shadow-lg z-50">
-    <!-- Icon Chat -->
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 3.866-3.582 7-8 7H5l-4 4V5c0-1.104.896-2 2-2h14c1.104 0 2 .896 2 2v7z" />
-    </svg>
-</button>
-
-<!-- Chat Box (Hidden by default) -->
-<div id="chatBox" class="fixed bottom-6 left-6 w-72 bg-white border rounded-lg shadow-lg overflow-hidden hidden z-50">
-    <div class="flex justify-between items-center bg-gray-100 p-2">
-        <span class="font-semibold">Message</span>
-        <button id="closeChat" class="text-gray-600 hover:text-red-500">&times;</button>
-    </div>
-    <div class="p-3 h-40 overflow-y-auto">
-        <div class="flex items-center mb-2">
-            <div class="w-6 h-6 bg-gray-300 rounded-full mr-2"></div>
-            <div class="bg-gray-100 p-2 rounded-md text-sm">Mohon ditunggu ya</div>
+            </div>
         </div>
-    </div>
-    <div class="border-t flex p-2 items-center">
-        <input type="text" placeholder="Type here" class="flex-1 p-1 text-sm border-none focus:ring-0">
-        <button class="ml-2 bg-green-400 hover:bg-green-300 text-white p-2 rounded-full">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
-        </button>
-    </div>
-</div>
-
-
     </div>
 
     <!-- Footer -->
