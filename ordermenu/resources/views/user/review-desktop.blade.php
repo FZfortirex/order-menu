@@ -44,27 +44,28 @@
             </div>
 
             <!-- Form Review -->
-            <form action="{{ route('reviews.store') }}" method="POST" class="mt-6" id="review-form">
-                @csrf
-                <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+            @if(Auth::check() && !is_numeric(Auth::user()->name))
+                <form action="{{ route('reviews.store') }}" method="POST" class="mt-6" id="review-form">
+                    @csrf
+                    <input type="hidden" name="menu_id" value="{{ $menu->id }}">
 
-                <label class="block text-sm mb-2 font-medium">Write Your Review</label>
-                <div id="star-rating" class="flex space-x-1">
-                    @for ($i = 1; $i <= 5; $i++)
-                        <svg data-index="{{ $i }}" xmlns="http://www.w3.org/2000/svg"
-                             class="w-5 h-5 star text-gray-300 hover:text-yellow-400 transition-colors duration-200 cursor-pointer"
-                             fill="currentColor" viewBox="0 0 24 24">
-                            <path
-                                d="M12 .587l3.668 7.568 8.332 1.151-6.001 5.849 1.415 8.277L12 18.896l-7.414 4.536 1.415-8.277L.001 9.306l8.332-1.151z"/>
-                        </svg>
-                    @endfor
-                </div>
-                <textarea name="comment" class="w-full border rounded p-2 mt-2" rows="3" placeholder="Tulis ulasanmu..." required></textarea>
-                <button type="submit"
-                        class="mt-3 px-4 py-2 bg-yellow-400 hover:bg-yellow-300 border border-black text-black rounded">
-                    Kirim Review
-                </button>
-            </form>
+                    <label class="block text-sm mb-2 font-medium">Write Your Review</label>
+                    <div id="star-rating" class="flex space-x-1">
+                        @for ($i = 1; $i <= 5; $i++)
+                            <svg data-index="{{ $i }}" xmlns="http://www.w3.org/2000/svg"
+                                class="w-5 h-5 star text-gray-300 hover:text-yellow-400 transition-colors duration-200 cursor-pointer"
+                                fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 .587l3.668 7.568 8.332 1.151-6.001 5.849 1.415 8.277L12 18.896l-7.414 4.536 1.415-8.277L.001 9.306l8.332-1.151z"/>
+                            </svg>
+                        @endfor
+                    </div>
+                    <textarea name="comment" class="w-full border rounded p-2 mt-2" rows="3" placeholder="Tulis ulasanmu..." required></textarea>
+                    <button type="submit"
+                            class="mt-3 px-4 py-2 bg-yellow-400 hover:bg-yellow-300 border border-black text-black rounded">
+                        Kirim Review
+                    </button>
+                </form>
+            @endif
 
             <!-- List Review -->
             <div class="mt-8 space-y-4" id="review-list">
