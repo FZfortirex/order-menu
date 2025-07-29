@@ -61,6 +61,17 @@ Route::middleware('auth')->group(function () {
     Route::post('/tambah-pesanan', [MenuController::class, 'addToCart']);
     Route::get('/api/menus', [MenuController::class, 'apiMenus']);
 
+    Route::prefix('admin')->group(function () {
+        Route::get('/menu', [MenuController::class, 'adminMenu'])->name('admin.menu');
+        Route::get('/menu/create', [MenuController::class, 'create'])->name('menu.create');
+        Route::post('/menu', [MenuController::class, 'store'])->name('menu.store');
+        Route::get('/menu/{id}/edit', [MenuController::class, 'edit'])->name('menu.edit');
+        Route::put('/menu/{id}', [MenuController::class, 'update'])->name('menu.update');
+        Route::delete('/menu/{id}', [MenuController::class, 'destroy'])->name('menu.destroy');
+    });
+
+
+
     Route::get('/listOrder', [ListOrderController::class, 'index'])->name('dashboard');
     Route::get('/listOrder/waiting', [ListOrderController::class, 'showWaiting']);
     Route::get('/listOrder/process', [ListOrderController::class, 'showProcess'])->name('listOrder.process');
