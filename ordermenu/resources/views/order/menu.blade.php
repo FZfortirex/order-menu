@@ -109,7 +109,7 @@
             <div class="ml-4 flex-1">
               <h3 class="font-bold text-lg">${item.name}</h3>
               <p class="text-sm text-gray-600">${item.desc}</p>
-              <div class="flex justify-between items-center mt-2">
+              <div class="flex justify-between items-center mt-1">
                 <p class="text-sm">Stok: ${item.stock}</p>
                 ${
                   item.discount_price
@@ -130,7 +130,11 @@
                     `
                 }
               </div>
-              <div class="mt-2 text-yellow-400 text-sm">${stars}</div>
+              <div class="text-sm text-yellow-400">
+                ${item.review_count > 0 
+                  ? `${getStarRating(item.rating)} (${item.review_count})`
+                  : 'Belum ada ulasan'}
+              </div>
             </div>
             <button
               onclick="goToDetail(${item.id})"
@@ -142,11 +146,11 @@
     }
 
     function getStarRating(rating) {
-      const fullStar = "★";
-      const emptyStar = "☆";
-      const maxStars = 5;
-      const filledStars = Math.round(rating);
-      return fullStar.repeat(filledStars) + emptyStar.repeat(maxStars - filledStars);
+      const fullStars = Math.floor(rating);
+      const halfStar = rating % 1 >= 0.5;
+      const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+      return '★'.repeat(fullStars) + (halfStar ? '½' : '') + '☆'.repeat(emptyStars);
     }
 
     function filterCategory(category, clickedBtn) {

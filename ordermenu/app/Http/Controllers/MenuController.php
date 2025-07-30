@@ -18,12 +18,16 @@ class MenuController extends Controller
 
     public function apiMenus()
     {
-        $menus = Menu::withAvg('reviews', 'rating')->get();
+        $menus = Menu::withAvg('reviews', 'rating')
+                    ->withCount('reviews') 
+                    ->get();
 
-        // Rename agar tetap bisa diakses sebagai 'rating' di frontend
         $menus->each(function ($menu) {
             $menu->rating = round($menu->reviews_avg_rating ?? 0, 1);
+            $menu->review_count = $menu->reviews_count ?? 0;
+
             unset($menu->reviews_avg_rating);
+            unset($menu->reviews_count);
         });
 
         return response()->json($menus);
