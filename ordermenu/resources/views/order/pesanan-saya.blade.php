@@ -62,12 +62,6 @@
           {{ $userNameIsNumber || in_array($status, ['menunggu', 'sedang dibuat', 'sudah dibuat']) ? 'readonly' : '' }}>
       </div>
       <div>
-        <label class="block text-sm font-medium">Catatan tambahan ( Opsional )</label>
-        <textarea name="catatan" rows="3"
-          class="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-yellow-400"
-          {{ in_array($status, ['menunggu', 'sedang dibuat', 'sudah dibuat']) ? 'readonly' : '' }}>{{ old('additional_note', $order->additional_note ?? '') }}</textarea>
-      </div>
-      <div>
       @if ($status === 'menunggu' || $status === 'sedang dibuat' || $status === 'sudah dibuat')
         <label class="block text-sm font-medium">Voucher Waroeng Sawah</label>
         <div class="mt-1 px-4 py-2 border rounded-md text-sm text-gray-700">

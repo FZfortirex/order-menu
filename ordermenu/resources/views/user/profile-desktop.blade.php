@@ -50,19 +50,14 @@
       </div>
 
       <!-- Kolom Kanan -->
-      <div class="bg-white w-full sm:w-2/3 p-10 flex flex-col justify-between border-l">
+      <div class="bg-white w-full sm:w-2/3 p-10 flex flex-col justify-start border-l">
         <!-- Bagian Poin -->
-        <div class="flex justify-between items-center">
-          <div class="flex items-center space-x-2">
-            <span class="text-3xl font-bold text-black-500">$</span>
-            <span class="text-xl font-semibold text-gray-800">{{ $user->my_points }} Poin</span>
-          </div>
+        <div class="flex justify-end items-center">
           <a href="/tukarpoin" class="text-sm bg-maroon hover:bg-[#4f1410] text-white px-4 py-2 rounded transition-all duration-300 flex items-center">
             Tukar Poin <span class="ml-2 text-lg">➤</span>
           </a>
         </div>
 
-        <div class="text-2xl font-bold mt-10 text-gray-700">{{ $user->my_points }} Poin</div>
         <hr class="mt-6 border-gray-300" />
 
         <!-- Bagian History Pembelian -->

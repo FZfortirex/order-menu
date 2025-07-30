@@ -8,7 +8,7 @@ class Order extends Model
 {
     protected $fillable = [
         'user_id', 'user_discount_id', 'table', 
-        'additional_note', 'total_price', 'status', 'total_point'
+        'total_price', 'status', 'total_point'
     ];
 
     public function indexDashboard()

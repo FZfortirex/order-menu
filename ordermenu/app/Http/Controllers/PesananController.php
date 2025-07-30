@@ -20,9 +20,11 @@ class PesananController extends Controller
             'note'      => 'nullable|string',
             'quantity'  => 'required|integer|min:1',
             'price'     => 'required|numeric',
+            'discount_price' => 'nullable|numeric',
         ]);
 
-        $totalItemPrice = $request->price * $request->quantity;
+        $hargaPerItem = $request->discount_price ?? $request->price;
+        $totalItemPrice = $hargaPerItem * $request->quantity;
 
         Item::create([
             'user_id'     => auth()->id(), 
@@ -130,7 +132,6 @@ class PesananController extends Controller
             'user_id'         => $userId,
             'user_discount_id' => $userDiscountId,
             'table'           => $request->meja,
-            'additional_note' => $request->catatan,
             'total_price'     => $request->final_total,
             'status'          => 'menunggu',
             'total_point'     => $totalPoint,

@@ -84,9 +84,6 @@
                                 @if (isset($order->total_price))
                                     <p class="text-sm text-gray-500">Harga: <strong class="text-red-600">Rp. {{ number_format($order->total_price, 0, ',', '.') }}</strong></p>
                                 @endif
-                                @if (isset($order->additional_note))
-                                    <p class="text-sm text-gray-500">Catatan: {{ $order->additional_note }}</p>
-                                @endif
                             </div>
                         </div>
                     </div>

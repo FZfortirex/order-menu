@@ -50,7 +50,18 @@
 
                         <div class="flex justify-between text-sm text-gray-700 mt-2">
                             <span>Stok: {{ $menu->stock }}</span>
-                            <span>Harga: {{ number_format($menu->price, 0, ',', '.') }}</span>
+                            <span>
+                            @if($menu->discount_price)
+                                <span class="line-through italic text-red-500 mr-1">
+                                Rp{{ number_format($menu->price, 0, ',', '.') }}
+                                </span>
+                                <span class="font-semibold text-gray-800">
+                                Rp{{ number_format($menu->discount_price, 0, ',', '.') }}
+                                </span>
+                            @else
+                                Rp{{ number_format($menu->price, 0, ',', '.') }}
+                            @endif
+                            </span>
                         </div>
 
                         <div class="flex gap-2 mt-4">

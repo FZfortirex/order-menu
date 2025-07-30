@@ -40,6 +40,7 @@
           @csrf
           <input type="hidden" name="menu_id" value="{{ $menu->id }}">
           <input type="hidden" name="price" value="{{ $menu->price }}">
+          <input type="hidden" name="discount_price" value="{{ $menu->discount_price }}">
           <input type="hidden" id="quantity" name="quantity" value="1">
 
           <p class="font-semibold">Packaging</p>
@@ -66,7 +67,22 @@
           </div>
           @if(is_null($status) || $status === 'selesai')
             <button type="submit" class="bg-yellow-400 text-black rounded-xl w-full py-2 font-semibold flex items-center justify-between px-4">
-              Tambahkan : <span id="totalPrice">Rp {{ $menu->price }}</span> <i class="fas fa-shopping-cart"></i>
+              Tambahkan : 
+              <span id="totalPrice" class="flex items-center space-x-2">
+                @if($menu->discount_price)
+                  <span class="text-red-600 line-through text-sm">
+                    Rp {{ number_format($menu->price, 0, ',', '.') }}
+                  </span>
+                  <span class="text-black font-bold">
+                    Rp {{ number_format($menu->discount_price, 0, ',', '.') }}
+                  </span>
+                @else
+                  <span class="text-black font-bold">
+                    Rp {{ number_format($menu->price, 0, ',', '.') }}
+                  </span>
+                @endif
+              </span>
+              <i class="fas fa-shopping-cart"></i>
             </button>
           @else
             <button type="button" class="w-full bg-gray-300 text-gray-700 font-semibold py-2 rounded-md cursor-not-allowed" disabled>
@@ -100,6 +116,8 @@
   <script>
     let qty = 1;
     const price = {{ $menu->price }};
+    const discountPrice = {{ $menu->discount_price ?? 'null' }};
+    const unitPrice = discountPrice || price;
 
     function updateQty(change) {
       qty += change;
@@ -107,8 +125,8 @@
       document.getElementById('qty').innerText = qty;
       document.getElementById('quantity').value = qty;
 
-      const total = qty * price;
-      document.getElementById('totalPrice').innerText = 'Rp ' + total;
+      const total = qty * unitPrice;
+      document.getElementById('totalPrice').innerText = 'Rp ' + total.toLocaleString('id-ID');
     }
   </script>
 </body>

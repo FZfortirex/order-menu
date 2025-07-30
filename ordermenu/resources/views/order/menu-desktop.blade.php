@@ -32,7 +32,20 @@
         <p class="text-sm text-gray-600">{{ $menu['desc'] }}</p>
         <div class="flex justify-between text-sm mt-2">
           <span>Stok: {{ $menu['stock'] }}</span>
-          <span class="font-semibold">Harga: {{ $menu['price'] }}</span>
+          <div class="text-right">
+            @if($menu['discount_price'])
+              <div class="text-sm text-red-500 line-through italic">
+                Rp{{ number_format($menu['price'], 0, ',', '.') }}
+              </div>
+              <div class="text-sm font-semibold text-black">
+                Rp{{ number_format($menu['discount_price'], 0, ',', '.') }}
+              </div>
+            @else
+              <div class="text-sm font-semibold text-black">
+                Rp{{ number_format($menu['price'], 0, ',', '.') }}
+              </div>
+            @endif
+          </div>
         </div>
       </div>
       <button class="ml-4 bg-yellow-400 px-4 py-2 rounded-full font-bold text-lg">+</button>

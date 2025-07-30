@@ -37,6 +37,7 @@ public function update(Request $request, $id)
     $request->validate([
         'name' => 'required|string',
         'price' => 'required|numeric',
+        'discount_price' => 'nullable|numeric|lt:price',
         'desc' => 'nullable|string',
         'category' => 'required|string',
         'stock' => 'required|integer|min:0',
@@ -48,6 +49,7 @@ public function update(Request $request, $id)
 
     $menu->name = $request->name;
     $menu->price = $request->price;
+    $menu->discount_price = $request->discount_price;
     $menu->desc = $request->desc;
     $menu->stock = $request->stock;
     $menu->point = $request->point;
@@ -98,6 +100,7 @@ public function store(Request $request)
     $request->validate([
         'name' => 'required|string',
         'price' => 'required|numeric',
+        'discount_price' => 'nullable|numeric|lt:price',
         'desc' => 'nullable|string',
         'category' => 'required|string',
         'stock' => 'required|integer|min:0',
@@ -116,6 +119,7 @@ public function store(Request $request)
     Menu::create([
         'name' => $request->name,
         'price' => $request->price,
+        'discount_price' => $request->discount_price,
         'desc' => $request->desc,
         'category' => $request->category,
         'stock' => $request->stock,

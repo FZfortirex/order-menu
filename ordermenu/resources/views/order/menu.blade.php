@@ -111,7 +111,24 @@
               <p class="text-sm text-gray-600">${item.desc}</p>
               <div class="flex justify-between items-center mt-2">
                 <p class="text-sm">Stok: ${item.stock}</p>
-                <p class="text-sm font-semibold">Harga: ${item.price}</p>
+                ${
+                  item.discount_price
+                    ? `
+                      <div class="text-right">
+                        <div class="text-xs text-red-500 line-through italic">
+                          Rp${parseInt(item.price).toLocaleString('id-ID')}
+                        </div>
+                        <div class="text-sm font-semibold text-black">
+                          Rp${parseInt(item.discount_price).toLocaleString('id-ID')}
+                        </div>
+                      </div>
+                    `
+                    : `
+                      <div class="text-sm font-semibold text-black">
+                        Rp${parseInt(item.price).toLocaleString('id-ID')}
+                      </div>
+                    `
+                }
               </div>
               <div class="mt-2 text-yellow-400 text-sm">${stars}</div>
             </div>

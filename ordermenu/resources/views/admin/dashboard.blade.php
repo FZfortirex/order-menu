@@ -173,7 +173,6 @@
                         <p class="name">Nama : {{ $order->user->name }}</p>
                         <p class="table">Meja: {{ $order->table ?? '-' }}</p>
                         <p class="price">Harga: {{ number_format($order->total_price, 0, ',', '.') }} IDR</p>
-                        <p class="note">Catatan : {{ $order->additional_note }}</p>
                     </div>
                 </div>
                 <div class="order-actions">

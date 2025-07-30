@@ -54,6 +54,14 @@
             <input type="number" name="price" id="price" value="{{ old('price', $menu->price) }}" required
                    class="mt-1 block w-full border border-gray-300 rounded-md px-4 py-2 shadow-sm focus:ring-blue-500 focus:border-blue-500">
         </div>
+        <div>
+            <label for="discount_price" class="block text-sm font-medium text-gray-700">Harga Diskon</label>
+            <input type="number" name="discount_price" id="discount_price" 
+                value="{{ old('discount_price', $menu->discount_price) }}" 
+                placeholder="Contoh: 12000"
+                class="mt-1 block w-full border border-gray-300 rounded-md px-4 py-2 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+            <p class="text-sm text-gray-400 mt-1">Biarkan kosong jika tidak ada diskon.</p>
+        </div>
 
         <!-- Deskripsi -->
         <div>

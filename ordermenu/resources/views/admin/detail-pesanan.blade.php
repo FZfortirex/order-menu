@@ -61,10 +61,6 @@
         <label class="block text-gray-700 font-semibold mb-1">Meja</label>
         <input type="text" class="w-full border rounded-md p-2" value="{{ $order->table }}" readonly>
     </div>
-    <div>
-        <label class="block text-gray-700 font-semibold mb-1">Catatan tambahan</label>
-        <textarea class="w-full border rounded-md p-2" rows="3" readonly>{{ $order->additional_note }}</textarea>
-    </div>
 
     <!-- Garis pemisah -->
         <h3 class="font-bold text-gray-700 mb-2">Riwayat Pembayaran</h3>

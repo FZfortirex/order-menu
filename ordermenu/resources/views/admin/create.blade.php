@@ -25,6 +25,13 @@
       </div>
 
       <div class="mb-4">
+        <label class="block text-gray-700 font-medium mb-1">Harga Diskon (Opsional)</label>
+        <input type="number" name="discount_price" placeholder="Contoh: 12000"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+          min="0">
+      </div>
+
+      <div class="mb-4">
         <label class="block text-gray-700 font-medium mb-1">Deskripsi</label>
         <textarea name="desc" rows="3" placeholder="Deskripsikan menu di sini..."
           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"></textarea>
