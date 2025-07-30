@@ -19,6 +19,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\DetailPesananController;
 use App\Http\Controllers\MyDiscountController;
 use App\Http\Controllers\RekapController;
+use App\Http\Controllers\AdminMenuController;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
 Route::get('/welcome', [WelcomeController::class, 'index'])->name('welcome');
@@ -70,6 +71,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/create-accounts', [AccountController::class, 'create'])->name('create-accounts.index');
     Route::post('/create-accounts', [AccountController::class, 'store'])->name('create-accounts.store');
     Route::delete('/delete-account/{id}', [AccountController::class, 'destroy'])->name('delete-account');
+
+    Route::get('admin/menu', [AdminMenuController::class, 'adminMenu'])->name('admin.menu');
+    Route::get('admin/menu/create', [AdminMenuController::class, 'create'])->name('menu.create');
+    Route::post('admin/menu', [AdminMenuController::class, 'store'])->name('menu.store');
+    Route::get('admin/menu/{id}/edit', [AdminMenuController::class, 'edit'])->name('menu.edit');
+    Route::put('admin/menu/{id}', [AdminMenuController::class, 'update'])->name('menu.update');
+    Route::delete('admin/menu/{id}', [AdminMenuController::class, 'destroy'])->name('menu.destroy');
+
+
+
+
 
     Route::get('/order-detail/{id}', [DetailPesananController::class, 'show'])->name('order.detail');
     Route::patch('/orders/{order}/status', [DetailPesananController::class, 'updateStatus'])->name('orders.updateStatus');

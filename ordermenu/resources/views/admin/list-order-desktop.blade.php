@@ -22,7 +22,15 @@
             <a href="/rekap-penjualan" class="bg-yellow-600 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg shadow">
                 Lihat Rekap Penjualan
             </a>
+
+
+            <a href="{{ route('admin.menu') }}" class="bg-yellow-600 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg shadow">
+                Menu Admin
+            </a>
+
         </div>
+
+
 
         <div class="flex flex-wrap justify-between items-center gap-4 mb-8">
             <input type="text" id="search" placeholder="Cari pesanan..." class="w-1/3 p-2 border rounded" oninput="searchOrders()">
