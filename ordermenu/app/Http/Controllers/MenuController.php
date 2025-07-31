@@ -5,15 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Menu;
 use App\Models\Order;
+use App\Models\Banner;
 
 class MenuController extends Controller
 {
 
     public function index(Request $request)
     {
-        // Menampilkan semua menu
+        $banners = Banner::whereNotNull('image')->get();
         $menus = Menu::all();
-        return view('order.menu', compact('menus'));
+
+        return view('order.menu', compact('banners', 'menus'));
     }
 
     public function apiMenus()

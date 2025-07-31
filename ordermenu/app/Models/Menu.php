@@ -14,7 +14,12 @@ class Menu extends Model
 
     public function reviews()
     {      
-    return $this->hasMany(Review::class);
+        return $this->hasMany(Review::class);
+    }
+
+    public function banners()
+    {
+        return $this->hasMany(Banner::class);
     }
 
 }

@@ -20,6 +20,7 @@ use App\Http\Controllers\DetailPesananController;
 use App\Http\Controllers\MyDiscountController;
 use App\Http\Controllers\RekapController;
 use App\Http\Controllers\AdminMenuController;
+use App\Http\Controllers\AdminBannerController;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
 Route::get('/welcome', [WelcomeController::class, 'index'])->name('welcome');
@@ -79,9 +80,9 @@ Route::middleware('auth')->group(function () {
     Route::put('admin/menu/{id}', [AdminMenuController::class, 'update'])->name('menu.update');
     Route::delete('admin/menu/{id}', [AdminMenuController::class, 'destroy'])->name('menu.destroy');
 
-
-
-
+    Route::get('/admin/banner', [AdminBannerController::class, 'index'])->name('admin.banner');
+    Route::post('/admin/banner/save', [AdminBannerController::class, 'storeOrUpdate'])->name('admin.banner.save');
+    Route::post('/admin/banner/clear/{id}', [AdminBannerController::class, 'clear'])->name('admin.banner.clear');
 
     Route::get('/order-detail/{id}', [DetailPesananController::class, 'show'])->name('order.detail');
     Route::patch('/orders/{order}/status', [DetailPesananController::class, 'updateStatus'])->name('orders.updateStatus');
