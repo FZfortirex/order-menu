@@ -67,7 +67,7 @@
           </div>
           @if(is_null($status) || $status === 'selesai')
             <button type="submit" class="bg-yellow-400 text-black rounded-xl w-full py-2 font-semibold flex items-center justify-between px-4">
-              Tambahkan : 
+              Tambahkan :
               <span id="totalPrice" class="flex items-center space-x-2">
                 @if($menu->discount_price)
                   <span class="text-red-600 line-through text-sm">
@@ -97,16 +97,19 @@
     <!-- Bagian Menu Lainnya -->
     <div class="mt-12">
       <h3 class="text-xl font-semibold mb-4">Menu Lainnya</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        @foreach($menus as $m)
-        <a href="{{ route('menu.detail', $m->id) }}" class="border rounded-xl overflow-hidden shadow hover:shadow-lg transition duration-200 bg-white">
-          <img src="/images/{{ $m->image }}" class="w-full h-40 object-cover" alt="{{ $m->name }}">
-          <div class="p-3">
-            <p class="font-semibold">{{ $m->name }}</p>
-            <p class="text-sm text-gray-500">{{ $m->price }}rb</p>
-          </div>
-        </a>
-        @endforeach
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      @foreach($menus as $m)
+  <a href="{{ route('menu.detail', $m->id) }}" class="border rounded-xl overflow-hidden shadow hover:shadow-lg transition duration-200 bg-white">
+    <div class="aspect-[4/3] w-full overflow-hidden">
+      <img src="/images/{{ $m->image }}" class="object-cover w-full h-full" alt="{{ $m->name }}">
+    </div>
+    <div class="p-3">
+      <p class="font-semibold">{{ $m->name }}</p>
+      <p class="text-sm text-gray-500">{{ $m->price }}rb</p>
+    </div>
+  </a>
+@endforeach
+
       </div>
     </div>
   </div>

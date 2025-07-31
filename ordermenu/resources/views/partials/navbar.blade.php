@@ -13,7 +13,7 @@
     <a href="/galeri" class="hover:underline">Galeri</a>
     <a href="{{ route('kontak') }}" class="hover:underline">Kontak</a>
     <a href="{{ auth()->check() ? route('order.menu') : route('loginAccount') }}" class="hover:underline">Menu</a>
-    <a href="{{ auth()->check() ? route('pesanan') : route('loginAccount') }}" class="hover:underline">Order</a>
+
   </div>
 
   <!-- Tombol Mobile -->
@@ -26,7 +26,6 @@
     <a href="/galeri" class="block py-2 px-4">Galeri</a>
     <a href="{{ route('kontak') }}" class="block py-2 px-4">Kontak</a>
     <a href="{{ auth()->check() ? route('order.menu') : route('loginTable') }}" class="block py-2 px-4">Menu</a>
-    <a href="{{ auth()->check() ? route('pesanan') : route('loginTable') }}" class="block py-2 px-4">Order</a>
   </div>
 </nav>
 

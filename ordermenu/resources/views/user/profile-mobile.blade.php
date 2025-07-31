@@ -1,49 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Profile Mobile</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Pengguna</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9f9f9;
+        }
+    </style>
 </head>
-<body class="bg-white font-sans">
-  <!-- Navbar -->
-@include('partials.navbar')
+<body class="min-h-screen flex flex-col">
 
-  <!-- Back & Profile Nav -->
-  <div class="flex justify-between items-center px-4 py-2 border-b">
-    <a href="{{ url('/menu') }}" class="text-base font-medium">&#x2190; BACK</a>
-    <span class="text-sm font-medium">Profile</span>
-    <div></div>
-  </div>
+    <!-- Navbar -->
+    @include('partials.navbar')
 
-  <!-- Profile Section -->
-  <div class="p-4">
-    <div class="flex items-center space-x-4">
-      <div class="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center text-3xl font-bold text-white">
-        {{ strtoupper(substr($user->name, 0, 1)) }} 
-      </div>
-      <div>
-        <div class="text-base font-semibold">{{ $user->name }}</div>
-        <div class="text-xs text-gray-500">Hastag</div>
-      </div>
-      <div class="ml-auto text-xl">💬</div>
-    </div>
+    <!-- Profile Card -->
+    <div class="flex-grow px-4 py-6">
+        <div class="max-w-md mx-auto bg-white rounded-2xl shadow-md p-6">
+            <div class="flex flex-col items-center">
+                <img src="https://ui-avatars.com/api/?name={{ urlencode($user->full_name) }}&background=random" alt="Foto Profil" class="w-24 h-24 rounded-full mb-4 shadow-md">
+                <h2 class="text-xl font-semibold text-gray-800">{{ $user->full_name }}</h2>
+                <p class="text-sm text-gray-500 mb-4">{{ $user->email }}</p>
 
-    <!-- Poin Card -->
-    <div class="border mt-6 p-4 rounded-md">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-2">
-          <div class="text-lg">💲</div>
-          <div class="text-base font-semibold">{{ $user->my_points }} poin</div>
+                <div class="w-full mt-4 space-y-3">
+                    <div class="bg-gray-100 px-4 py-2 rounded-lg text-sm">
+                        <span class="font-medium text-gray-600">Username: </span>{{ $user->username }}
+                    </div>
+                    <div class="bg-gray-100 px-4 py-2 rounded-lg text-sm">
+                        <span class="font-medium text-gray-600">Grade: </span>{{ $user->grade->grade ?? '-' }}
+                    </div>
+                    <div class="bg-gray-100 px-4 py-2 rounded-lg text-sm">
+                        <span class="font-medium text-gray-600">Department: </span>{{ $user->department->name ?? '-' }}
+                    </div>
+                </div>
+
+                <a href="{{ route('logout') }}" class="mt-6 inline-block bg-red-500 text-white font-semibold px-6 py-2 rounded-full shadow hover:bg-red-600 transition">
+                    Keluar
+                </a>
+            </div>
         </div>
-        <button class="text-sm text-white bg-maroon-800 px-3 py-1 rounded flex items-center">
-          Tukar Poin
-          <span class="ml-1">➡️</span>
-        </button>
-      </div>
     </div>
-  </div>
+
+    <!-- Footer -->
+    @include('partials.footer')
+
 </body>
 </html>

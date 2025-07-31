@@ -131,16 +131,17 @@
                 }
               </div>
               <div class="text-sm text-yellow-400">
-                ${item.review_count > 0 
+                ${item.review_count > 0
                   ? `${getStarRating(item.rating)} (${item.review_count})`
                   : 'Belum ada ulasan'}
               </div>
             </div>
-            <button
-              onclick="goToDetail(${item.id})"
-              class="ml-4 bg-yellow-400 px-3 py-1 rounded-full flex items-center justify-center text-sm font-bold border border-black hover:bg-yellow-300 transition">
-              +
+           <button
+            onclick="goToDetail(${item.id})"
+            class="ml-4 bg-yellow-400 p-2 aspect-square rounded-full flex items-center justify-center text-base font-bold border border-black hover:bg-yellow-300 transition">
+            +
             </button>
+
           </div>`;
       });
     }
