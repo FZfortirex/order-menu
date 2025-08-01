@@ -21,12 +21,14 @@ use App\Http\Controllers\MyDiscountController;
 use App\Http\Controllers\RekapController;
 use App\Http\Controllers\AdminMenuController;
 use App\Http\Controllers\AdminBannerController;
+use App\Http\Controllers\QrMenuController;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
 Route::get('/welcome', [WelcomeController::class, 'index'])->name('welcome');
 
-Route::get('/login-table', [AuthController::class, 'showLoginTable'])->name('loginTable.show');
-Route::post('/login-table', [AuthController::class, 'loginTable'])->name('loginTable');
+Route::get('/login-table', [AuthController::class, 'loginByQr'])->name('qr.login');
+Route::get('/qr/{meja}', [AuthController::class, 'showQr'])->name('qr.view');
+Route::get('/qr-menu', [QrMenuController::class, 'index'])->name('qr.menu');
 
 Route::get('/loginAccount', [AuthController::class, 'showLogin'])->name('loginAccount');
 Route::post('/loginAccount', [AuthController::class, 'login']);

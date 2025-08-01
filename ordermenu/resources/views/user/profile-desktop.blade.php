@@ -34,10 +34,22 @@
         <div class="w-24 h-24 rounded-full bg-black text-white flex items-center justify-center text-3xl font-bold shadow-md">
           {{ strtoupper(substr($user->name, 0, 1)) }}
         </div>
-        <div class="text-lg font-semibold text-center">{{ $user->name }}</div>
-        <div class="text-sm text-gray-300 text-center">Nomer Telepon: <br> {{ $user->number_phone ?? 'Belum terisi' }}</div>
-        <div class="text-sm text-gray-300 text-center">Email: <br> {{ $user->email ?? 'Belum terisi' }}</div>
+        <div class="text-lg font-semibold text-center">
+          @if (is_numeric($user->name))
+            Meja {{ $user->name }}
+          @else
+            {{ $user->name }}
+          @endif
+        </div>
 
+        @if (!is_numeric($user->name))
+          <div class="text-sm text-gray-300 text-center">
+            Nomer Telepon: <br> {{ $user->number_phone ?? 'Belum terisi' }}
+          </div>
+          <div class="text-sm text-gray-300 text-center">
+            Email: <br> {{ $user->email ?? 'Belum terisi' }}
+          </div>
+        @endif
         <a href="{{ route('logoutAccount') }}"
           onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
           class="mt-4 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-5 py-2 rounded transition-all duration-300">
@@ -52,36 +64,47 @@
       <!-- Kolom Kanan -->
       <div class="bg-white w-full sm:w-2/3 p-10 flex flex-col justify-start border-l">
         <!-- Bagian Poin -->
-        <div class="flex justify-end items-center">
-          <a href="/tukarpoin" class="text-sm bg-maroon hover:bg-[#4f1410] text-white px-4 py-2 rounded transition-all duration-300 flex items-center">
-            Tukar Poin <span class="ml-2 text-lg">➤</span>
-          </a>
-        </div>
+        @if (!is_numeric($user->name))
+          <div class="flex justify-end items-center">
+            <a href="/tukarpoin" class="text-sm bg-maroon hover:bg-[#4f1410] text-white px-4 py-2 rounded transition-all duration-300 flex items-center">
+              Tukar Poin <span class="ml-2 text-lg">➤</span>
+            </a>
+          </div>
+        @endif
 
+        <!-- Bagian History atau Info Fitur -->
+        @if (!is_numeric(Auth::user()->name))
         <hr class="mt-6 border-gray-300" />
-
-        <!-- Bagian History Pembelian -->
         <div class="mt-6">
-          <h2 class="text-lg font-semibold text-gray-700 mb-4">Riwayat Pembelian</h2>
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">Riwayat Pembelian</h2>
 
-          <ul class="space-y-4 max-h-72 overflow-y-auto pr-2">
-          @foreach ($orders as $order)
-          <li class="border p-4 rounded-md hover:bg-gray-50 transition">
-              <a href="/riwayat/{{ $order->id }}" class="flex justify-between items-center w-full">
-                  <div>
-                      <div class="font-medium text-gray-800">Pesanan Selesai</div>
-                      <div class="text-sm text-gray-500">
-                          Waktu Pesanan: {{ \Carbon\Carbon::parse($order->updated_at)->translatedFormat('d F Y H:i') }}
+            <ul class="space-y-4 max-h-72 overflow-y-auto pr-2">
+              @forelse ($orders as $order)
+                <li class="border p-4 rounded-md hover:bg-gray-50 transition">
+                  <a href="/riwayat/{{ $order->id }}" class="flex justify-between items-center w-full">
+                      <div>
+                          <div class="font-medium text-gray-800">Pesanan Selesai</div>
+                          <div class="text-sm text-gray-500">
+                              Waktu Pesanan: {{ \Carbon\Carbon::parse($order->updated_at)->translatedFormat('d F Y H:i') }}
+                          </div>
                       </div>
-                  </div>
-                  <div class="text-maroon font-semibold">
-                      Rp{{ number_format($order->total_price, 0, ',', '.') }}
-                  </div>
-              </a>
-          </li>
-          @endforeach
-      </ul>
-    </div>
+                      <div class="text-maroon font-semibold">
+                          Rp{{ number_format($order->total_price, 0, ',', '.') }}
+                      </div>
+                  </a>
+                </li>
+              @empty
+                <li class="text-sm text-gray-500">Belum ada riwayat pembelian.</li>
+              @endforelse
+            </ul>
+          @else
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">Beberapa fitur jika sudah punya Akun</h2>
+            <ul class="list-disc pl-5 space-y-2 text-sm text-gray-600">
+              <li>Setiap pembelian akan mendapatkan poin yang bisa ditukar dengan voucher diskon.</li>
+              <li>Riwayat pembelian Anda akan disimpan agar mudah dilihat kembali.</li>
+            </ul>
+          @endif
+        </div>
   </main>
 
   <!-- Footer -->

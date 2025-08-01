@@ -25,7 +25,7 @@
     <a href="{{ route('welcome') }}" class="block py-2 px-4">Home</a>
     <a href="/galeri" class="block py-2 px-4">Galeri</a>
     <a href="{{ route('kontak') }}" class="block py-2 px-4">Kontak</a>
-    <a href="{{ auth()->check() ? route('order.menu') : route('loginTable') }}" class="block py-2 px-4">Menu</a>
+    <a href="{{ auth()->check() ? route('order.menu') : route('loginAccount') }}" class="block py-2 px-4">Menu</a>
   </div>
 </nav>
 
