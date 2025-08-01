@@ -1,43 +1,67 @@
-<nav class="bg-[#731b0c] p-4 text-white font-sans">
-    <div class="container mx-auto flex items-center justify-between md:justify-center relative">
-        <!-- Menu Kiri -->
-        <ul class="hidden md:flex space-x-6 text-sm absolute left-[160px]">
-            <li><a href="{{ route('dashboard') }}" class="hover:underline hover:text-yellow-300 transition duration-200">List Menu</a></li>
-        </ul>
-
-        <!-- Logo di Tengah -->
-        <div class="flex flex-col items-center">
-            <img src="{{ asset('images/logo_waroeng_sawah.png') }}" alt="Logo" class="h-10 mb-1">
-            <span class="text-yellow-400 font-bold text-lg tracking-wide">Kampoeng Sawah</span>
-        </div>
-
-        <!-- Menu Kanan -->
-        <ul class="hidden md:flex space-x-6 text-sm absolute right-[160px]">
-            <li><a href="/accounts" class="hover:underline hover:text-yellow-300 transition duration-200">Accounts</a></li>
-        </ul>
-
-        <!-- Tombol Menu Mobile -->
-        <button class="md:hidden block text-white text-2xl focus:outline-none" id="menu-toggle">☰</button>
+<nav class="bg-[#731b0c] text-white font-sans shadow-md">
+  <div class="max-w-screen-xl mx-auto px-4 py-4 flex items-center justify-between">
+    <!-- Logo -->
+    <div class="flex items-center space-x-3">
+      <img src="{{ asset('images/logo_waroeng_sawah.png') }}" alt="Logo" class="h-10">
+      <span class="text-yellow-400 font-bold text-lg tracking-wide">Kampoeng Sawah</span>
     </div>
 
-    <!-- Menu Mobile -->
-    <div class="hidden md:hidden mt-2 bg-[#5b130a] p-4 rounded-lg space-y-2 shadow-lg" id="mobile-menu">
-        <a href="{{ route('dashboard') }}" class="block py-2 px-4 rounded hover:bg-[#4a0f07] transition">Home</a>
-        <a href="/galeri" class="block py-2 px-4 rounded hover:bg-[#4a0f07] transition">Galeri</a>
-        <a href="/kontak" class="block py-2 px-4 rounded hover:bg-[#4a0f07] transition">Kontak</a>
-        <a href="/menu" class="block py-2 px-4 rounded hover:bg-[#4a0f07] transition">Menu</a>
-        <a href="/order" class="block py-2 px-4 rounded hover:bg-[#4a0f07] transition">Order</a>
+    <!-- Desktop Menu -->
+    <div class="hidden md:flex items-center space-x-10">
+      <a href="{{ route('dashboard') }}"
+         class="text-sm {{ request()->routeIs('dashboard') ? 'text-yellow-300' : 'hover:text-yellow-300' }} transition duration-200">
+         List Menu
+      </a>
+      <a href="/accounts"
+         class="text-sm {{ request()->is('accounts') ? 'text-yellow-300' : 'hover:text-yellow-300' }} transition duration-200">
+         Accounts
+      </a>
     </div>
+
+    <!-- Mobile Toggle -->
+    <button id="menu-toggle" class="md:hidden text-2xl focus:outline-none">
+      ☰
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+<div id="mobile-menu" class="hidden md:hidden px-4 pb-4">
+  <div class="bg-[#5b130a] rounded-2xl p-4 space-y-3 shadow-xl border border-[#a12d1c] animate-slide-down">
+    <a href="{{ route('dashboard') }}"
+       class="block py-3 px-5 rounded-xl text-sm font-medium text-white bg-opacity-10 backdrop-blur-sm transition-all duration-200
+              {{ request()->routeIs('dashboard') ? 'bg-yellow-400 text-[#5b130a]' : 'hover:bg-[#4a0f07]' }}">
+       List Menu
+    </a>
+    <a href="/accounts"
+       class="block py-3 px-5 rounded-xl text-sm font-medium text-white bg-opacity-10 backdrop-blur-sm transition-all duration-200
+              {{ request()->is('accounts') ? 'bg-yellow-400 text-[#5b130a]' : 'hover:bg-[#4a0f07]' }}">
+       Accounts
+    </a>
+  </div>
+</div>
+
 </nav>
 
-<!-- Script untuk Toggle Menu Mobile -->
+<!-- Script -->
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const menuToggle = document.getElementById("menu-toggle");
-        const mobileMenu = document.getElementById("mobile-menu");
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggle = document.getElementById("menu-toggle");
+    const menu = document.getElementById("mobile-menu");
 
-        menuToggle.addEventListener("click", function () {
-            mobileMenu.classList.toggle("hidden");
-        });
+    toggle.addEventListener("click", () => {
+      menu.classList.toggle("hidden");
     });
+  });
 </script>
+
+<!-- Animasi -->
+<style>
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-slide-down {
+    animation: slideDown 0.3s ease-out;
+  }
+</style>

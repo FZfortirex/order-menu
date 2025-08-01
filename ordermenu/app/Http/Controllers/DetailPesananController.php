@@ -20,7 +20,7 @@ class DetailPesananController extends Controller
                 ? asset('images/' . $filename)
                 : asset('images/default.png');
         }
-        
+
         return view('admin.detail-pesanan', compact('order'));
     }
 
@@ -35,12 +35,12 @@ class DetailPesananController extends Controller
         if ($request->status === 'sedang dibuat' && $order->status !== 'sedang dibuat') {
             foreach ($order->items as $item) {
                 $menu = $item->menu;
-        
+
                 if (!$menu || $menu->stock < $item->quantity) {
                     return back()->with('error', 'Stok untuk "' . $menu->name . '" tidak mencukupi.');
                 }
             }
-        
+
             foreach ($order->items as $item) {
                 $menu = $item->menu;
                 $menu->stock -= $item->quantity;

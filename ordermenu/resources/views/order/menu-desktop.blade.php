@@ -1,56 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>Kampoeng Sawah</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .active-category {
+      background-color: #facc15;
+      color: black;
+      border: none;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 flex flex-col min-h-screen">
 
-@section('content')
-<div class="bg-gray-100 min-h-screen">
-  {{-- Carousel --}}
-  <div class="container mx-auto px-4 py-6 flex space-x-4 overflow-x-auto">
-    <img src="/img/paket-ayam.png" class="w-1/3 rounded-xl shadow-md" alt="Paket Ayam">
-    <img src="/img/paket-nila1.png" class="w-1/3 rounded-xl shadow-md" alt="Paket Nila">
-    <img src="/img/paket-nila2.png" class="w-1/3 rounded-xl shadow-md" alt="Paket Nila 2">
-  </div>
+  <!-- NAVBAR -->
+  @include('partials.navbar')
 
-  {{-- Kategori + Search + Tombol Pesanan --}}
-  <div class="container mx-auto px-4 flex items-center justify-between mb-4">
-    <div class="flex space-x-2">
-      <button class="category-button active-category">Ayam, Bebek, lainnya</button>
-      <button class="category-button">Makanan</button>
-      <button class="category-button">Minuman</button>
-      <button class="category-button">Cemilan</button>
+  <!-- CAROUSEL PROMO DISKON -->
+<div class="container mx-auto px-2 mt-8">
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+    <!-- Gambar 1 -->
+    <div class="relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
+      <img src="{{ asset('images/diskon1.jpg') }}" alt="Promo 1"
+        class="w-full h-full object-cover group-hover:scale-105 transition duration-300 ease-in-out" />
     </div>
-    <div class="flex space-x-2">
-      <input type="text" class="border rounded px-3 py-2" placeholder="Type here">
-      <a href="/pesanan" class="bg-yellow-400 px-4 py-2 rounded text-black font-semibold">Pesanan Saya</a>
+    <!-- Gambar 2 -->
+    <div class="relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
+      <img src="{{ asset('images/diskon5.jpg') }}" alt="Promo 2"
+        class="w-full h-full object-cover group-hover:scale-105 transition duration-300 ease-in-out" />
     </div>
-  </div>
-
-  {{-- Daftar Menu --}}
-  <div class="container mx-auto px-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-    @foreach($menus as $menu)
-    <div class="bg-white p-4 rounded-xl shadow-md flex items-center border border-black h-32">
-      <img src="/images/{{ $menu['image'] }}" class="h-16 w-16 rounded-lg object-cover" alt="{{ $menu['name'] }}">
-      <div class="ml-4 flex-1">
-        <h3 class="font-bold text-lg">{{ $menu['name'] }}</h3>
-        <p class="text-sm text-gray-600">{{ $menu['desc'] }}</p>
-        <div class="flex justify-between text-sm mt-2">
-          <span>Stok: {{ $menu['stock'] }}</span>
-          <div class="text-right">
-            @if($menu['discount_price'])
-              <div class="text-sm text-red-500 line-through italic">
-                Rp{{ number_format($menu['price'], 0, ',', '.') }}
-              </div>
-              <div class="text-sm font-semibold text-black">
-                Rp{{ number_format($menu['discount_price'], 0, ',', '.') }}
-              </div>
-            @else
-              <div class="text-sm font-semibold text-black">
-                Rp{{ number_format($menu['price'], 0, ',', '.') }}
-              </div>
-            @endif
-          </div>
-        </div>
-      </div>
-      <button class="ml-4 bg-yellow-400 px-4 py-2 rounded-full font-bold text-lg">+</button>
+    <!-- Gambar 3 -->
+    <div class="relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
+      <img src="{{ asset('images/diskon3.jpg') }}" alt="Promo 3"
+        class="w-full h-full object-cover group-hover:scale-105 transition duration-300 ease-in-out" />
     </div>
-    @endforeach
+    <!-- Gambar 4 -->
+    <div class="relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg group">
+      <img src="{{ asset('images/diskon4.jpg') }}" alt="Promo 4"
+        class="w-full h-full object-cover group-hover:scale-105 transition duration-300 ease-in-out" />
+    </div>
   </div>
 </div>
-@endsection
+
+
+  <!-- KATEGORI -->
+  <div class="container mx-auto px-4 py-4">
+    <div class="flex space-x-2">
+      <button onclick="filterCategory('Semua', this)" class="category-button active-category px-4 py-2 border rounded">Semua</button>
+      <button onclick="filterCategory('Makanan', this)" class="category-button px-4 py-2 border rounded">Makanan</button>
+      <button onclick="filterCategory('Minuman', this)" class="category-button px-4 py-2 border rounded">Minuman</button>
+      <button onclick="filterCategory('Cemilan', this)" class="category-button px-4 py-2 border rounded">Cemilan</button>
+    </div>
+  </div>
+
+ <!-- SEARCH DAN PESANAN -->
+<div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4 mt-4">
+  <input type="text" id="search" placeholder="Cari menu..." class="w-full md:w-1/3 p-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
+  <a href="/pesanan" class="bg-yellow-400 text-black font-semibold px-6 py-2 rounded-full shadow hover:bg-yellow-300 transition duration-200">Pesanan Saya</a>
+</div>
+
+  <!-- MENU -->
+  <div id="menu-container" class="container mx-auto px-4 py-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 flex-grow"></div>
+
+  @if(Auth::check() && !is_numeric(Auth::user()->name))
+    <!-- Tombol Profile -->
+    <a href="/profile" class="fixed bottom-4 right-4 bg-yellow-400 hover:bg-yellow-300 text-black p-4 rounded-full shadow-lg border border-black">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9.004 9.004 0 0112 15c2.072 0 3.98.707 5.465 1.898M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg>
+    </a>
+  @endif
+
+  <!-- FOOTER -->
+  @include('partials.footer')
+
+  <!-- SCRIPT -->
+  <script>
+    const menuContainer = document.getElementById("menu-container");
+    const searchInput = document.getElementById("search");
+
+    // --- Menu ---
+    let menuItems = [];
+
+    async function getMenus() {
+      try {
+        const res = await fetch("/api/menus");
+        menuItems = await res.json();
+        renderMenu(menuItems);
+      } catch (err) {
+        console.error("Gagal memuat menu:", err);
+      }
+    }
+
+    function goToDetail(id) {
+      window.location.href = `/menu/${id}`;
+    }
+
+    function renderMenu(items) {
+      menuContainer.innerHTML = "";
+      items.forEach(item => {
+        const stars = getStarRating(item.rating || 0);
+        menuContainer.innerHTML += `
+          <div onclick="goToDetail(${item.id})" class="menu-item bg-white p-4 shadow rounded-xl flex items-center border border-black h-44 hover:bg-gray-100 transition cursor-pointer" data-category="${item.category}">
+            <img src="/images/${item.image}" class="h-16 w-16 object-cover rounded-lg" alt="${item.name}">
+            <div class="ml-4 flex-1">
+              <h3 class="font-bold text-lg">${item.name}</h3>
+              <p class="text-sm text-gray-600">${item.desc}</p>
+              <div class="flex justify-between items-center mt-1">
+                <p class="text-sm">Stok: ${item.stock}</p>
+                ${
+                  item.discount_price
+                    ? `
+                      <div class="text-right">
+                        <div class="text-xs text-red-500 line-through italic">
+                          Rp${parseInt(item.price).toLocaleString('id-ID')}
+                        </div>
+                        <div class="text-sm font-semibold text-black">
+                          Rp${parseInt(item.discount_price).toLocaleString('id-ID')}
+                        </div>
+                      </div>
+                    `
+                    : `
+                      <div class="text-sm font-semibold text-black">
+                        Rp${parseInt(item.price).toLocaleString('id-ID')}
+                      </div>
+                    `
+                }
+              </div>
+              <div class="text-sm text-yellow-400">
+                ${item.review_count > 0
+                  ? `${getStarRating(item.rating)} (${item.review_count})`
+                  : 'Belum ada ulasan'}
+              </div>
+            </div>
+           <button
+  onclick="goToDetail(${item.id})"
+  class="ml-4 w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center text-base font-bold border hover:bg-yellow-300 transition">
+  +
+</button>
+
+
+          </div>`;
+      });
+    }
+
+    function getStarRating(rating) {
+      const fullStars = Math.floor(rating);
+      const halfStar = rating % 1 >= 0.5;
+      const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+      return '★'.repeat(fullStars) + (halfStar ? '½' : '') + '☆'.repeat(emptyStars);
+    }
+
+    function filterCategory(category, clickedBtn) {
+      document.querySelectorAll(".category-button").forEach(btn => btn.classList.remove("active-category"));
+      clickedBtn.classList.add("active-category");
+
+      const filtered = category === "Semua"
+        ? menuItems
+        : menuItems.filter(item => item.category === category);
+      renderMenu(filtered);
+    }
+
+    function searchMenu() {
+      const input = searchInput.value.toLowerCase();
+      document.querySelectorAll(".menu-item").forEach(item => {
+        const title = item.querySelector("h3").innerText.toLowerCase();
+        item.style.display = title.includes(input) ? "flex" : "none";
+      });
+    }
+
+    function addToCart(item) {
+      fetch("/tambah-pesanan", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+        },
+        body: JSON.stringify(item)
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert(item.name + " ditambahkan ke Pesanan Saya!");
+      })
+      .catch(err => console.error("Error:", err));
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      getMenus();
+      searchInput.addEventListener("keyup", searchMenu);
+    });
+  </script>
+
+</body>
+</html>

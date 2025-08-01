@@ -44,10 +44,6 @@
         <div>
           <h2 class="text-lg font-semibold">Total Poin Kamu</h2>
           <p class="text-2xl font-bold mt-1">{{ $user->my_points }} Poin</p>
-          <div class="flex space-x-6 mt-2 text-sm text-gray-600">
-            <div>Poin Dasar<br><span class="font-semibold text-black">10 poin</span></div>
-            <div class="border-l pl-4 border-gray-400">Poin Bonus<br><span class="font-semibold text-black">10 poin</span></div>
-          </div>
         </div>
         <div class="mt-2 flex flex-col space-y-2">
           <a href="{{ route('my-discount.index') }}" class="text-green-700 text-sm font-medium hover:underline">Lihat Discount Saya &gt;</a>

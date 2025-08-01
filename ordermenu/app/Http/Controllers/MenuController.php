@@ -13,13 +13,15 @@ class MenuController extends Controller
     {
         // Menampilkan semua menu
         $menus = Menu::all();
-        return view('order.menu', compact('menus'));
+        $isMobile = $request->header('User-Agent') && preg_match('/Mobile|Android|iPhone|iPad/', $request->header('User-Agent'));
+
+    return view($isMobile ? 'order.menu-mobile' : 'order.menu-desktop', compact('menus'));
     }
 
     public function apiMenus()
     {
         $menus = Menu::withAvg('reviews', 'rating')
-                    ->withCount('reviews') 
+                    ->withCount('reviews')
                     ->get();
 
         $menus->each(function ($menu) {

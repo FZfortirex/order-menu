@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Galeri Tempat (Mobile)</title>
+    <title>Galeri Tempat </title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
 </head>
@@ -13,7 +13,7 @@
     @include('partials.navbar')
 
     <main class="flex-grow container mx-auto px-4 py-6">
-        <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">Galeri Tempat (Mobile)</h1>
+        <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">Galeri Tempat</h1>
 
         {{-- Foto Statis (2 kolom biar pas di mobile) --}}
         <div class="grid grid-cols-2 gap-4 mb-8">
@@ -50,6 +50,36 @@
             @endforelse
         </div>
     </main>
+
+    <!-- Modal Fullscreen -->
+<div id="imageModal" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 hidden">
+<img id="modalImage" src="" alt="Preview"
+     class="w-auto h-auto max-w-[90vw] max-h-[70vh] rounded-lg shadow-lg mx-auto" />
+  <button onclick="closeModal()" class="absolute top-4 right-4 text-white text-3xl font-bold">&times;</button>
+</div>
+
+<script>
+  function openModal(src) {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+    modalImg.src = src;
+    modal.classList.remove('hidden');
+  }
+
+  function closeModal() {
+    document.getElementById('imageModal').classList.add('hidden');
+  }
+
+  // Tambahkan event listener ke semua gambar
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("img").forEach((img) => {
+      img.addEventListener("click", () => {
+        openModal(img.src);
+      });
+    });
+  });
+</script>
+
 
     <!-- Footer -->
     @include('partials.footer')

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     protected $fillable = [
-        'user_id', 'user_discount_id', 'table', 
+        'user_id', 'user_discount_id', 'table',
         'total_price', 'status', 'total_point'
     ];
 
@@ -35,7 +35,7 @@ class Order extends Model
         return $this->hasMany(Item::class);
     }
 
-    // Relasi dengan User 
+    // Relasi dengan User
     public function user()
     {
         return $this->belongsTo(User::class);

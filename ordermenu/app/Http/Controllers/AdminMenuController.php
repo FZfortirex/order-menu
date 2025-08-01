@@ -11,7 +11,11 @@ class AdminMenuController extends Controller
     public function index()
     {
         $menus = Menu::all();
-        return view('admin.admin-menu', compact('menus'));
+        $isMobile = $request->header('User-Agent') && preg_match('/Mobile|Android|iPhone|iPad/', $request->header('User-Agent'));
+
+        $view = $isMobile ? 'admin.admin-menu-mobile' : 'admin.admin-menu';
+
+        return view($view, compact('menus'));
     }
 
     // Menampilkan form tambah menu

@@ -31,43 +31,65 @@
     <!-- Deskripsi -->
     <p class="text-sm text-gray-600 leading-relaxed mb-4">{{ $menu->desc }}</p>
 
-    <!-- Packaging (Radio button lebih sesuai) -->
-    <div class="mb-4">
-      <p class="text-sm font-semibold mb-2">Packaging</p>
-      <div class="flex flex-col gap-2 text-sm">
-        <label class="inline-flex items-center gap-2">
-          <input type="radio" name="packaging" class="accent-yellow-400" />
-          Dibungkus
-        </label>
-        <label class="inline-flex items-center gap-2">
-          <input type="radio" name="packaging" class="accent-yellow-400" />
-          Makan di tempat
-        </label>
-      </div>
-    </div>
+    <form action="{{ route('pesanan.add') }}" method="POST">
+  @csrf
+  <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+  <input type="hidden" name="price" value="{{ $menu->price }}">
+  <input type="hidden" name="discount_price" value="{{ $menu->discount_price }}">
+  <input type="hidden" id="quantity" name="quantity" value="1">
 
-    <!-- Catatan -->
-    <div class="mb-4">
-      <p class="text-sm font-semibold">Catatan <span class="text-gray-400 font-normal">(Opsional)</span></p>
-      <p class="text-xs text-gray-500 mb-1">Contoh: tambahkan sedikit sambal saja</p>
-      <textarea rows="3" class="w-full border rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" placeholder="Tulis catatan di sini..."></textarea>
+  <!-- Packaging -->
+  <div class="mb-4">
+    <p class="text-sm font-semibold mb-2">Packaging</p>
+    <div class="flex flex-col gap-2 text-sm">
+      <label class="inline-flex items-center gap-2">
+        <input type="radio" name="packaging" value="dibungkus" class="accent-yellow-400" required />
+        Dibungkus
+      </label>
+      <label class="inline-flex items-center gap-2">
+        <input type="radio" name="packaging" value="makan di tempat" class="accent-yellow-400" required />
+        Makan di tempat
+      </label>
     </div>
+  </div>
 
-    <!-- Jumlah & Harga -->
-    <div class="flex items-center justify-between mb-4">
-      <p class="text-sm font-medium">{{ $menu->name }}</p>
-      <div class="flex items-center space-x-4">
-        <button onclick="updateQty(-1)" class="text-xl bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-300">-</button>
-        <span id="qty" class="text-base font-semibold">1</span>
-        <button onclick="updateQty(1)" class="text-xl bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-300">+</button>
-      </div>
+  <!-- Catatan -->
+  <div class="mb-4">
+    <p class="text-sm font-semibold">Catatan <span class="text-gray-400 font-normal">(Opsional)</span></p>
+    <p class="text-xs text-gray-500 mb-1">Contoh: tambahkan sedikit sambal saja</p>
+    <textarea name="note" rows="3" class="w-full border rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" placeholder="Tulis catatan di sini..."></textarea>
+  </div>
+
+  <!-- Jumlah & Harga -->
+  <div class="flex items-center justify-between mb-4">
+    <p class="text-sm font-medium">{{ $menu->name }}</p>
+    <div class="flex items-center space-x-4">
+      <button type="button" onclick="updateQty(-1)" class="text-xl bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-300">-</button>
+      <span id="qty" class="text-base font-semibold">1</span>
+      <button type="button" onclick="updateQty(1)" class="text-xl bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-300">+</button>
     </div>
+  </div>
 
-    <!-- Tambah ke Keranjang -->
-    <button class="bg-yellow-400 text-black rounded-xl w-full py-3 font-semibold flex items-center justify-between px-4 hover:bg-yellow-300 transition">
-      Tambahkan : <span id="totalPrice">Rp {{ number_format($menu->price, 0, ',', '.') }}</span>
+  <!-- Tombol Tambahkan -->
+  @if(is_null($status) || $status === 'selesai')
+    <button type="submit" class="bg-yellow-400 text-black rounded-xl w-full py-3 font-semibold flex items-center justify-between px-4 hover:bg-yellow-300 transition">
+      Tambahkan:
+      <span id="totalPrice">
+        @if($menu->discount_price)
+          Rp {{ number_format($menu->discount_price, 0, ',', '.') }}
+        @else
+          Rp {{ number_format($menu->price, 0, ',', '.') }}
+        @endif
+      </span>
       <i class="fas fa-shopping-cart"></i>
     </button>
+  @else
+    <button type="button" class="w-full bg-gray-300 text-gray-700 font-semibold py-3 rounded-md cursor-not-allowed" disabled>
+      Batalkan Pesanan Dulu
+    </button>
+  @endif
+</form>
+
 
     <!-- Menu Lainnya -->
     <div class="mt-10">

@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\User;
 use App\Models\Item;
 use App\Models\UserDiscount;
+use Detection\MobileDetect;
 
 class PesananController extends Controller
 {
@@ -27,12 +28,12 @@ class PesananController extends Controller
         $totalItemPrice = $hargaPerItem * $request->quantity;
 
         Item::create([
-            'user_id'     => auth()->id(), 
+            'user_id'     => auth()->id(),
             'menu_id'     => $request->menu_id,
             'packaging'   => $request->packaging,
             'note'        => $request->note,
             'quantity'    => $request->quantity,
-            'items_price' => $totalItemPrice, 
+            'items_price' => $totalItemPrice,
         ]);
 
         return redirect('/menu')->with('success', 'Item berhasil ditambahkan ke pesanan.');
@@ -71,7 +72,7 @@ class PesananController extends Controller
         if ($order->user_discount_id) {
         UserDiscount::where('id', $order->user_discount_id)->update([
             'is_used' => false,
-            'order_id' => null, 
+            'order_id' => null,
         ]);
     }
 
@@ -155,6 +156,9 @@ class PesananController extends Controller
 
     public function index()
     {
+        $detect = new MobileDetect;
+        $isMobile = $detect->isMobile();
+
         $userId = Auth::id();
 
         $vouchers = UserDiscount::where('user_id', $userId)
@@ -175,7 +179,7 @@ class PesananController extends Controller
         $pesanan = $pesanan->map(function ($item) {
             $filename = strtolower(str_replace(' ', '_', $item->menu->name)) . '.jpg';
             $imagePath = public_path('images/' . $filename);
-            
+
             $image = file_exists($imagePath) ? asset('images/' . $filename) : asset('images/default.png');
 
             return [
@@ -186,7 +190,7 @@ class PesananController extends Controller
                 'quantity'     => $item->quantity,
                 'items_price'  => $item->items_price,
                 'total_price'  => 'Rp. ' . number_format($item->items_price, 0, ',', '.'),
-                'image'        => $image, 
+                'image'        => $image,
             ];
         });
 
@@ -198,18 +202,21 @@ class PesananController extends Controller
 
         $status = $currentOrder ? $currentOrder->status : null;
         $currentOrderId = $currentOrder ? $currentOrder->id : null;
-        
+
         $order = Order::with('userDiscount.reward')
         ->where('user_id', $userId)
         ->latest()
         ->first();
 
-        return view('order.pesanan-saya', [
+        // View yang dipakai akan tergantung device
+        $view = $isMobile ? 'order.pesanan-saya-mobile' : 'order.pesanan-saya';
+
+        return view($view, [
             'order' => $order,
-            'pesanan' => $pesanan, 
-            'status' => $order->status ?? null, 
-            'currentOrderId' => $order->id ?? null, 
-            'total' => $total, 
+            'pesanan' => $pesanan,
+            'status' => $order->status ?? null,
+            'currentOrderId' => $order->id ?? null,
+            'total' => $total,
             'vouchers' => $vouchers,
         ]);
     }
