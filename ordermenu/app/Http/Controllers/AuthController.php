@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\Order; 
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 
 class AuthController extends Controller
@@ -16,6 +18,40 @@ class AuthController extends Controller
     {
 
     }
+
+    public function showQr($meja)
+    {
+        return view('auth.login-table', compact('meja'));
+    }
+
+    public function loginByQr(Request $request)
+    {
+        $nomorMeja = $request->query('meja');
+
+        if (!$nomorMeja) {
+            return redirect()->route('home')->with('error', 'QR tidak valid.');
+        }
+
+        // Cari user dengan nama sesuai nomor meja
+        $user = User::where('name', $nomorMeja)->where('role', 'customer')->first();
+
+        if (!$user) {
+            return redirect()->route('home')->with('error', 'Meja tidak tersedia.');
+        }
+
+        // Logout user sebelumnya (kalau ada)
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        // Simpan nomor meja ke session
+        session(['meja' => $nomorMeja]);
+
+        // Login user
+        Auth::login($user);
+
+        return redirect()->route('order.menu');
+    }
     
     public function showLogin(Request $request)
     {
@@ -23,44 +59,6 @@ class AuthController extends Controller
         $isMobile = $request->header('User-Agent') && preg_match('/Mobile|Android|iPhone|iPad/', $request->header('User-Agent'));
 
         return view($isMobile ? 'auth.login-mobile' : 'auth.login-desktop');
-    }
-
-    public function showLoginTable()
-    {
-        return view('auth.login-table');
-    }
-
-    public function loginTable(Request $request)
-    {
-        $request->validate([
-            'username' => 'required|string',
-            'password' => 'nullable|string',
-        ]);
-
-        $user = User::where('name', $request->username)->first();
-
-        if ($user) {
-            $inputPassword = $request->password ?? '';
-            $dbPassword = $user->password ?? '';
-
-            if ($dbPassword === '' || $dbPassword === null) {
-                auth()->loginUsingId($user->id);
-                $request->session()->regenerate();
-                $request->session()->put('username', $user->name);
-                return redirect()->intended('/menu');
-            }
-
-            if (Hash::check($inputPassword, $dbPassword)) {
-                auth()->loginUsingId($user->id);
-                $request->session()->regenerate();
-                $request->session()->put('username', $user->name);
-                return redirect()->intended('/menu');
-            }
-        }
-
-        return back()->withErrors([
-            'username' => 'Akun tidak ditemukan atau tidak valid.',
-        ]);
     }
 
     // Login Pakai Database

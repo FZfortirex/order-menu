@@ -38,7 +38,7 @@
                 </div>
 
                 <!-- Judul di bawah untuk mobile -->
-                <h1 class="text-xl sm:text-2xl font-bold text-gray-800">Manajemen Menuii</h1>
+                <h1 class="text-xl sm:text-2xl font-bold text-gray-800">Manajemen Menu</h1>
 
                 <!-- Tombol Tambah di kanan (desktop) -->
                 <a href="{{ route('menu.create') }}"

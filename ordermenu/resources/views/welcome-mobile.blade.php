@@ -24,7 +24,7 @@
         <p class="mt-3 text-sm max-w-sm">
             Nikmati pengalaman kuliner terbaik dengan sistem pemesanan langsung!
         </p>
-        <a href="{{ auth()->check() ? route('order.menu') : route('loginTable.show') }}">
+        <a href="{{ auth()->check() ? route('order.menu') : route('loginAccount') }}">
             <button class="bg-yellow-400 text-[#731b0c] px-4 py-2 mt-5 rounded-full font-bold btn-hover">
                 Lihat Menu
             </button>

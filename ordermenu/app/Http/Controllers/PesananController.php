@@ -86,8 +86,10 @@ class PesananController extends Controller
     // Kirim pesanan
     public function submit(Request $request)
     {
+        $mejaSession = session('meja');
+
         $request->validate([
-            'meja'    => 'required|string',
+            'meja'    => $mejaSession ? 'nullable' : 'required|string',
             'catatan' => 'nullable|string',
             'voucher' => 'nullable|string',
         ]);
@@ -96,19 +98,17 @@ class PesananController extends Controller
 
         $items = Item::where('user_id', $userId)
             ->whereNull('order_id')
-            ->with('menu') // pastikan menu ikut diambil
+            ->with('menu')
             ->get();
 
         if ($items->isEmpty()) {
             return redirect()->back()->with('error', 'Tidak ada pesanan untuk dikirim.');
         }
 
-        // Hitung total harga
-        $totalHarga = $items->sum(function($item) {
+        $totalHarga = $items->sum(function ($item) {
             return ($item->items_price ?? 0) * ($item->quantity ?? 1);
         });
 
-        // Hitung total point dari menu.point * quantity
         $totalPoint = $items->sum(function ($item) {
             return optional($item->menu)->point * $item->quantity;
         });
@@ -129,16 +129,17 @@ class PesananController extends Controller
             $userDiscountId = $userDiscount->id;
         }
 
+        $meja = $mejaSession ?? $request->meja;
+
         $order = Order::create([
-            'user_id'         => $userId,
+            'user_id'          => $userId,
             'user_discount_id' => $userDiscountId,
-            'table'           => $request->meja,
-            'total_price'     => $request->final_total,
-            'status'          => 'menunggu',
-            'total_point'     => $totalPoint,
+            'table'            => $meja,
+            'total_price'      => $request->final_total,
+            'status'           => 'menunggu',
+            'total_point'      => $totalPoint,
         ]);
 
-        // Update item
         Item::where('user_id', $userId)
             ->whereNull('order_id')
             ->update(['order_id' => $order->id]);
@@ -152,7 +153,6 @@ class PesananController extends Controller
 
         return redirect('/pesanan')->with('success', 'Pesanan berhasil dikirim! Kamu dapat ' . $totalPoint . ' poin.')->with('order', $order);
     }
-
 
     public function index()
     {

@@ -54,9 +54,9 @@
      Kontak
   </a>
 
-  <a href="{{ auth()->check() ? route('order.menu') : route('loginTable') }}"
+  <a href="{{ auth()->check() ? route('order.menu') : route('loginAccount') }}"
      class="block text-white text-base font-medium py-2 px-4 rounded-xl
-     {{ request()->routeIs('order.menu') || request()->routeIs('loginTable') ? 'bg-yellow-400 text-[#5b130a] font-semibold' : 'hover:bg-[#4a0f07]' }} transition duration-200 ease-in-out">
+     {{ request()->routeIs('order.menu') || request()->routeIs('loginAccount') ? 'bg-yellow-400 text-[#5b130a] font-semibold' : 'hover:bg-[#4a0f07]' }} transition duration-200 ease-in-out">
      Menu
   </a>
 </div>

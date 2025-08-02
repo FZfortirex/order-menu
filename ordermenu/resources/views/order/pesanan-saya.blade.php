@@ -49,8 +49,18 @@
       <div>
         <label class="block text-sm font-medium">Meja</label>
         @php
-          $userNameIsNumber = Auth::check() && is_numeric(Auth::user()->name);
-          $mejaValue = $userNameIsNumber ? Auth::user()->name : old('table', $order->table ?? '');
+          $sessionMeja = session('meja');
+          $readonly = false;
+
+          if ($sessionMeja) {
+              $mejaValue = $sessionMeja;
+              $readonly = true;
+          } elseif (Auth::check() && is_numeric(Auth::user()->name)) {
+              $mejaValue = Auth::user()->name;
+              $readonly = true;
+          } else {
+              $mejaValue = old('meja', $order->table ?? '');
+          }
         @endphp
 
         <input
@@ -59,7 +69,7 @@
           value="{{ $mejaValue }}"
           placeholder="Contoh: 4"
           class="w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-yellow-400"
-          {{ $userNameIsNumber || in_array($status, ['menunggu', 'sedang dibuat', 'sudah dibuat']) ? 'readonly' : '' }}>
+          {{ $readonly || in_array($status, ['menunggu', 'sedang dibuat', 'sudah dibuat']) ? 'readonly' : '' }}>
       </div>
       <div>
       @if ($status === 'menunggu' || $status === 'sedang dibuat' || $status === 'sudah dibuat')

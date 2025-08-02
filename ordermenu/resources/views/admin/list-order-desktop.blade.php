@@ -23,10 +23,14 @@
                 Lihat Rekap Penjualan
             </a>
 
-
-            <a href="{{ route('admin.menu') }}" class="bg-yellow-400 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg shadow">
-                Menu Admin
-            </a>
+            <div class="flex gap-4">
+                <a href="{{ route('admin.banner') }}" class="bg-yellow-600 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg shadow">
+                    Banner Admin
+                </a>
+                <a href="{{ route('admin.menu') }}" class="bg-yellow-600 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg shadow">
+                    Menu Admin
+                </a>
+            </div>
 
         </div>
 
