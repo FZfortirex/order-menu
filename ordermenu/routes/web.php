@@ -80,7 +80,7 @@ Route::middleware('auth')->group(function () {
     Route::post('admin/menu', [AdminMenuController::class, 'store'])->name('menu.store');
     Route::get('admin/menu/{id}/edit', [AdminMenuController::class, 'edit'])->name('menu.edit');
     Route::put('admin/menu/{id}', [AdminMenuController::class, 'update'])->name('menu.update');
-    Route::delete('admin/menu/{id}', [AdminMenuController::class, 'destroy'])->name('menu.destroy');
+    Route::delete('admin/menu/{id}', [AdminMenuController::class, 'delete'])->name('menu.delete');
 
     Route::get('/admin/banner', [AdminBannerController::class, 'index'])->name('admin.banner');
     Route::post('/admin/banner/save', [AdminBannerController::class, 'storeOrUpdate'])->name('admin.banner.save');

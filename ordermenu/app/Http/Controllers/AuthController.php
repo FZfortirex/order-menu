@@ -112,10 +112,10 @@ class AuthController extends Controller
     // Logout Pakai Database
     public function logout(Request $request)
     {
-        Auth::logout(); // Hapus session
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        Session::forget('admin_logged_in');
+        // Auth::logout(); // Hapus session
+        // $request->session()->invalidate();
+        // $request->session()->regenerateToken();
+        // Session::forget('admin_logged_in');
 
         // Tambahan dari versimu: Hapus session manual
         return redirect('/loginAccount');

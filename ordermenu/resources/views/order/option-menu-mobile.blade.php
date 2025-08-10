@@ -62,7 +62,7 @@
 
   <!-- Jumlah & Harga -->
   <div class="flex items-center justify-between mb-4">
-    <p class="text-sm font-medium">{{ $menu->name }}</p>
+    <p class="text-base font-medium">Jumlah Pemesanan</p>
     <div class="flex items-center space-x-4">
       <button type="button" onclick="updateQty(-1)" class="text-xl bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-300">-</button>
       <span id="qty" class="text-base font-semibold">1</span>
@@ -111,12 +111,17 @@
   <script>
     let qty = 1;
     const price = {{ $menu->price }};
+    const discountPrice = {{ $menu->discount_price ?? 'null' }};
+    const unitPrice = discountPrice || price;
 
     function updateQty(change) {
       qty += change;
       if (qty < 1) qty = 1;
       document.getElementById('qty').innerText = qty;
-      document.getElementById('totalPrice').innerText = 'Rp ' + (qty * price).toLocaleString('id-ID');
+      document.getElementById('quantity').value = qty;
+
+      const total = qty * unitPrice;
+      document.getElementById('totalPrice').innerText = 'Rp ' + total.toLocaleString('id-ID');
     }
   </script>
 

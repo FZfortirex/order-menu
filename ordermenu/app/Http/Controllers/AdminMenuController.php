@@ -10,7 +10,7 @@ class AdminMenuController extends Controller
     // Menampilkan semua menu
     public function index()
     {
-        $menus = Menu::all();
+        $menus = Menu::where('status', 'sedia')->get();
         $isMobile = $request->header('User-Agent') && preg_match('/Mobile|Android|iPhone|iPad/', $request->header('User-Agent'));
 
         $view = $isMobile ? 'admin.admin-menu-mobile' : 'admin.admin-menu';
@@ -22,10 +22,8 @@ class AdminMenuController extends Controller
     public function adminMenu()
 {
     $menus = Menu::all();
-    $isMobile = $request->header('User-Agent') && preg_match('/Mobile|Android|iPhone|iPad/', $request->header('User-Agent'));
 
-    $view = $isMobile ? 'admin.admin-menu-mobile' : 'admin.admin-menu';
-    return view($view, compact('menus'));
+    return view('admin.admin-menu', compact('menus'));
 }
 
 public function create()
@@ -92,12 +90,11 @@ public function update(Request $request, $id)
     return redirect()->route('admin.menu')->with('success', 'Menu berhasil diupdate!');
 }
 
-
-
-public function destroy($id)
+public function delete($id)
 {
     $menu = Menu::findOrFail($id);
-    $menu->delete();
+    $menu->status = 'tidak sedia';
+    $menu->save();
 
     return redirect()->route('admin.menu')->with('success', 'Menu berhasil dihapus!');
 }

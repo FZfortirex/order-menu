@@ -64,7 +64,7 @@
                                 <a href="{{ route('menu.edit', $menu->id) }}" class="bg-yellow-400 hover:bg-yellow-500 text-white text-xs px-3 py-1 rounded-lg">
                                     Edit
                                 </a>
-                                <form action="{{ route('menu.destroy', $menu->id) }}" method="POST" class="delete-form">
+                                <form action="{{ route('menu.delete', $menu->id) }}" method="POST" class="delete-form">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="text-white bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-xs">

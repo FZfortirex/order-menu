@@ -60,13 +60,14 @@
                     data-name="{{ strtolower($order->user->name ?? '-') }}"
                     onclick="window.location.href='/order-detail/{{ $order->id }}'">
 
-
                         <!-- Tombol Hapus -->
-                        <form action="{{ route('orders.destroy', $order->id) }}" method="POST" class="absolute top-2 right-2" onclick="event.stopPropagation();">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-red-500 hover:text-red-700 text-xl font-bold delete-btn">❌</button>
-                        </form>
+                        @if (strtolower($order->status) !== 'selesai' && strtolower($order->status) !== 'sudah dibuat' && strtolower($order->status) !== 'sedang dibuat' )
+                            <form action="{{ route('orders.destroy', $order->id) }}" method="POST" class="absolute top-2 right-2" onclick="event.stopPropagation();">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-500 hover:text-red-700 text-xl font-bold delete-btn">❌</button>
+                            </form>
+                        @endif
 
                         <div class="flex items-center gap-4 mb-4">
                             <div class="w-20 aspect-square rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-xl font-bold">
@@ -78,7 +79,7 @@
                                 @endphp
 
                                 @if ($isNumeric)
-                                    <p class="font-semibold text-gray-800">Nama: Customer</p>
+                                    <p class="font-semibold text-gray-800">Nama: Customer ( Meja: {{ $order->user->name }} )</p>
                                     <p class="text-sm text-gray-500">Meja: {{ $order->user->name }}</p>
                                 @else
                                     <p class="font-semibold text-gray-800">Nama: {{ $order->user->name ?? '-' }}</p>
@@ -105,6 +106,9 @@
 
     function filterOrders(status, btn) {
         currentStatus = status;
+
+        sessionStorage.setItem('selectedFilter', status);
+
         const cards = document.querySelectorAll(".order-card");
 
         cards.forEach(card => {
@@ -148,7 +152,11 @@
     }
 
     function searchOrders() {
+        const inputElement = document.getElementById('search');
         const input = document.getElementById('search').value.toLowerCase();
+
+        sessionStorage.setItem('searchInput', inputElement.value);
+
         const cards = document.querySelectorAll(".order-card");
         cards.forEach(card => {
             const name = card.getAttribute("data-name");
@@ -164,8 +172,54 @@
 
     // code untuk load otomatis ke filter semua
     document.addEventListener("DOMContentLoaded", function() {
-        const defaultBtn = document.getElementById("btn-menunggu");
-        filterOrders("menunggu", defaultBtn);
+        let reloadInterval;
+
+        function startAutoReload() {
+            reloadInterval = setInterval(() => {
+                location.reload();
+            }, 5000);
+            sessionStorage.setItem("autoReload", "true");
+        }
+
+        function stopAutoReload() {
+            clearInterval(reloadInterval);
+            sessionStorage.removeItem("autoReload");
+        }
+
+        if (sessionStorage.getItem("autoReload") === "true") {
+            startAutoReload();
+            } else {
+            startAutoReload();
+        }
+
+        const searchInput = document.getElementById('search');
+        if (searchInput) {
+            const savedSearch = sessionStorage.getItem('searchInput') || "";
+            searchInput.value = savedSearch;
+
+            searchInput.addEventListener('input', () => {
+                searchOrders(); 
+            });
+        }
+
+
+        let savedFilter = sessionStorage.getItem('selectedFilter') || "menunggu";
+
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        let btnToClick = null;
+        filterButtons.forEach(btn => {
+            if (btn.textContent.toLowerCase().includes(savedFilter.toLowerCase())) {
+                btnToClick = btn;
+            }
+        });
+
+        if (btnToClick) {
+            filterOrders(savedFilter, btnToClick);
+        } else {
+            const defaultBtn = document.getElementById("btn-menunggu");
+            filterOrders("menunggu", defaultBtn);
+        }
+        searchOrders();
     });
 
     if (e.target.classList.contains("status-btn")) {

@@ -22,19 +22,28 @@
     <h1 class="text-lg font-bold">RUMAH MAKAN</h1>
     <h2 class="text-3xl font-extrabold text-yellow-400 mb-6">Kampoeng Sawah</h2>
 
-    <form action="{{ route('loginAccount') }}" method="POST" class="space-y-5">
-      @csrf
-      <div class="relative">
-        <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">👤</span>
-        <input type="text" name="username" placeholder="Username" class="w-full pl-10 p-3 rounded-md border border-gray-300 text-black" required>
-      </div>
-      <div class="relative">
-        <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">#</span>
-        <input type="password" name="password" placeholder="Password" class="w-full pl-10 p-3 rounded-md border border-gray-300 text-black" required>
-      </div>
-      <button type="submit" class="w-full bg-yellow-400 text-[#731b0c] font-bold py-3 rounded-md hover:bg-yellow-300">Login</button>
-    </form>
-    <p class="mt-6 text-sm text-gray-200">Kembali ke Menu <a href="{{ route('order.menu') }}" class="text-yellow-400 hover:underline">Masuk di sini</a></p>
+    @php
+    $sessionMeja = session('meja');
+    @endphp
+    @if ($sessionMeja)
+      <form action="{{ route('loginAccount') }}" method="POST" class="space-y-5">
+          @csrf
+          <div class="relative">
+              <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">👤</span>
+              <input type="text" name="username" placeholder="Username" class="w-full pl-10 p-3 rounded-md border border-gray-300 text-black" required>
+          </div>
+          <div class="relative">
+              <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">#</span>
+              <input type="password" name="password" placeholder="Password" class="w-full pl-10 p-3 rounded-md border border-gray-300 text-black" required>
+          </div>
+          <button type="submit" class="w-full bg-yellow-400 text-[#731b0c] font-bold py-3 rounded-md hover:bg-yellow-300">Login</button>
+      </form>
+      <p class="mt-6 text-sm text-gray-200">
+          Kembali ke Menu <a href="{{ route('order.menu') }}" class="text-yellow-400 hover:underline">Masuk di sini</a>
+      </p>
+    @else
+      <p class="text-sm font-semibold">Kamu harus scan meja terlebih dahulu</p>
+    @endif
   </div>
 </body>
 </html>

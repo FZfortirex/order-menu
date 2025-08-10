@@ -31,7 +31,13 @@
                 </svg>
                 BACK
             </a>
-            <h1 class="text-2xl font-bold">{{ $order->user->name }}</h1>
+            <h1 class="text-2xl font-bold">
+                @if (is_numeric($order->user->name))
+                    Meja ( {{ $order->user->name }} )
+                @else
+                    {{ $order->user->name }}
+                @endif
+            </h1>
             <div class="w-6"></div> <!-- Placeholder biar posisi center -->
         </div>
 

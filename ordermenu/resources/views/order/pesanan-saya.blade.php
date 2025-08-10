@@ -159,24 +159,46 @@
     const discountDetail = document.getElementById("discountDetail");
     const finalTotalInput = document.getElementById("finalTotalInput");
 
-    voucherSelect.addEventListener("change", function () {
-      const selectedOption = voucherSelect.options[voucherSelect.selectedIndex];
-      const discountPercent = parseFloat(selectedOption.getAttribute("data-diskon")) || 0;
+    if (voucherSelect) {
+      voucherSelect.addEventListener("change", function () {
+        const selectedOption = voucherSelect.options[voucherSelect.selectedIndex];
+        const discountPercent = parseFloat(selectedOption.getAttribute("data-diskon")) || 0;
 
-      let newTotal = totalValue;
-      if (discountPercent > 0) {
-        newTotal = totalValue - (totalValue * discountPercent / 100);
-        discountDetail.style.display = "flex";
-        discountDetail.innerHTML = `
-          <span>${new Intl.NumberFormat('id-ID').format(totalValue)} - ${discountPercent}% = ${new Intl.NumberFormat('id-ID').format(newTotal)}</span>
-        `;
-      } else {
-        discountDetail.style.display = "none";
-        newTotal = totalValue;
-      }
+        let newTotal = totalValue;
+        if (discountPercent > 0) {
+          newTotal = totalValue - (totalValue * discountPercent / 100);
+          discountDetail.style.display = "flex";
+          discountDetail.innerHTML = `
+            <span>${new Intl.NumberFormat('id-ID').format(totalValue)} - ${discountPercent}% = ${new Intl.NumberFormat('id-ID').format(newTotal)}</span>
+          `;
+        } else {
+          discountDetail.style.display = "none";
+          newTotal = totalValue;
+        }
 
-      totalPriceFix.textContent = "Rp. " + new Intl.NumberFormat('id-ID').format(newTotal);
-      finalTotalInput.value = Math.round(newTotal);
-    });
+        totalPriceFix.textContent = "Rp. " + new Intl.NumberFormat('id-ID').format(newTotal);
+        finalTotalInput.value = Math.round(newTotal);
+      });
+    }
+    @if($status === null || $status === 'selesai')
+        sessionStorage.removeItem("autoReload");
+    @endif
+
+    @if(session('refresh') && in_array($status, ['menunggu', 'sedang dibuat', 'sudah dibuat']))
+        sessionStorage.setItem("autoReload", "true");
+    @endif
+
+    if (sessionStorage.getItem("autoReload") === "true") {
+        setInterval(() => {
+            location.reload();
+        }, 5000);
+    }
+
+    const cancelForm = document.querySelector('form[action*="pesanan/cancel"]');
+    if (cancelForm) {
+        cancelForm.addEventListener("submit", function () {
+            sessionStorage.removeItem("autoReload");
+        });
+    }
   });
 </script>

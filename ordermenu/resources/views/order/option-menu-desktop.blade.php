@@ -42,6 +42,7 @@
           <input type="hidden" name="price" value="{{ $menu->price }}">
           <input type="hidden" name="discount_price" value="{{ $menu->discount_price }}">
           <input type="hidden" id="quantity" name="quantity" value="1">
+          <input type="hidden" id="stock" value="{{ $menu->stock }}">
 
           <p class="font-semibold">Packaging</p>
           <label class="flex items-center space-x-2 my-1">
@@ -58,11 +59,11 @@
           <p class="text-sm text-gray-500 mb-1">Contoh: tambahkan sedikit sambal saja</p>
           <textarea name="note" class="w-full border rounded-lg p-2 mb-4" rows="3" placeholder="Tulis catatan di sini..."></textarea>
           <div class="flex items-center justify-between mb-2">
-            <p>{{ $menu->name }}</p>
+            <p class="text-base font-medium">Jumlah Pemesanan</p>
             <div class="flex items-center space-x-4">
-              <button type="button" onclick="updateQty(-1)" class="text-xl bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center">➖</button>
+              <button type="button" id="btn-minus" onclick="updateQty(-1)" class="text-xl bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center">➖</button>
               <span id="qty" class="text-lg font-semibold">1</span>
-              <button type="button" onclick="updateQty(1)" class="text-xl bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center">➕</button>
+              <button type="button" id="btn-plus" onclick="updateQty(1)" class="text-xl bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center">➕</button>
             </div>
           </div>
           @if(is_null($status) || $status === 'selesai')
@@ -123,14 +124,28 @@
     const unitPrice = discountPrice || price;
 
     function updateQty(change) {
-      qty += change;
-      if (qty < 1) qty = 1;
+      const stock = parseInt(document.getElementById('stock').value);
+      const btnPlus = document.getElementById('btn-plus');
+      const btnMinus = document.getElementById('btn-minus');
+
+      let newQty = qty + change;
+
+      if (newQty < 1) newQty = 1;
+      if (newQty > stock) newQty = stock;
+
+      qty = newQty;
+
       document.getElementById('qty').innerText = qty;
       document.getElementById('quantity').value = qty;
 
       const total = qty * unitPrice;
       document.getElementById('totalPrice').innerText = 'Rp ' + total.toLocaleString('id-ID');
+
+      btnMinus.disabled = qty <= 1;
+      btnPlus.disabled = qty >= stock;
     }
+
+    document.addEventListener('DOMContentLoaded', () => updateQty(0));
   </script>
 </body>
 </html>

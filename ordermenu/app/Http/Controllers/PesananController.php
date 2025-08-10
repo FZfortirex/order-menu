@@ -151,7 +151,7 @@ class PesananController extends Controller
             ]);
         }
 
-        return redirect('/pesanan')->with('success', 'Pesanan berhasil dikirim! Kamu dapat ' . $totalPoint . ' poin.')->with('order', $order);
+        return redirect('pesanan')->with('success', 'Pesanan berhasil dikirim! Kamu dapat ' . $totalPoint . ' poin.')->with('order', $order)->with('refresh', true);;
     }
 
     public function index()
