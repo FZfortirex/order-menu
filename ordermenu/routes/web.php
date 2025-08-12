@@ -34,7 +34,7 @@ Route::get('/loginAccount', [AuthController::class, 'showLogin'])->name('loginAc
 Route::post('/loginAccount', [AuthController::class, 'login']);
 Route::post('/logoutAccount', [AuthController::class, 'logout'])->name('logoutAccount')->middleware('auth');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'check.session'])->group(function () {
     Route::get('/menu', [MenuController::class, 'index'])->name('order.menu');
     Route::get('/menu/{id}', [MenuController::class, 'show'])->name('menu.detail');
     Route::get('/menu/{id}/reviews', [ReviewController::class, 'show'])->name('menu.reviews');

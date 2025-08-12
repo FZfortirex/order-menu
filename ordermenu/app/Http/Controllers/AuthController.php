@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Carbon\Carbon;
 
 
 class AuthController extends Controller
@@ -32,22 +33,23 @@ class AuthController extends Controller
             return redirect()->route('home')->with('error', 'QR tidak valid.');
         }
 
-        // Cari user dengan nama sesuai nomor meja
         $user = User::where('name', $nomorMeja)->where('role', 'customer')->first();
 
         if (!$user) {
             return redirect()->route('home')->with('error', 'Meja tidak tersedia.');
         }
 
-        // Logout user sebelumnya (kalau ada)
+        $newSessionId = Str::uuid()->toString();
+
+        $user->current_session_id = $newSessionId;
+        $user->session_expired_at = Carbon::now()->addMinutes(30);
+        $user->save();
+
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+        session(['meja' => $nomorMeja, 'current_session_id' => $newSessionId]);
 
-        // Simpan nomor meja ke session
-        session(['meja' => $nomorMeja]);
-
-        // Login user
         Auth::login($user);
 
         return redirect()->route('order.menu');
