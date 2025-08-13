@@ -34,12 +34,18 @@
 
   <!-- Menu Mobile -->
 <div id="mobile-menu"
-  class="hidden absolute right-4 top-16 w-56 bg-[#5b130a] z-50 px-4 py-4 space-y-3 rounded-2xl shadow-2xl border border-yellow-600">
+  class="hidden absolute right-4 top-16 w-56 bg-[#5b130a] z-50 px-4 py-4 space-y-3 rounded-2xl shadow-2xl">
 
   <a href="{{ route('welcome') }}"
      class="block text-white text-base font-medium py-2 px-4 rounded-xl
      {{ request()->routeIs('welcome') ? 'bg-yellow-400 text-[#5b130a] font-semibold' : 'hover:bg-[#4a0f07]' }} transition duration-200 ease-in-out">
      Home
+  </a>
+
+  <a href="/profile"
+     class="block text-white text-base font-medium py-2 px-4 rounded-xl
+     {{ request()->is('galeri') ? 'bg-yellow-400 text-[#5b130a] font-semibold' : 'hover:bg-[#4a0f07]' }} transition duration-200 ease-in-out">
+     Profile
   </a>
 
   <a href="/galeri"

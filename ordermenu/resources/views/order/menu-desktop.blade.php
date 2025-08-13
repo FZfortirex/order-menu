@@ -65,14 +65,12 @@
   <!-- MENU -->
   <div id="menu-container" class="container mx-auto px-4 py-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 flex-grow"></div>
 
-  @if(Auth::check() && !is_numeric(Auth::user()->name))
     <!-- Tombol Profile -->
     <a href="/profile" class="fixed bottom-4 right-4 bg-yellow-400 hover:bg-yellow-300 text-black p-4 rounded-full shadow-lg border border-black">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9.004 9.004 0 0112 15c2.072 0 3.98.707 5.465 1.898M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
       </svg>
     </a>
-  @endif
 
   <!-- FOOTER -->
   @include('partials.footer')

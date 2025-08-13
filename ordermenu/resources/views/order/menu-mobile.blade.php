@@ -27,10 +27,18 @@
   <!-- CAROUSEL -->
   <div class="px-4 mt-4">
     <div class="flex overflow-x-auto snap-x snap-mandatory space-x-4 scrollbar-hide">
-      @foreach (['diskon1.jpg','diskon5.jpg','diskon3.jpg','diskon4.jpg'] as $img)
+      @foreach ($banners as $banner)
+        @if ($banner->menu_id)
         <div class="snap-center min-w-[85%] sm:min-w-0 rounded-xl overflow-hidden shadow-lg">
-          <img src="{{ asset('images/' . $img) }}" class="w-full h-44 object-cover" />
+          <a href="{{ url('/menu/' . $banner->menu_id) }}">
+            <img src="{{ asset($banner->image) }}" class="w-full h-44 object-cover" />
+          </a>
         </div>
+        @else
+        <div class="snap-center min-w-[85%] sm:min-w-0 rounded-xl overflow-hidden shadow-lg">
+          <img src="{{ asset($banner->image) }}" class="w-full h-44 object-cover" />
+        </div>
+        @endif
       @endforeach
     </div>
   </div>
@@ -39,10 +47,10 @@
   <!-- KATEGORI -->
   <div class="mt-6 px-4">
     <div class="flex overflow-x-auto gap-2 scrollbar-hide pb-2">
-      @foreach (['Semua', 'Makanan', 'Minuman', 'Cemilan'] as $cat)
-        <button onclick="filterCategory('{{ $cat }}', this)"
-          class="category-button whitespace-nowrap px-4 py-2 border rounded-full text-sm bg-white hover:bg-yellow-100 transition">
-          {{ $cat }}
+      @foreach (['Semua', 'Makanan', 'Minuman', 'Cemilan'] as $menu)
+        <button onclick="filterCategory('{{ $menu }}', this)"
+          class="category-button whitespace-nowrap px-4 py-2 border rounded-[12px] text-sm bg-white hover:bg-yellow-300 transition">
+          {{ $menu }}
         </button>
       @endforeach
     </div>
@@ -50,29 +58,23 @@
 
 <!-- SEARCH + PESANAN -->
 <div class="px-4 mt-4 flex flex-col gap-2">
-  <input type="text" id="search" placeholder="Cari menu favorit..."
+  <input type="text" id="search" placeholder="Cari Menu..."
     class="w-full p-2 text-sm border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" />
-    <a href="/pesanan"
-  class="w-full max-w-sm mx-auto bg-yellow-400 text-black text-center text-sm font-medium py-1.5 rounded-md shadow hover:bg-yellow-300 transition">
-  Pesanan Saya
-</a>
-
 </div>
 
   <!-- MENU SECTION -->
   <div id="menu-container" class="container mx-auto px-4 py-6 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
 
-  @if(Auth::check() && !is_numeric(Auth::user()->name))
-    <!-- PROFILE BUTTON -->
-    <a href="/profile"
-      class="fixed bottom-4 right-4 bg-yellow-400 hover:bg-yellow-300 text-black p-4 rounded-full shadow-lg border border-black">
+    <!-- PESANAN SAYA BUTTON -->
+    <a href="/pesanan"
+      class="fixed bottom-4 right-4 bg-yellow-400 hover:bg-yellow-300 text-black p-4 rounded-[12px] shadow-lg border border-black flex items-center gap-2">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-        viewBox="0 0 24 24" stroke="currentColor">
+          viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M5.121 17.804A9.004 9.004 0 0112 15c2.072 0 3.98.707 5.465 1.898M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+          d="M2.25 3h1.5l1.5 12h13.5l1.5-8H6.75M16.5 18.75a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm-7.5 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
       </svg>
+      <p>Pesanan Saya</p>
     </a>
-  @endif
 
   <!-- FOOTER -->
   @include('partials.footer')
