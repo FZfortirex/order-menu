@@ -12,6 +12,10 @@
          class="{{ request()->routeIs('welcome') ? 'text-yellow-300' : 'hover:text-yellow-300' }}">
          Home
       </a>
+      <a href="/profile"
+         class="{{ request()->is('galeri') ? 'text-yellow-300' : 'hover:text-yellow-300' }}">
+         Profile
+      </a>
       <a href="/galeri"
          class="{{ request()->is('galeri') ? 'text-yellow-300' : 'hover:text-yellow-300' }}">
          Galeri

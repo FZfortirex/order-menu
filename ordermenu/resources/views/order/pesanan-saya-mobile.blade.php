@@ -75,9 +75,9 @@
       <div class="pt-2 border-t">
         <h4 class="font-medium mb-2">Ringkasan</h4>
         @foreach($pesanan as $item)
-          <div class="flex justify-between">
+          <div class="flex justify-between mb-1">
             <span>{{ $item['name'] }} x {{ $item['quantity'] ?? 1 }}</span>
-            <span>Rp. {{ number_format($item['items_price'] ?? 0) }}</span>
+            <span>Rp. {{ number_format($item['items_price'] ?? 0, 0, '.', '.') }}</span>
           </div>
         @endforeach
         <div class="flex justify-between font-semibold border-t pt-2">
@@ -146,5 +146,25 @@
       totalPriceFix.textContent = "Rp. " + new Intl.NumberFormat('id-ID').format(newTotal);
       finalTotalInput.value = Math.round(newTotal);
     });
+    @if($status === null || $status === 'selesai')
+        sessionStorage.removeItem("autoReload");
+    @endif
+
+    @if(session('refresh') && in_array($status, ['menunggu', 'sedang dibuat', 'sudah dibuat']))
+        sessionStorage.setItem("autoReload", "true");
+    @endif
+
+    if (sessionStorage.getItem("autoReload") === "true") {
+        setInterval(() => {
+            location.reload();
+        }, 5000);
+    }
+
+    const cancelForm = document.querySelector('form[action*="pesanan/cancel"]');
+    if (cancelForm) {
+        cancelForm.addEventListener("submit", function () {
+            sessionStorage.removeItem("autoReload");
+        });
+    }
   });
 </script>

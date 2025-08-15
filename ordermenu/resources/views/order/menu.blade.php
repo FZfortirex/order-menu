@@ -48,17 +48,20 @@
   <!-- SEARCH DAN PESANAN -->
   <div class="container mx-auto px-4 flex justify-between items-center mt-4">
     <input type="text" id="search" placeholder="Cari menu..." class="w-1/3 p-2 border rounded">
-    <a href="/pesanan" class="bg-yellow-400 text-black px-4 py-2 rounded">Pesanan Saya</a>
   </div>
 
   <!-- MENU -->
   <div id="menu-container" class="container mx-auto px-4 py-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 flex-grow"></div>
 
     <!-- Tombol Profile -->
-    <a href="/profile" class="fixed bottom-4 right-4 bg-yellow-400 hover:bg-yellow-300 text-black p-4 rounded-full shadow-lg border border-black">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9.004 9.004 0 0112 15c2.072 0 3.98.707 5.465 1.898M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+    <a href="/pesanan"
+      class="fixed bottom-4 right-4 bg-yellow-400 hover:bg-yellow-300 text-black p-4 rounded-[12px] shadow-lg border border-black flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+          viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M2.25 3h1.5l1.5 12h13.5l1.5-8H6.75M16.5 18.75a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm-7.5 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
       </svg>
+      <p>Pesanan Saya</p>
     </a>
 
   <!-- FOOTER -->
@@ -82,22 +85,34 @@
       }
     }
 
-    function goToDetail(id) {
-      window.location.href = `/menu/${id}`;
+    function goToDetail(id, stock) {
+      if (stock <= 0) {
+        window.location.href = "/menu"; 
+      } else {
+        window.location.href = `/menu/${id}`;
+      }
     }
 
     function renderMenu(items) {
       menuContainer.innerHTML = "";
       items.forEach(item => {
-        const stars = getStarRating(item.rating || 0);
+        const isOutOfStock = item.stock <= 0;
+
         menuContainer.innerHTML += `
-          <div onclick="goToDetail(${item.id})" class="menu-item bg-white p-4 shadow rounded-xl flex items-center border border-black h-44 hover:bg-gray-100 transition cursor-pointer" data-category="${item.category}">
+          <div 
+            class="menu-item bg-white p-4 shadow rounded-xl flex items-center border border-black h-44 transition ${isOutOfStock ? 'opacity-80 cursor-not-allowed' : 'hover:bg-gray-100 cursor-pointer'}"
+            data-category="${item.category}"
+            ${!isOutOfStock ? `onclick="goToDetail(${item.id}, ${item.stock})"` : ''}>
+            
             <img src="/images/${item.image}" class="h-16 w-16 object-cover rounded-lg" alt="${item.name}">
+            
             <div class="ml-4 flex-1">
               <h3 class="font-bold text-lg">${item.name}</h3>
               <p class="text-sm text-gray-600">${item.desc}</p>
               <div class="flex justify-between items-center mt-1">
-                <p class="text-sm">Stok: ${item.stock}</p>
+                <p class="text-sm ${isOutOfStock ? 'text-black' : ''}">
+                  Stok: ${isOutOfStock ? 'Habis' : item.stock}
+                </p>
                 ${
                   item.discount_price
                     ? `
@@ -123,12 +138,18 @@
                   : 'Belum ada ulasan'}
               </div>
             </div>
-           <button
-            onclick="goToDetail(${item.id})"
-            class="ml-4 bg-yellow-400 p-2 aspect-square rounded-full flex items-center justify-center text-base font-bold border border-black hover:bg-yellow-300 transition">
-            +
-            </button>
 
+            ${
+              !isOutOfStock
+                ? `<button onclick="goToDetail(${item.id}, ${item.stock})"
+                    class="ml-4 w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center text-base font-bold border hover:bg-yellow-300 transition">
+                    +
+                  </button>`
+                : `<button disabled
+                    class="ml-4 w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-base font-bold border cursor-not-allowed">
+                    ×
+                  </button>`
+            }
           </div>`;
       });
     }

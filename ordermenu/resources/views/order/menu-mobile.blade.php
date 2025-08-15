@@ -95,28 +95,45 @@
       }
     }
 
-    function goToDetail(id) {
-      window.location.href = `/menu/${id}`;
+    function goToDetail(id, stock) {
+      if (stock <= 0) {
+        window.location.href = "/menu"; 
+      } else {
+        window.location.href = `/menu/${id}`;
+      }
     }
 
     function renderMenu(items) {
       menuContainer.innerHTML = "";
       items.forEach(item => {
         const stars = getStarRating(item.rating || 0);
+        const isOutOfStock = item.stock <= 0;
+
         menuContainer.innerHTML += `
-          <div onclick="goToDetail(${item.id})" class="menu-item bg-white p-2 rounded-lg shadow border hover:bg-gray-50 transition cursor-pointer" data-category="${item.category}">
+          <div 
+            ${isOutOfStock ? '' : `onclick="goToDetail(${item.id}, ${item.stock})"`}
+            class="menu-item bg-white p-2 rounded-lg shadow border 
+            ${isOutOfStock ? 'opacity-80 cursor-not-allowed pointer-events-none' : 'hover:bg-gray-50 cursor-pointer'} 
+            transition" 
+            data-category="${item.category}">
+            
             <img src="/images/${item.image}" class="w-full h-28 object-cover rounded-md mb-2" alt="${item.name}">
             <h3 class="font-bold text-sm truncate">${item.name}</h3>
             <p class="text-xs text-gray-600 truncate">${item.desc}</p>
+
             <div class="text-xs mt-1 flex justify-between items-center">
-              <span>Stok: ${item.stock}</span>
+              <p class="text-sm ${isOutOfStock ? 'text-black' : ''}">
+                  Stok: ${isOutOfStock ? 'Habis' : item.stock}
+              </p>
               ${item.discount_price ? `
                 <div class="text-right">
                   <div class="text-[10px] text-red-500 line-through italic">Rp${parseInt(item.price).toLocaleString('id-ID')}</div>
                   <div class="text-xs font-semibold text-black">Rp${parseInt(item.discount_price).toLocaleString('id-ID')}</div>
                 </div>` : `
-                <div class="text-xs font-semibold text-black">Rp${parseInt(item.price).toLocaleString('id-ID')}</div>`}
+                <div class="text-xs font-semibold text-black">Rp${parseInt(item.price).toLocaleString('id-ID')}</div>`
+              }
             </div>
+
             <div class="text-xs text-yellow-400 mt-1">
               ${item.review_count > 0 ? `${stars} (${item.review_count})` : 'Belum ada ulasan'}
             </div>

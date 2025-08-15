@@ -15,27 +15,40 @@ class PesananController extends Controller
 {
     public function add(Request $request)
     {
-        $request->validate([
-            'menu_id'   => 'required|exists:menus,id',
-            'packaging' => 'required|string',
-            'note'      => 'nullable|string',
-            'quantity'  => 'required|integer|min:1',
-            'price'     => 'required|numeric',
-            'discount_price' => 'nullable|numeric',
-        ]);
+        $userId = auth()->id();
+
+        $note = $request->note ?? null;
+
+        $existingItem = Item::where('user_id', $userId)
+            ->where('menu_id', $request->menu_id)
+            ->where('packaging', $request->packaging)
+            ->where(function ($query) use ($note) {
+                if (is_null($note) || trim($note) === '') {
+                    $query->whereNull('note')->orWhere('note', '');
+                } else {
+                    $query->where('note', $note);
+                }
+            })
+            ->whereNull('order_id')
+            ->first();
 
         $hargaPerItem = $request->discount_price ?? $request->price;
         $totalItemPrice = $hargaPerItem * $request->quantity;
 
-        Item::create([
-            'user_id'     => auth()->id(),
-            'menu_id'     => $request->menu_id,
-            'packaging'   => $request->packaging,
-            'note'        => $request->note,
-            'quantity'    => $request->quantity,
-            'items_price' => $totalItemPrice,
-        ]);
-
+        if ($existingItem) {
+            $existingItem->quantity += $request->quantity;
+            $existingItem->items_price += $totalItemPrice;
+            $existingItem->save();
+        } else {
+            Item::create([
+                'user_id'     => $userId,
+                'menu_id'     => $request->menu_id,
+                'packaging'   => $request->packaging,
+                'note'        => $note,
+                'quantity'    => $request->quantity,
+                'items_price' => $totalItemPrice,
+            ]);
+        }
         return redirect('/menu')->with('success', 'Item berhasil ditambahkan ke pesanan.');
     }
 

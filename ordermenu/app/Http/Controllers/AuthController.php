@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Order; 
+use App\Models\Item;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -48,6 +49,13 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        if ($user->id) {
+            Item::where('user_id', $user->id)
+                ->whereNull('order_id')
+                ->delete();
+        }
+
         session(['meja' => $nomorMeja, 'current_session_id' => $newSessionId]);
 
         Auth::login($user);

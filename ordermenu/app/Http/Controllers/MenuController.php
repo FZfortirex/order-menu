@@ -22,8 +22,11 @@ class MenuController extends Controller
     public function apiMenus()
     {
         $menus = Menu::withAvg('reviews', 'rating')
-                    ->withCount('reviews')
-                    ->get();
+                ->withCount('reviews')
+                ->orderByRaw('CASE WHEN discount_price IS NOT NULL THEN 0 ELSE 1 END') 
+                ->orderByDesc('reviews_avg_rating') 
+                ->orderByRaw('CASE WHEN stock = 0 THEN 1 ELSE 0 END') 
+                ->get();
 
         $menus->each(function ($menu) {
             $menu->rating = round($menu->reviews_avg_rating ?? 0, 1);

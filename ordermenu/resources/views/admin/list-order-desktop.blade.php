@@ -19,15 +19,15 @@
             <!-- Top Controls -->
         <div class="flex flex-wrap justify-between items-center gap-4 mb-4">
             <!-- Tombol Recap -->
-            <a href="/rekap-penjualan" class="bg-yellow-400 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg shadow">
+            <a href="/rekap-penjualan" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg shadow">
                 Lihat Rekap Penjualan
             </a>
 
             <div class="flex gap-4">
-                <a href="{{ route('admin.banner') }}" class="bg-yellow-600 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg shadow">
+                <a href="{{ route('admin.banner') }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg shadow">
                     Banner Admin
                 </a>
-                <a href="{{ route('admin.menu') }}" class="bg-yellow-600 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg shadow">
+                <a href="{{ route('admin.menu') }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg shadow">
                     Menu Admin
                 </a>
             </div>

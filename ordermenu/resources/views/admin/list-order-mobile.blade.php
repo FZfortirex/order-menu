@@ -24,8 +24,8 @@
     Menu Admin
   </a>
   <a href="{{ route('admin.banner') }}" class="bg-yellow-500 hover:bg-yellow-400 text-white py-2 px-4 rounded shadow text-sm font-semibold w-[140px] text-center">
-                    Banner Admin
-                </a>
+    Banner Admin
+  </a>
 </div>
 
 
@@ -102,6 +102,9 @@
 
     function filterOrders(status, btn) {
       currentStatus = status;
+
+      sessionStorage.setItem('selectedFilter', status);
+
       const cards = document.querySelectorAll(".order-card");
 
       cards.forEach(card => {
@@ -130,8 +133,52 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      const defaultBtn = document.getElementById("btn-menunggu");
-      filterOrders("menunggu", defaultBtn);
+      let reloadInterval;
+
+      function startAutoReload() {
+          reloadInterval = setInterval(() => {
+              location.reload();
+          }, 5000);
+          sessionStorage.setItem("autoReload", "true");
+      }
+
+      function stopAutoReload() {
+          clearInterval(reloadInterval);
+          sessionStorage.removeItem("autoReload");
+      }
+
+      if (sessionStorage.getItem("autoReload") === "true") {
+          startAutoReload();
+          } else {
+          startAutoReload();
+      }
+
+      const searchInput = document.getElementById('search');
+      if (searchInput) {
+          const savedSearch = sessionStorage.getItem('searchInput') || "";
+          searchInput.value = savedSearch;
+
+          searchInput.addEventListener('input', () => {
+              searchOrders(); 
+          });
+      }
+      let savedFilter = sessionStorage.getItem('selectedFilter') || "menunggu";
+
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      let btnToClick = null;
+      filterButtons.forEach(btn => {
+          if (btn.textContent.toLowerCase().includes(savedFilter.toLowerCase())) {
+              btnToClick = btn;
+          }
+      });
+
+      if (btnToClick) {
+          filterOrders(savedFilter, btnToClick);
+      } else {
+          const defaultBtn = document.getElementById("btn-menunggu");
+          filterOrders("menunggu", defaultBtn);
+      }
+      searchOrders();
     });
   </script>
 </body>

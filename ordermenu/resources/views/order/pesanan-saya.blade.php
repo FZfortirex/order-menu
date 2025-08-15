@@ -103,7 +103,7 @@
         @foreach($pesanan as $item)
           <div class="flex justify-between">
             <span>{{ $item['name'] }} x {{ $item['quantity'] ?? 1 }}</span>
-            <span>Rp. {{ number_format($item['items_price'] ?? 0) }}</span>
+            <span>Rp. {{ number_format($item['items_price'] ?? 0, 0, '.', '.') }}</span>
           </div>
         @endforeach
         <div class="flex justify-between font-semibold pt-2 border-t">
