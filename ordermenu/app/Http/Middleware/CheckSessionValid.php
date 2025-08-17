@@ -18,19 +18,37 @@ class CheckSessionValid
             $sessionIdInSession = session('current_session_id');
             $expiry = $user->session_expired_at;
 
-            if (!$sessionIdInDb || $sessionIdInDb !== $sessionIdInSession) {
+            // 1. Pastikan customer punya session id
+            if (!$sessionIdInDb || !$sessionIdInSession) {
                 Auth::logout();
                 $request->session()->invalidate();
                 $request->session()->regenerateToken();
-                return redirect()->route('qr.login')->with('error', 'Sesi anda telah digantikan oleh login baru.');
+                return redirect()->route('qr.login')
+                    ->with('error', 'Anda harus login melalui QR Code.');
             }
 
-            // 2. Jika expired → logout
+            // 2. Jika session ID beda (tabrakan login)
+            if ($sessionIdInDb !== $sessionIdInSession) {
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+                return redirect()->route('qr.login')
+                    ->with('error', 'Sesi anda digantikan oleh login baru.');
+            }
+
+            // 3. Jika sesi expired
             if ($expiry && Carbon::now()->greaterThan($expiry)) {
                 Auth::logout();
                 $request->session()->invalidate();
                 $request->session()->regenerateToken();
-                return redirect()->route('qr.login')->with('error', 'Sesi anda sudah berakhir, silakan scan QR lagi.');
+                return redirect()->route('qr.login')
+                    ->with('error', 'Sesi anda sudah berakhir, silakan scan QR lagi.');
+            }
+
+            // 4. Pastikan session meja tetap ada
+            if (!session()->has('meja')) {
+                session(['meja' => $user->name]); 
+                // fallback kalau login manual tanpa QR
             }
         }
 

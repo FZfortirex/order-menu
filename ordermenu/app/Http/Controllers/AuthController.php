@@ -82,38 +82,48 @@ class AuthController extends Controller
 
         $user = User::where('name', $credentials['username'])->first();
 
-        if ($user && $credentials['password'] === $user->password) {
+        if ($user && ( $credentials['password'] === $user->password || Hash::check($credentials['password'], $user->password) )) {
+            // Login user
             auth()->loginUsingId($user->id); 
             $request->session()->regenerate();
 
-            if ($user->role === 'admin') {
-                $orders = Order::all();
-                Session::put('admin_logged_in', true);
-                return redirect()->route('dashboard');
-            } else {
-                return redirect()->intended('/menu');
-            }
-        } else if ($user && Hash::check($credentials['password'], $user->password)) {
-            auth()->loginUsingId($user->id); 
-            $request->session()->regenerate();
+            // Reset flag lama
+            Session::forget(['admin_logged_in', 'customer_logged_in']);
 
             if ($user->role === 'admin') {
-                $orders = Order::all();
                 Session::put('admin_logged_in', true);
                 return redirect()->route('dashboard');
+            } elseif ($user->role === 'customer') {
+                Session::put('customer_logged_in', true);
+
+                // 🔥 Mirip QR Scan: generate session id baru
+                $newSessionId = Str::uuid()->toString();
+                $user->current_session_id = $newSessionId;
+                $user->session_expired_at = Carbon::now()->addMinutes(30);
+                $user->save();
+
+                // 🔥 Kalau ada session meja dari QR, pakai itu.
+                // Kalau tidak ada, fallback pakai nama user
+                if (!session()->has('meja')) {
+                    session(['meja' => $user->name]);
+                }
+
+                // Update session id
+                session(['current_session_id' => $newSessionId]);
+
+                return redirect()->route('order.menu');
             } else {
-                return redirect()->intended('/menu');
+                return redirect()->route('home');
             }
         }
 
-        // Tambahan dari versimu: Debug session jika gagal login
+        // Jika gagal
         session()->put('login_attempt', [
             'username' => $credentials['username'],
             'status' => 'failed',
             'timestamp' => now(),
         ]);
 
-        // Balikin error
         return back()->withErrors([
             'username' => 'Username atau password salah.',
         ]);
