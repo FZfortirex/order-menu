@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\UserDiscount;
+use Jenssegers\Agent\Agent;
 
 class DetailPesananController extends Controller
 {
@@ -19,6 +20,12 @@ class DetailPesananController extends Controller
             $item->image_url = file_exists($imagePath)
                 ? asset('images/' . $filename)
                 : asset('images/default.png');
+        }
+
+        $agent = new Agent();
+
+        if ($agent->isMobile()) {
+            return view('admin.detail-pesanan-mobile', compact('order'));
         }
 
         return view('admin.detail-pesanan', compact('order'));

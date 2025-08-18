@@ -43,23 +43,25 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- Left: Items -->
-            <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-                @foreach ($order->items as $item)
-                <div class="flex flex-col items-center justify-center bg-white shadow p-3 border w-[400px] h-[240px] rounded-xl">
+            <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    @foreach ($order->items as $item)
+    <div class="bg-white shadow border rounded-xl overflow-hidden">
+        <!-- Foto -->
+        <img src="{{ $item->image_url }}"
+             alt="{{ $item->menu->name }}"
+             class="w-full h-40 object-cover">
 
-
-    <img src="{{ $item->image_url }}" alt="{{ $item->menu->name }}" class="w-14 h-14 rounded-md object-cover mr-3">
-    <div>
-        <p class="font-semibold text-gray-800 text-sm">{{ $item->menu->name ?? 'Menu' }}</p>
-        <p class="text-green-500 text-xs">+{{ $item->menu->point }} poin</p>
-        <p class="text-gray-700 text-xs">Harga: Rp. {{ number_format($item->items_price, 0, ',', '.') }}</p>
-        <p class="text-gray-700 text-xs">Packaging: {{ $item->packaging }}</p>
-        <p class="text-gray-700 text-xs">Catatan: {{ $item->note }}</p>
+        <!-- Detail -->
+        <div class="p-3 text-sm">
+            <p class="font-semibold text-gray-800 truncate">{{ $item->menu->name ?? 'Menu' }}</p>
+            <p class="text-green-500">+{{ $item->menu->point }} poin</p>
+            <p class="text-gray-700">Harga: Rp. {{ number_format($item->items_price, 0, ',', '.') }}</p>
+            <p class="text-gray-700 text-xs">Packaging: {{ $item->packaging }}</p>
+            <p class="text-gray-700 text-xs truncate">Catatan: {{ $item->note }}</p>
+        </div>
     </div>
+    @endforeach
 </div>
-
-                @endforeach
-            </div>
 
             <!-- Right: Info Pesanan -->
 <div class="bg-white shadow rounded-lg p-5 border space-y-4">
@@ -73,7 +75,7 @@
         @foreach ($order->items as $item)
             <div class="flex justify-between text-gray-700">
                 <span>{{ $item->menu->name ?? 'Item' }} x{{ $item->quantity }}</span>
-                <span>Rp. {{ number_format($item['items_price'] ?? 0) }}</span>
+                <span>Rp. {{ number_format($item['items_price'] ?? 0, 0, '', '.') }}</span>
             </div>
         @endforeach
 
@@ -138,22 +140,5 @@
             </div>
         </div>
     </div>
-
-    <script>
-    const toggleChat = document.getElementById('toggleChat');
-    const chatBox = document.getElementById('chatBox');
-    const closeChat = document.getElementById('closeChat');
-
-    toggleChat.addEventListener('click', () => {
-        chatBox.classList.remove('hidden');
-        toggleChat.classList.add('hidden');
-    });
-
-    closeChat.addEventListener('click', () => {
-        chatBox.classList.add('hidden');
-        toggleChat.classList.remove('hidden');
-    });
-</script>
-
 </body>
 </html>
