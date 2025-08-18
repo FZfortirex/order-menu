@@ -44,6 +44,7 @@
             </div>
 
             <!-- Form Review -->
+            @if(Auth::check() && !is_numeric(Auth::user()->name))
             <form action="{{ route('reviews.store') }}" method="POST" class="mt-6" id="review-form">
                 @csrf
                 <input type="hidden" name="menu_id" value="{{ $menu->id }}">
@@ -65,6 +66,7 @@
                     Kirim Review
                 </button>
             </form>
+            @endif
 
             <!-- List Review -->
             <div class="mt-8 space-y-4" id="review-list">
