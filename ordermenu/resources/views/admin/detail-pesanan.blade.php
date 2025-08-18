@@ -139,9 +139,6 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    @include('partials.footer')
-
     <script>
     const toggleChat = document.getElementById('toggleChat');
     const chatBox = document.getElementById('chatBox');

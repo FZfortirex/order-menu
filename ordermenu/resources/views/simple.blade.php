@@ -13,16 +13,5 @@
 </head>
 <body class="bg-gray-100 text-black">
   @yield('content')
-
-  <!-- Footer -->
-  <footer class="bg-black text-white mt-10 py-6">
-    <div class="text-center space-x-4">
-      <a href="#" class="hover:underline">Home</a>
-      <a href="#" class="hover:underline">Galeri</a>
-      <a href="#" class="hover:underline">Kontak</a>
-      <a href="#" class="hover:underline">Opsi</a>
-    </div>
-    <div class="text-center mt-2 text-sm">© 2025 kampoengsawahproject</div>
-  </footer>
 </body>
 </html>

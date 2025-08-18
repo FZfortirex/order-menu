@@ -25,10 +25,10 @@
 
             <div class="flex gap-4">
                 <a href="{{ route('admin.banner') }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg shadow">
-                    Banner Admin
+                    Custom Banners
                 </a>
                 <a href="{{ route('admin.menu') }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg shadow">
-                    Menu Admin
+                    Menu
                 </a>
             </div>
 

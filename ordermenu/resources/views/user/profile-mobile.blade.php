@@ -50,7 +50,7 @@
 
       <a href="{{ route('logoutAccount') }}"
         onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-        class="mt-2 w-full bg-red-600 hover:bg-red-700 text-white text-sm font-semibold px-4 py-2 rounded">
+        class="text-center mt-2 w-full bg-red-600 hover:bg-red-700 text-white text-sm font-semibold px-4 py-2 rounded">
         Ganti Akun
       </a>
       <form id="logout-form" action="{{ route('logoutAccount') }}" method="POST" class="hidden">

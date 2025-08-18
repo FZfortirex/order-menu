@@ -21,10 +21,10 @@
     Rekap Penjualan
   </a>
   <a href="{{ route('admin.menu') }}" class="bg-yellow-500 hover:bg-yellow-400 text-white py-2 px-4 rounded shadow text-sm font-semibold w-[140px] text-center">
-    Menu Admin
+    Custom Banners
   </a>
   <a href="{{ route('admin.banner') }}" class="bg-yellow-500 hover:bg-yellow-400 text-white py-2 px-4 rounded shadow text-sm font-semibold w-[140px] text-center">
-    Banner Admin
+    Menu
   </a>
 </div>
 
