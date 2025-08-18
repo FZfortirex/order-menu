@@ -23,6 +23,7 @@ class MenuController extends Controller
     {
         $menus = Menu::withAvg('reviews', 'rating')
                 ->withCount('reviews')
+                ->orderByRaw("CASE WHEN category = 'Paket' THEN 0 ELSE 1 END")
                 ->orderByRaw('CASE WHEN discount_price IS NOT NULL THEN 0 ELSE 1 END') 
                 ->orderByDesc('reviews_avg_rating') 
                 ->orderByRaw('CASE WHEN stock = 0 THEN 1 ELSE 0 END') 

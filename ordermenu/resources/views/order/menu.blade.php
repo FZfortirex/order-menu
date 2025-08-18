@@ -42,6 +42,7 @@
       <button onclick="filterCategory('Makanan', this)" class="category-button px-4 py-2 border rounded">Makanan</button>
       <button onclick="filterCategory('Minuman', this)" class="category-button px-4 py-2 border rounded">Minuman</button>
       <button onclick="filterCategory('Cemilan', this)" class="category-button px-4 py-2 border rounded">Cemilan</button>
+      <button onclick="filterCategory('Paket', this)" class="category-button px-4 py-2 border rounded">Paket</button>
     </div>
   </div>
 
@@ -63,9 +64,6 @@
       </svg>
       <p>Pesanan Saya</p>
     </a>
-
-  <!-- FOOTER -->
-  @include('partials.footer')
 
   <!-- SCRIPT -->
   <script>

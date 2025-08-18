@@ -21,7 +21,7 @@
   <div class="w-full max-w-4xl bg-white rounded-2xl shadow-xl p-8 transition-all duration-300">
     <h1 class="text-3xl font-extrabold text-yellow-600 mb-8 text-center">Tambah Menu Baru</h1>
 
-    <form action="{{ route('menu.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('menu.store') }}" method="POST" enctype="multipart/form-data" novalidate>
       @csrf
 
       <div class="flex flex-col md:flex-row gap-6">
@@ -53,12 +53,14 @@
             <label class="block text-gray-700 font-medium mb-1">Nama Menu</label>
             <input type="text" name="name" placeholder="Contoh: Nasi Goreng"
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 transition" required>
+              <p class="text-red-500 text-xs mt-1 hidden">Nama menu wajib diisi.</p>
           </div>
 
           <div>
             <label class="block text-gray-700 font-medium mb-1">Harga</label>
             <input type="number" name="price" placeholder="Contoh: 15000"
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 transition" required>
+              <p class="text-red-500 text-xs mt-1 hidden">Harga wajib diisi.</p>
           </div>
 
           <div class="mb-4">
@@ -71,19 +73,22 @@
           <div>
             <label class="block text-gray-700 font-medium mb-1">Deskripsi</label>
             <textarea name="desc" rows="3" placeholder="Deskripsikan menu di sini..."
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 transition"></textarea>
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 transition" required></textarea>
+              <p class="text-red-500 text-xs mt-1 hidden">Deskripsi wajib diisi.</p>
           </div>
 
           <div>
             <label class="block text-gray-700 font-medium mb-1">Stok</label>
             <input type="number" name="stock" placeholder="Jumlah stok"
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 transition" required min="0">
+              <p class="text-red-500 text-xs mt-1 hidden">Stok wajib diisi.</p>
           </div>
 
           <div>
             <label class="block text-gray-700 font-medium mb-1">Poin</label>
             <input type="number" name="point" placeholder="Masukkan poin"
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 transition" required min="0">
+              <p class="text-red-500 text-xs mt-1 hidden">Poin wajib diisi.</p>
           </div>
 
           <div>
@@ -94,10 +99,13 @@
               <option value="Makanan">Makanan</option>
               <option value="Minuman">Minuman</option>
               <option value="Cemilan">Cemilan</option>
+              <option value="Paket">Paket</option>
             </select>
+            <p class="text-red-500 text-xs mt-1 hidden">Kategori wajib diisi.</p>
           </div>
         </div>
       </div>
+      <input type="hidden" name="status" value="sedia">
 
       <!-- Tombol Submit -->
       <div class="flex justify-center mt-8">
@@ -116,6 +124,13 @@
     const noImageText = document.getElementById('noImageText');
     const removeImage = document.getElementById('removeImage');
 
+    document.addEventListener("DOMContentLoaded", () => {
+      form.reset();
+      previewImage.classList.add("hidden");
+      noImageText.classList.remove("hidden");
+      removeImage.classList.add("hidden");
+    });
+
     fileInput.addEventListener('change', function (e) {
       const file = e.target.files[0];
       if (file) {
@@ -132,6 +147,48 @@
       fileInput.value = '';
       previewImage.src = '';
       removeImage.classList.add('hidden');
+    });
+    const form = document.querySelector("form");
+
+    function validateField(field) {
+      const wrapper = field.parentElement; // div pembungkus field
+      const errorMsg = wrapper.querySelector("p.text-red-500");
+      let isValid = true;
+
+      if (field.type === 'file') {
+        isValid = field.files && field.files.length > 0;
+      } else if (field.tagName === 'SELECT') {
+        isValid = field.value !== "";
+      } else {
+        isValid = field.value.trim() !== "";
+      }
+
+      if (!isValid) {
+        errorMsg && errorMsg.classList.remove("hidden");
+        field.classList.add("border-red-500");
+        field.classList.remove("border-gray-300");
+      } else {
+        errorMsg && errorMsg.classList.add("hidden");
+        field.classList.remove("border-red-500");
+        field.classList.add("border-gray-300");
+      }
+
+      return isValid;
+    }
+
+    // Live validate saat user input/ubah
+    form.querySelectorAll("[required]").forEach(field => {
+      const evt = field.type === 'file' ? 'change' : 'input';
+      field.addEventListener(evt, () => validateField(field));
+    });
+
+    // Cek saat submit
+    form.addEventListener("submit", function (e) {
+      let valid = true;
+      form.querySelectorAll("[required]").forEach(field => {
+        if (!validateField(field)) valid = false;
+      });
+      if (!valid) e.preventDefault();
     });
   </script>
 

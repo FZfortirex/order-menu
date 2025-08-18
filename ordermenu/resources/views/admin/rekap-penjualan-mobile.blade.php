@@ -40,9 +40,6 @@
     </div>
   </div>
 
-  <!-- Footer -->
-  @include('partials-admin.footer')
-
   <!-- Chart Script -->
   <script>
     const ctx = document.getElementById('chartPenjualan').getContext('2d');

@@ -47,7 +47,7 @@
   <!-- KATEGORI -->
   <div class="mt-6 px-4">
     <div class="flex overflow-x-auto gap-2 scrollbar-hide pb-2">
-      @foreach (['Semua', 'Makanan', 'Minuman', 'Cemilan'] as $menu)
+      @foreach (['Semua', 'Makanan', 'Minuman', 'Cemilan', 'Paket'] as $menu)
         <button onclick="filterCategory('{{ $menu }}', this)"
           class="category-button whitespace-nowrap px-4 py-2 border rounded-[12px] text-sm bg-white hover:bg-yellow-300 transition">
           {{ $menu }}
@@ -75,9 +75,6 @@
       </svg>
       <p>Pesanan Saya</p>
     </a>
-
-  <!-- FOOTER -->
-  @include('partials.footer')
 
   <!-- SCRIPT -->
   <script>

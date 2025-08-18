@@ -38,7 +38,7 @@
 
   <!-- Total Poin -->
   <section class="mx-6 mt-6 border rounded-lg shadow-md overflow-hidden flex flex-col sm:flex-row">
-    <div class="bg-maroon text-white p-6 flex items-center justify-center text-4xl font-bold sm:w-32">$</div>
+    <div class="bg-maroon text-white p-6 flex items-center justify-center text-4xl font-bold sm:w-32"></div>
     <div class="p-6 flex-1">
       <div class="flex justify-between items-start flex-wrap gap-4">
         <div>
@@ -52,37 +52,27 @@
     </div>
   </section>
 
-  <!-- Filter Tabs -->
-  <div class="flex flex-wrap gap-4 px-6 mt-6">
-    <button class="bg-yellow-400 text-black px-4 py-2 rounded-md flex items-center space-x-2 font-medium shadow hover:brightness-95">
-      <span class="text-xl">☰</span><span>Semua</span>
-    </button>
-    <button class="border border-gray-400 px-4 py-2 rounded-md flex items-center space-x-2 font-medium hover:bg-gray-100">
-      <span class="text-xl">⚙️</span><span>Diskon</span>
-    </button>
-  </div>
-
   <!-- Voucher List -->
   <section class="px-6 mt-8 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
     @foreach($rewards as $reward)
-    <div class="border rounded-lg shadow hover:shadow-lg transition p-4 flex flex-col items-center">
-      <img src="https://via.placeholder.com/100x100.png?text={{ urlencode($reward->name) }}" alt="{{ $reward->name }}" class="mb-3 rounded">
-      <p class="text-center text-sm font-medium mb-1">{{ $reward->name }}</p>
-      <span class="text-xs text-gray-500 mb-3">{{ $reward->points_required }} poin</span>
-      <form action="{{ route('tukarpoin.store') }}" method="POST">
-        @csrf
-        <input type="hidden" name="reward_id" value="{{ $reward->id }}">
-        <button type="submit" class="bg-yellow-400 text-black px-4 py-1 rounded w-full text-sm font-semibold hover:brightness-95">Tukar</button>
-      </form>
-    </div>
-    @endforeach
+    @if(!is_numeric($user->name))
+      <div class="border rounded-lg shadow hover:shadow-lg transition p-4 flex flex-col items-center"> 
+        <p class="text-center text-sm font-medium mb-1">{{ $reward->name }}</p>
+        <span class="text-xs text-gray-500 mb-3">{{ $reward->points_required }} poin</span>
+        <form action="{{ route('tukarpoin.store') }}" method="POST">
+          @csrf
+          <input type="hidden" name="reward_id" value="{{ $reward->id }}">
+          <button type="submit" class="bg-yellow-400 text-black px-4 py-1 rounded w-full text-sm font-semibold hover:brightness-95">
+            Tukar
+          </button>
+        </form>
+      </div>
+    @endif
+  @endforeach
 
 
     <!-- Tambahkan kartu voucher lain jika perlu -->
   </section>
-
-  <!-- Footer -->
-  @include('partials.footer')
 
 
 </body>

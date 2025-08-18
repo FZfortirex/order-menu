@@ -12,8 +12,8 @@
          class="{{ request()->routeIs('welcome') ? 'text-yellow-300' : 'hover:text-yellow-300' }}">
          Home
       </a>
-      <a href="/profile"
-         class="{{ request()->is('galeri') ? 'text-yellow-300' : 'hover:text-yellow-300' }}">
+      <a href="{{ auth()->check() ? route('profile') : route('loginAccount') }}"
+         class="{{ request()->routeIs('profile') ? 'text-yellow-300' : 'hover:text-yellow-300' }}">
          Profile
       </a>
       <a href="/galeri"
@@ -46,10 +46,10 @@
      Home
   </a>
 
-  <a href="/profile"
-     class="block text-white text-base font-medium py-2 px-4 rounded-xl
-     {{ request()->is('galeri') ? 'bg-yellow-400 text-[#5b130a] font-semibold' : 'hover:bg-[#4a0f07]' }} transition duration-200 ease-in-out">
-     Profile
+  <a href="{{ auth()->check() ? route('profile') : route('loginAccount') }}"
+      class="block text-white text-base font-medium py-2 px-4 rounded-xl
+      {{ request()->routeIs('profile') ? 'bg-yellow-400 text-[#5b130a] font-semibold' : 'hover:bg-[#4a0f07]' }} transition duration-200 ease-in-out">
+      Profile
   </a>
 
   <a href="/galeri"

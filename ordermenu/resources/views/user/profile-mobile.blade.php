@@ -97,9 +97,5 @@
       @endif
     </div>
   </main>
-
-  <!-- Footer -->
-  @include('partials.footer')
-
 </body>
 </html>

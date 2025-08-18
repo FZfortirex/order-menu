@@ -61,7 +61,7 @@
             <input type="hidden" name="role" value="customer">
 
             <div class="flex justify-center mt-6">
-                <button type="submit" class="bg-yellow-400 text-white font-semibold px-6 py-2 rounded-lg shadow hover:bg-yellow-500 transition duration-200">
+                <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-6 py-2 rounded-lg shadow transition duration-200">
                     Buat Akun
                 </button>
             </div>

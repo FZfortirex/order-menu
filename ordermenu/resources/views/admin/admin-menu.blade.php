@@ -36,10 +36,26 @@
                 </a>
             </div>
 
+            <!-- Search Input -->
+            <div class="mb-6">
+                <input type="text" id="searchInput" placeholder="Cari menu..."
+                    class="w-full md:w-1/3 px-4 py-2 border rounded-lg shadow-sm focus:ring text-sm">
+            </div>
+
+            <!-- Filter Kategori -->
+            <div class="flex flex-wrap gap-3 mb-8">
+                <button class="filter-btn bg-yellow-500 text-white px-4 py-2 rounded-lg text-sm" data-category="all">Semua</button>
+                <button class="filter-btn bg-gray-200 px-4 py-2 rounded-lg text-sm" data-category="makanan">Makanan</button>
+                <button class="filter-btn bg-gray-200 px-4 py-2 rounded-lg text-sm" data-category="minuman">Minuman</button>
+                <button class="filter-btn bg-gray-200 px-4 py-2 rounded-lg text-sm" data-category="cemilan">Cemilan</button>
+            </div>
+
             <!-- Daftar Menu -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div id="menuContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach ($menus as $menu)
-                    <div class="bg-white rounded-2xl shadow-md flex p-4 gap-4 hover:shadow-lg transition">
+                    <div class="menu-card bg-white rounded-2xl shadow-md flex p-4 gap-4 hover:shadow-lg transition"
+                        data-name="{{ strtolower($menu->name) }}"
+                        data-category="{{ strtolower($menu->category) }}">
                         <img src="/images/{{ $menu->image }}" alt="{{ $menu->name }}" class="w-24 h-24 object-cover rounded-xl">
 
                         <div class="flex flex-col justify-between flex-1">
@@ -76,6 +92,9 @@
                     </div>
                 @endforeach
             </div>
+
+            <!-- Pesan jika tidak ada hasil -->
+            <p id="noResult" class="hidden text-center text-gray-500 mt-6">Menu tidak ditemukan.</p>
         </div>
     </main>
 
@@ -94,10 +113,10 @@
         </div>
     </div>
 
-    <!-- Script Hapus Konfirmasi -->
+    <!-- Script -->
     <script>
+        // Konfirmasi Hapus
         let formToSubmit = null;
-
         document.querySelectorAll('.delete-form').forEach(form => {
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
@@ -105,15 +124,62 @@
                 document.getElementById('confirmModal').classList.remove('hidden');
             });
         });
-
         document.getElementById('cancelDelete').addEventListener('click', () => {
             formToSubmit = null;
             document.getElementById('confirmModal').classList.add('hidden');
         });
-
         document.getElementById('confirmDelete').addEventListener('click', () => {
             if (formToSubmit) formToSubmit.submit();
         });
+
+        // Search Menu Realtime
+        const searchInput = document.getElementById("searchInput");
+        const menuCards = document.querySelectorAll(".menu-card");
+        const noResult = document.getElementById("noResult");
+
+        searchInput.addEventListener("input", () => {
+            filterMenus();
+        });
+
+        // Filter Kategori
+        const filterButtons = document.querySelectorAll(".filter-btn");
+        let activeCategory = "all";
+
+        filterButtons.forEach(btn => {
+            btn.addEventListener("click", () => {
+                activeCategory = btn.dataset.category;
+
+                // Ubah warna tombol aktif
+                filterButtons.forEach(b => b.classList.remove("bg-yellow-500", "text-white"));
+                filterButtons.forEach(b => b.classList.add("bg-gray-200"));
+                btn.classList.add("bg-yellow-500", "text-white");
+                btn.classList.remove("bg-gray-200");
+
+                filterMenus();
+            });
+        });
+
+        function filterMenus() {
+            const searchVal = searchInput.value.toLowerCase();
+            let found = false;
+
+            menuCards.forEach(card => {
+                const name = card.dataset.name;
+                const category = card.dataset.category;
+
+                const matchSearch = name.includes(searchVal);
+                const matchCategory = (activeCategory === "all" || category === activeCategory);
+
+                if (matchSearch && matchCategory) {
+                    card.style.display = "flex";
+                    found = true;
+                } else {
+                    card.style.display = "none";
+                }
+            });
+
+            noResult.classList.toggle("hidden", found);
+        }
     </script>
 </body>
 </html>

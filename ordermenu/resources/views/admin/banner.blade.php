@@ -17,21 +17,22 @@
   </a>
 
   <!-- Card -->
-  <div class="w-full max-w-5xl bg-white rounded-2xl shadow-xl p-8 transition-all duration-300">
+  <div class="w-full max-w-6xl bg-white rounded-2xl shadow-xl p-8 transition-all duration-300">
     <h1 class="text-3xl font-extrabold text-yellow-600 mb-8 text-center">Tambah Banner</h1>
 
     <form method="POST" action="{{ route('admin.banner.save') }}" enctype="multipart/form-data">
       @csrf
 
-      <div class="flex justify-between gap-5 flex-wrap">
+      <!-- Grid Responsive -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         @foreach([1, 2, 3, 4] as $i)
           @php $banner = $banners->firstWhere('id', $i); @endphp
 
-          <div class="w-[23%] min-w-[220px] border border-gray-200 rounded-lg p-4 shadow-sm flex-shrink-0">
-            <h2 class="text-lg font-semibold text-yellow-600 mb-4">Banner {{ $i }}</h2>
+          <div class="border border-gray-200 rounded-lg p-4 shadow-sm bg-white">
+            <h2 class="text-lg font-semibold text-yellow-600 mb-4 text-center">Banner {{ $i }}</h2>
 
             <!-- Preview Gambar -->
-            <div class="relative w-full max-w-[250px] aspect-[4/3] bg-gray-100 rounded-md flex items-center justify-center overflow-hidden mx-auto">
+            <div class="relative w-full aspect-[4/3] bg-gray-100 rounded-md flex items-center justify-center overflow-hidden">
               @if($banner && $banner->image)
                 <img id="previewImage_{{ $i }}" src="{{ asset($banner->image) }}" class="object-cover w-full h-full">
               @else
@@ -52,21 +53,16 @@
 
             <!-- Tombol Hapus Gambar -->
             <div class="mt-2">
-              @if($banner && $banner->has_image)
-                <!-- Checkbox Hidden -->
-                <input type="checkbox" name="clear_banner[]" value="{{ $i }}" id="clearCheckbox_{{ $i }}" class="hidden">
-
-                <!-- Tombol Hapus Gambar -->
-                <button type="button"
-                        id="deleteButton_{{ $i }}"
-                        onclick="markBannerForClear({{ $i }})"
-                        class="w-full px-4 py-2 bg-red-500 text-white text-sm rounded hover:bg-red-700 transition">
-                  Hapus Banner
-                </button>
-              @endif
+              <input type="checkbox" name="clear_banner[]" value="{{ $i }}" id="clearCheckbox_{{ $i }}" class="hidden">
+              <button type="button"
+                      id="deleteButton_{{ $i }}"
+                      onclick="markBannerForClear({{ $i }})"
+                      class="w-full px-4 py-2 bg-red-500 text-white text-sm rounded hover:bg-red-700 transition {{ $banner && $banner->has_image ? '' : 'hidden' }}">
+                Hapus Banner
+              </button>
             </div>
 
-            <!-- Input Nama Menu + Autocomplete -->
+            <!-- Input Nama Menu -->
             <div class="relative mt-4 {{ $banner && $banner->has_image ? '' : 'hidden' }}" id="menuSection_{{ $i }}">
               <input type="text" name="menu_name_{{ $i }}" id="menuInput_{{ $i }}" autocomplete="off"
                     value="{{ $banner->menu->name ?? '' }}"
@@ -82,9 +78,10 @@
         @endforeach
       </div>
 
+      <!-- Tombol Simpan -->
       <div class="flex justify-center mt-8">
         <button type="submit"
-                class="bg-yellow-600 text-white font-semibold px-6 py-2 rounded-lg shadow hover:bg-yellow-700 hover:shadow-lg transition-all duration-300">
+                class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-6 py-2 rounded-lg shadow hover:shadow-lg transition-all duration-300">
           Simpan Semua
         </button>
       </div>
@@ -95,119 +92,80 @@
     const menus = @json($menus);
 
     function markBannerForClear(index) {
-  const checkbox = document.getElementById(`clearCheckbox_${index}`);
-  const preview = document.getElementById(`previewImage_${index}`);
-  const noImageText = document.getElementById(`noImageText_${index}`);
-  const menuSection = document.getElementById(`menuSection_${index}`);
-  const menuInput = document.getElementById(`menuInput_${index}`);
-  const menuId = document.getElementById(`menuId_${index}`);
-  const fileInput = document.getElementById(`image_${index}`);
-  const deleteButton = document.getElementById(`deleteButton_${index}`);
-
-  if (checkbox) checkbox.checked = true;
-
-  if (preview) {
-    preview.src = '';
-    preview.classList.add('hidden');
-  }
-
-  if (noImageText) {
-    noImageText.classList.remove('hidden');
-  }
-
-  if (menuSection) menuSection.classList.add('hidden');
-  if (menuInput) menuInput.value = '';
-  if (menuId) menuId.value = '';
-
-  if (fileInput) fileInput.value = '';
-
-  if (deleteButton) deleteButton.classList.add('hidden');
-}
-
-    function previewImage(event, index) {
-    const input = event.target;
-    const reader = new FileReader();
-
-    reader.onload = function () {
+      const checkbox = document.getElementById(`clearCheckbox_${index}`);
       const preview = document.getElementById(`previewImage_${index}`);
       const noImageText = document.getElementById(`noImageText_${index}`);
-      const clearBtn = document.getElementById(`clearBtn_${index}`);
       const menuSection = document.getElementById(`menuSection_${index}`);
+      const menuInput = document.getElementById(`menuInput_${index}`);
+      const menuId = document.getElementById(`menuId_${index}`);
+      const fileInput = document.getElementById(`image_${index}`);
+      const deleteButton = document.getElementById(`deleteButton_${index}`);
 
-      preview.src = reader.result;
-      preview.classList.remove('hidden');
-      if (noImageText) noImageText.classList.add('hidden');
-      if (clearBtn) clearBtn.classList.remove('hidden');
-      if (menuSection) menuSection.classList.remove('hidden');
-    };
-
-    if (input.files[0]) {
-      reader.readAsDataURL(input.files[0]);
+      if (checkbox) checkbox.checked = true;
+      if (preview) { preview.src = ''; preview.classList.add('hidden'); }
+      if (noImageText) noImageText.classList.remove('hidden');
+      if (menuSection) menuSection.classList.add('hidden');
+      if (menuInput) menuInput.value = '';
+      if (menuId) menuId.value = '';
+      if (fileInput) fileInput.value = '';
+      if (deleteButton) deleteButton.classList.add('hidden');
     }
-  }
 
-  function clearImage(index) {
-    const preview = document.getElementById(`previewImage_${index}`);
-    const input = document.getElementById(`image_${index}`);
-    const noImageText = document.getElementById(`noImageText_${index}`);
-    const clearBtn = document.getElementById(`clearBtn_${index}`);
-    const menuSection = document.getElementById(`menuSection_${index}`);
+    function previewImage(event, index) {
+      const input = event.target;
+      const reader = new FileReader();
+      reader.onload = function () {
+        const preview = document.getElementById(`previewImage_${index}`);
+        const noImageText = document.getElementById(`noImageText_${index}`);
+        const menuSection = document.getElementById(`menuSection_${index}`);
+        const deleteButton = document.getElementById(`deleteButton_${index}`);
+        
+        preview.src = reader.result;
+        preview.classList.remove('hidden');
+        if (noImageText) noImageText.classList.add('hidden');
+        if (menuSection) menuSection.classList.remove('hidden');
+        if (deleteButton) deleteButton.classList.remove('hidden'); // <-- tampilkan tombol hapus
+      };
+      if (input.files[0]) reader.readAsDataURL(input.files[0]);
+    }
 
-    preview.src = '';
-    preview.classList.add('hidden');
-    input.value = '';
-    if (noImageText) noImageText.classList.remove('hidden');
-    if (clearBtn) clearBtn.classList.add('hidden');
-    if (menuSection) menuSection.classList.add('hidden');
-  }
+    [1, 2, 3, 4].forEach(i => {
+      const input = document.getElementById(`menuInput_${i}`);
+      const hidden = document.getElementById(`menuId_${i}`);
+      const box = document.getElementById(`suggestionBox_${i}`);
 
-  [1, 2, 3, 4].forEach(i => {
-    const input = document.getElementById(`menuInput_${i}`);
-    const hidden = document.getElementById(`menuId_${i}`);
-    const box = document.getElementById(`suggestionBox_${i}`);
-
-    input.addEventListener('input', function () {
-      const keyword = this.value.toLowerCase();
-      box.innerHTML = '';
-      hidden.value = '';
-
-      if (keyword.trim() === '') {
-        box.classList.add('hidden');
-        return;
-      }
-
-      const filtered = menus.filter(menu => menu.name.toLowerCase().includes(keyword));
-      if (filtered.length === 0) {
-        box.classList.add('hidden');
-        return;
-      }
-
-      filtered.forEach(menu => {
-        const li = document.createElement('li');
-        li.textContent = menu.name;
-        li.className = 'px-4 py-2 hover:bg-yellow-100 cursor-pointer';
-        li.addEventListener('click', () => {
-          input.value = menu.name;
-          hidden.value = menu.id;
-          box.classList.add('hidden');
+      input.addEventListener('input', function () {
+        const keyword = this.value.toLowerCase();
+        box.innerHTML = '';
+        hidden.value = '';
+        if (keyword.trim() === '') { box.classList.add('hidden'); return; }
+        const filtered = menus.filter(menu => menu.name.toLowerCase().includes(keyword));
+        if (filtered.length === 0) { box.classList.add('hidden'); return; }
+        filtered.forEach(menu => {
+          const li = document.createElement('li');
+          li.textContent = menu.name;
+          li.className = 'px-4 py-2 hover:bg-yellow-100 cursor-pointer';
+          li.addEventListener('click', () => {
+            input.value = menu.name;
+            hidden.value = menu.id;
+            box.classList.add('hidden');
+          });
+          box.appendChild(li);
         });
-        box.appendChild(li);
+        box.classList.remove('hidden');
       });
 
-      box.classList.remove('hidden');
+      document.addEventListener('click', function (e) {
+        if (!box.contains(e.target) && e.target !== input) {
+          box.classList.add('hidden');
+        }
+      });
     });
 
-    document.addEventListener('click', function (e) {
-      if (!box.contains(e.target) && e.target !== input) {
-        box.classList.add('hidden');
-      }
+    window.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('input[type="file"]').forEach(fileInput => fileInput.value = '');
     });
-  });
-
-  window.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('input[type="file"]').forEach(fileInput => fileInput.value = '');
-  });
-</script>
+  </script>
 
 </body>
 </html>

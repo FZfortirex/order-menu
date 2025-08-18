@@ -36,7 +36,7 @@
         </h2>
         <p class="text-gray-600 mb-4">{{ $menu->desc }}</p>
 
-        <form action="{{ route('pesanan.add') }}" method="POST">
+        <form id="orderForm" action="{{ route('pesanan.add') }}" method="POST">
           @csrf
           <input type="hidden" name="menu_id" value="{{ $menu->id }}">
           <input type="hidden" name="price" value="{{ $menu->price }}">
@@ -57,7 +57,10 @@
             Catatan <span class="text-gray-500 text-sm">Opsional</span>
           </p>
           <p class="text-sm text-gray-500 mb-1">Contoh: tambahkan sedikit sambal saja</p>
-          <textarea name="note" class="w-full border rounded-lg p-2 mb-4" rows="3" placeholder="Tulis catatan di sini..."></textarea>
+          <textarea id="note" name="note" class="w-full border rounded-lg p-2 mb-4" rows="3" placeholder="Tulis catatan di sini..."></textarea>
+          <p id="note-warning" class="text-red-600 text-sm mb-4 hidden">
+            Catatan maksimal 200 karakter!
+          </p>
           <div class="flex items-center justify-between mb-2">
             <p class="text-base font-medium">Jumlah Pemesanan</p>
             <div class="flex items-center space-x-4">
@@ -118,6 +121,24 @@
   @include('partials.footer')
 
   <script>
+    const maxNoteLength = 200; // batas karakter catatan
+    const noteField = document.getElementById('note');
+    const warningText = document.getElementById('note-warning');
+    const submitBtn = document.querySelector('#orderForm button[type="submit"]');
+
+    document.getElementById('orderForm').addEventListener('submit', function(e) {
+      const noteLength = noteField.value.length;
+
+      if(noteLength > maxNoteLength) {
+        e.preventDefault(); // batalkan submit
+        warningText.classList.remove('hidden'); // tampilkan warning
+        warningText.innerText = `Catatan maksimal ${maxNoteLength} karakter! Saat ini: ${noteLength} karakter.`;
+        noteField.focus(); // fokus ke textarea
+      } else {
+        warningText.classList.add('hidden'); // sembunyikan warning kalau valid
+      }
+    });
+    
     let qty = 1;
     const price = {{ $menu->price }};
     const discountPrice = {{ $menu->discount_price ?? 'null' }};

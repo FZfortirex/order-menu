@@ -31,7 +31,7 @@
     <!-- Deskripsi -->
     <p class="text-sm text-gray-600 leading-relaxed mb-4">{{ $menu->desc }}</p>
 
-    <form action="{{ route('pesanan.add') }}" method="POST">
+    <form id="orderForm" action="{{ route('pesanan.add') }}" method="POST">
   @csrf
   <input type="hidden" name="menu_id" value="{{ $menu->id }}">
   <input type="hidden" name="price" value="{{ $menu->price }}">
@@ -57,7 +57,10 @@
   <div class="mb-4">
     <p class="text-sm font-semibold">Catatan <span class="text-gray-400 font-normal">(Opsional)</span></p>
     <p class="text-xs text-gray-500 mb-1">Contoh: tambahkan sedikit sambal saja</p>
-    <textarea name="note" rows="3" class="w-full border rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" placeholder="Tulis catatan di sini..."></textarea>
+    <textarea id="note" name="note" rows="3" class="w-full border rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400" placeholder="Tulis catatan di sini..."></textarea>
+    <p id="note-warning" class="text-red-600 text-sm mb-4 hidden">
+      Catatan maksimal 200 karakter!
+    </p>
   </div>
 
   <!-- Jumlah & Harga -->
@@ -109,6 +112,24 @@
   </div>
 
   <script>
+    const maxNoteLength = 200; // batas karakter catatan
+    const noteField = document.getElementById('note');
+    const warningText = document.getElementById('note-warning');
+    const submitBtn = document.querySelector('#orderForm button[type="submit"]');
+
+    document.getElementById('orderForm').addEventListener('submit', function(e) {
+      const noteLength = noteField.value.length;
+
+      if(noteLength > maxNoteLength) {
+        e.preventDefault(); // batalkan submit
+        warningText.classList.remove('hidden'); // tampilkan warning
+        warningText.innerText = `Catatan maksimal ${maxNoteLength} karakter! Saat ini: ${noteLength} karakter.`;
+        noteField.focus(); // fokus ke textarea
+      } else {
+        warningText.classList.add('hidden'); // sembunyikan warning kalau valid
+      }
+    });
+    
     let qty = 1;
     const price = {{ $menu->price }};
     const discountPrice = {{ $menu->discount_price ?? 'null' }};

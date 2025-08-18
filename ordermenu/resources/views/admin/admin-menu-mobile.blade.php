@@ -22,35 +22,46 @@
         <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
 
             <!-- Header -->
-            <div class="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center mb-8">
-                <div class="flex items-center justify-between">
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6">
+                <div class="flex items-center gap-3">
                     <a href="/listOrder" class="flex items-center text-gray-700 hover:text-yellow-600 font-semibold text-sm">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                         </svg>
                         Back
                     </a>
-                    <!-- Tombol Tambah di kanan (mobile) -->
-                    <a href="{{ route('menu.create') }}"
-                       class="sm:hidden bg-yellow-500 hover:bg-yellow-600 text-white text-xs font-semibold px-3 py-1.5 rounded-md shadow">
-                        Tambah
-                    </a>
                 </div>
 
-                <!-- Judul di bawah untuk mobile -->
                 <h1 class="text-xl sm:text-2xl font-bold text-gray-800">Manajemen Menu</h1>
 
-                <!-- Tombol Tambah di kanan (desktop) -->
                 <a href="{{ route('menu.create') }}"
-                   class="hidden sm:inline-block bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-semibold px-5 py-2 rounded-xl shadow transition">
+                   class="mt-3 sm:mt-0 bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-semibold px-5 py-2 rounded-xl shadow transition">
                     Tambah Menu
                 </a>
             </div>
 
+            <!-- Search -->
+            <div class="mb-6">
+                <input type="text" id="searchInput" placeholder="Cari menu..."
+                       class="w-full sm:w-1/2 px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-yellow-400 focus:outline-none">
+            </div>
+
+            <!-- Filter Category -->
+            <div class="mb-6 flex flex-wrap gap-2">
+                <button class="filter-btn px-4 py-2 text-sm rounded-lg bg-yellow-500 text-white" data-category="all">Semua</button>
+                <button class="filter-btn px-4 py-2 text-sm rounded-lg bg-gray-200 hover:bg-yellow-400" data-category="makanan">Makanan</button>
+                <button class="filter-btn px-4 py-2 text-sm rounded-lg bg-gray-200 hover:bg-yellow-400" data-category="minuman">Minuman</button>
+                <button class="filter-btn px-4 py-2 text-sm rounded-lg bg-gray-200 hover:bg-yellow-400" data-category="cemilan">Cemilan</button>
+                <button class="filter-btn px-4 py-2 text-sm rounded-lg bg-gray-200 hover:bg-yellow-400 " data-category="paket">Paket</button>
+            </div>
+
             <!-- Daftar Menu -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div id="menuList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 @foreach ($menus as $menu)
-                    <div class="bg-white rounded-xl shadow-sm flex p-3 gap-3 hover:shadow-md transition">
+                    <div class="menu-item bg-white rounded-xl shadow-sm flex p-3 gap-3 hover:shadow-md transition"
+                        data-name="{{ strtolower($menu->name) }}"
+                        data-desc="{{ strtolower($menu->desc) }}"
+                        data-category="{{ strtolower($menu->category) }}">
                         <img src="/images/{{ $menu->image }}" alt="{{ $menu->name }}" class="w-20 h-20 object-cover rounded-lg">
 
                         <div class="flex flex-col justify-between flex-1 text-sm">
@@ -73,7 +84,7 @@
 
                             <div class="flex gap-2 mt-3">
                                 <a href="{{ route('menu.edit', $menu->id) }}"
-                                   class="bg-yellow-400 hover:bg-yellow-500 text-white text-xs px-3 py-1 rounded">
+                                class="bg-yellow-400 hover:bg-yellow-500 text-white text-xs px-3 py-1 rounded">
                                     Edit
                                 </a>
                                 <form action="{{ route('menu.destroy', $menu->id) }}" method="POST" class="delete-form">
@@ -89,6 +100,7 @@
                     </div>
                 @endforeach
             </div>
+
 
         </div>
     </main>
@@ -108,10 +120,10 @@
         </div>
     </div>
 
-    <!-- Script Hapus Konfirmasi -->
+    <!-- Script -->
     <script>
+        // Konfirmasi hapus
         let formToSubmit = null;
-
         document.querySelectorAll('.delete-form').forEach(form => {
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
@@ -119,14 +131,26 @@
                 document.getElementById('confirmModal').classList.remove('hidden');
             });
         });
-
         document.getElementById('cancelDelete').addEventListener('click', () => {
             formToSubmit = null;
             document.getElementById('confirmModal').classList.add('hidden');
         });
-
         document.getElementById('confirmDelete').addEventListener('click', () => {
             if (formToSubmit) formToSubmit.submit();
+        });
+
+        // Search filter
+        document.getElementById('searchInput').addEventListener('input', function () {
+            const query = this.value.toLowerCase();
+            document.querySelectorAll('.menu-item').forEach(item => {
+                const name = item.getAttribute('data-name');
+                const desc = item.getAttribute('data-desc');
+                if (name.includes(query) || desc.includes(query)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
         });
     </script>
 
