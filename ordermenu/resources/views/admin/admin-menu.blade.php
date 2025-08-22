@@ -176,20 +176,6 @@
         document.getElementById('confirmDelete').addEventListener('click', () => {
             if (formToSubmit) formToSubmit.submit();
         });
-        document.querySelectorAll('.delete-form').forEach(form => {
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
-                formToSubmit = form;
-                document.getElementById('confirmModal').classList.remove('hidden');
-            });
-        });
-        document.getElementById('cancelDelete').addEventListener('click', () => {
-            formToSubmit = null;
-            document.getElementById('confirmModal').classList.add('hidden');
-        });
-        document.getElementById('confirmDelete').addEventListener('click', () => {
-            if (formToSubmit) formToSubmit.submit();
-        });
 
         // Restock Semua
         document.getElementById("restockAllBtn").addEventListener("click", () => {
