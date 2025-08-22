@@ -31,9 +31,32 @@
                     </a>
                     <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Manajemen Menu</h1>
                 </div>
-                <a href="{{ route('menu.create') }}" class="mt-4 md:mt-0 bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-semibold px-5 py-2 rounded-xl shadow transition">
-                    Tambah Menu
-                </a>
+                <div class="gap-4 flex items-center">
+                    <button id="restockAllBtn" 
+                        class="mt-4 md:mt-0 bg-red-500 hover:bg-red-600 text-white text-sm font-semibold px-5 py-2 rounded-xl shadow transition">
+                        Restock Semua
+                    </button>
+
+                    <form id="restockForm" action="{{ route('menu.restock') }}" method="POST" class="hidden">
+                        @csrf
+                    </form>
+                    <!-- Modal Restock -->
+                    <div id="restockModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+                        <div class="bg-white rounded-lg shadow-lg w-96 p-6">
+                            <h2 class="text-lg font-semibold text-gray-800 mb-3">Konfirmasi Restock</h2>
+                            <p class="text-sm text-gray-600 mb-5">
+                                Apakah kamu yakin ingin merestock semua menu menjadi <b>50 stok</b>?
+                            </p>
+                            <div class="flex justify-end gap-3">
+                                <button id="cancelRestock" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-sm">Batal</button>
+                                <button id="confirmRestock" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded text-sm">Ya, Restock</button>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="{{ route('menu.create') }}" class="mt-4 md:mt-0 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold px-5 py-2 rounded-xl shadow transition">
+                        Tambah Menu
+                    </a>
+                </div>
             </div>
 
             <!-- Search Input -->
@@ -48,6 +71,7 @@
                 <button class="filter-btn bg-gray-200 px-4 py-2 rounded-lg text-sm" data-category="makanan">Makanan</button>
                 <button class="filter-btn bg-gray-200 px-4 py-2 rounded-lg text-sm" data-category="minuman">Minuman</button>
                 <button class="filter-btn bg-gray-200 px-4 py-2 rounded-lg text-sm" data-category="cemilan">Cemilan</button>
+                <button class="filter-btn bg-gray-200 px-4 py-2 rounded-lg text-sm" data-category="paket">Paket</button>
             </div>
 
             <!-- Daftar Menu -->
@@ -83,10 +107,25 @@
                                 <form action="{{ route('menu.delete', $menu->id) }}" method="POST" class="delete-form">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-white bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-xs">
+                                    <button type="submit" 
+                                        data-name="{{ $menu->name }}" 
+                                        class="text-white bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-xs delete-btn">
                                         Hapus
                                     </button>
                                 </form>
+                                <!-- Modal Konfirmasi Hapus -->
+                                <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+                                    <div class="bg-white rounded-lg shadow-lg w-96 p-6">
+                                        <h2 class="text-lg font-semibold text-gray-800 mb-3">Konfirmasi Hapus</h2>
+                                        <p class="text-sm text-gray-600 mb-5">
+                                            Apakah kamu yakin ingin menghapus menu <b id="menuNameToDelete"></b>?
+                                        </p>
+                                        <div class="flex justify-end gap-3">
+                                            <button id="cancelDelete" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-sm">Batal</button>
+                                            <button id="confirmDelete" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded text-sm">Hapus</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -115,8 +154,28 @@
 
     <!-- Script -->
     <script>
-        // Konfirmasi Hapus
         let formToSubmit = null;
+        document.querySelectorAll('.delete-form').forEach(form => {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                formToSubmit = form;
+
+                // Ambil nama menu dari tombol
+                const menuName = form.querySelector('.delete-btn').dataset.name;
+                document.getElementById('menuNameToDelete').textContent = menuName;
+
+                document.getElementById('confirmModal').classList.remove('hidden');
+            });
+        });
+
+        document.getElementById('cancelDelete').addEventListener('click', () => {
+            formToSubmit = null;
+            document.getElementById('confirmModal').classList.add('hidden');
+        });
+
+        document.getElementById('confirmDelete').addEventListener('click', () => {
+            if (formToSubmit) formToSubmit.submit();
+        });
         document.querySelectorAll('.delete-form').forEach(form => {
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
@@ -130,6 +189,19 @@
         });
         document.getElementById('confirmDelete').addEventListener('click', () => {
             if (formToSubmit) formToSubmit.submit();
+        });
+
+        // Restock Semua
+        document.getElementById("restockAllBtn").addEventListener("click", () => {
+            document.getElementById("restockModal").classList.remove("hidden");
+        });
+
+        document.getElementById("cancelRestock").addEventListener("click", () => {
+            document.getElementById("restockModal").classList.add("hidden");
+        });
+
+        document.getElementById("confirmRestock").addEventListener("click", () => {
+            document.getElementById("restockForm").submit();
         });
 
         // Search Menu Realtime

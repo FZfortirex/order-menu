@@ -22,6 +22,7 @@ use App\Http\Controllers\RekapController;
 use App\Http\Controllers\AdminMenuController;
 use App\Http\Controllers\AdminBannerController;
 use App\Http\Controllers\QrMenuController;
+use App\Http\Controllers\AdminVoucherController;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
 Route::get('/welcome', [WelcomeController::class, 'index'])->name('welcome');
@@ -81,6 +82,7 @@ Route::middleware(['auth', 'check.session'])->group(function () {
     Route::get('admin/menu/{id}/edit', [AdminMenuController::class, 'edit'])->name('menu.edit');
     Route::put('admin/menu/{id}', [AdminMenuController::class, 'update'])->name('menu.update');
     Route::delete('admin/menu/{id}', [AdminMenuController::class, 'delete'])->name('menu.delete');
+    Route::post('/menu/restock', [AdminMenuController::class, 'restock'])->name('menu.restock');
 
     Route::get('/admin/banner', [AdminBannerController::class, 'index'])->name('admin.banner');
     Route::post('/admin/banner/save', [AdminBannerController::class, 'storeOrUpdate'])->name('admin.banner.save');
@@ -90,7 +92,7 @@ Route::middleware(['auth', 'check.session'])->group(function () {
     Route::patch('/orders/{order}/status', [DetailPesananController::class, 'updateStatus'])->name('orders.updateStatus');
     Route::delete('/orders/{order}', [ListOrderController::class, 'destroy'])->name('orders.destroy');
     Route::delete('/orders/{order}/done', [DetailPesananController::class, 'done'])->name('orders.done');
-
+    
     Route::get('/rekap-penjualan', [RekapController::class, 'grafikPenjualan'])->name('rekap.penjualan');
 });
 

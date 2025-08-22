@@ -68,11 +68,13 @@
         data-name="{{ strtolower($order->user->name ?? '-') }}">
 
         <!-- Hapus -->
+         @if (strtolower($order->status) !== 'selesai' && strtolower($order->status) !== 'sudah dibuat' && strtolower($order->status) !== 'sedang dibuat' )
         <form action="{{ route('orders.destroy', $order->id) }}" method="POST" class="absolute top-2 right-2" onclick="event.stopPropagation();">
           @csrf
           @method('DELETE')
           <button type="submit" class="text-red-500 hover:text-red-700 text-lg leading-none">✕</button>
         </form>
+        @endif
 
         <div class="flex items-start gap-3">
           <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-xl">👤</div>

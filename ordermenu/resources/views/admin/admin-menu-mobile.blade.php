@@ -48,11 +48,11 @@
 
             <!-- Filter Category -->
             <div class="mb-6 flex flex-wrap gap-2">
-                <button class="filter-btn px-4 py-2 text-sm rounded-lg bg-yellow-500 text-white" data-category="all">Semua</button>
-                <button class="filter-btn px-4 py-2 text-sm rounded-lg bg-gray-200 hover:bg-yellow-400" data-category="makanan">Makanan</button>
-                <button class="filter-btn px-4 py-2 text-sm rounded-lg bg-gray-200 hover:bg-yellow-400" data-category="minuman">Minuman</button>
-                <button class="filter-btn px-4 py-2 text-sm rounded-lg bg-gray-200 hover:bg-yellow-400" data-category="cemilan">Cemilan</button>
-                <button class="filter-btn px-4 py-2 text-sm rounded-lg bg-gray-200 hover:bg-yellow-400 " data-category="paket">Paket</button>
+                <button class="filter-btn bg-yellow-500 text-white px-4 py-2 rounded-lg text-sm" data-category="all">Semua</button>
+                <button class="filter-btn bg-gray-200 px-4 py-2 rounded-lg text-sm" data-category="makanan">Makanan</button>
+                <button class="filter-btn bg-gray-200 px-4 py-2 rounded-lg text-sm" data-category="minuman">Minuman</button>
+                <button class="filter-btn bg-gray-200 px-4 py-2 rounded-lg text-sm" data-category="cemilan">Cemilan</button>
+                <button class="filter-btn bg-gray-200 px-4 py-2 rounded-lg text-sm" data-category="paket">Paket</button>
             </div>
 
             <!-- Daftar Menu -->

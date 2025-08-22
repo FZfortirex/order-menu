@@ -60,6 +60,6 @@ class AdminBannerController extends Controller
             Banner::updateOrCreate(['id' => $i], $data);
         }
 
-        return redirect()->back()->with('success', 'Semua banner berhasil disimpan');
+        return redirect('/listOrder')->with('success', 'Semua banner berhasil disimpan');
     }
 }
