@@ -34,16 +34,36 @@ class AuthController extends Controller
             return redirect()->route('home')->with('error', 'QR tidak valid.');
         }
 
-        $user = User::where('name', $nomorMeja)->where('role', 'customer')->first();
+        $user = User::where('name', $nomorMeja)
+            ->where('role', 'customer')
+            ->first();
 
         if (!$user) {
             return redirect()->route('home')->with('error', 'Meja tidak tersedia.');
+        }
+
+        $expiredAt = $user->session_expired_at
+            ? ($user->session_expired_at instanceof Carbon
+                ? $user->session_expired_at
+                : Carbon::parse($user->session_expired_at))
+            : null;
+
+        if ($user->status === 'terisi' && $expiredAt && $expiredAt->isFuture()) {
+            return redirect('/welcome')->with('error', 'Meja sedang digunakan.');
+        }
+
+        if ($expiredAt && $expiredAt->isPast()) {
+            $user->status = 'kosong';
+            $user->current_session_id = null;
+            $user->session_expired_at = null;
+            $user->save();
         }
 
         $newSessionId = Str::uuid()->toString();
 
         $user->current_session_id = $newSessionId;
         $user->session_expired_at = Carbon::now()->addMinutes(30);
+        $user->status = 'terisi'; 
         $user->save();
 
         Auth::logout();
@@ -56,7 +76,10 @@ class AuthController extends Controller
                 ->delete();
         }
 
-        session(['meja' => $nomorMeja, 'current_session_id' => $newSessionId]);
+        session([
+            'meja' => $nomorMeja,
+            'current_session_id' => $newSessionId
+        ]);
 
         Auth::login($user);
 

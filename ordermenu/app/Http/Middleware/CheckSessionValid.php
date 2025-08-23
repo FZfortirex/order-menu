@@ -27,16 +27,11 @@ class CheckSessionValid
                     ->with('error', 'Anda harus login melalui QR Code.');
             }
 
-            // 2. Jika session ID beda (tabrakan login)
-            if ($sessionIdInDb !== $sessionIdInSession) {
-                Auth::logout();
-                $request->session()->invalidate();
-                $request->session()->regenerateToken();
-                return redirect()->route('qr.login')
-                    ->with('error', 'Sesi anda digantikan oleh login baru.');
-            }
+            // ❌ Hapus bagian "Jika session ID beda (tabrakan login)"
+            // Karena sekarang kita tolak login baru di AuthController,
+            // jadi user lama ga perlu ditendang.
 
-            // 3. Jika sesi expired
+            // 2. Jika sesi expired
             if ($expiry && Carbon::now()->greaterThan($expiry)) {
                 Auth::logout();
                 $request->session()->invalidate();
@@ -45,7 +40,7 @@ class CheckSessionValid
                     ->with('error', 'Sesi anda sudah berakhir, silakan scan QR lagi.');
             }
 
-            // 4. Pastikan session meja tetap ada
+            // 3. Pastikan session meja tetap ada
             if (!session()->has('meja')) {
                 session(['meja' => $user->name]); 
                 // fallback kalau login manual tanpa QR

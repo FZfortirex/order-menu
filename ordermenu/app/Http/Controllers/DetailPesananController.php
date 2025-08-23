@@ -33,7 +33,7 @@ class DetailPesananController extends Controller
 
     public function updateStatus(Request $request, Order $order)
     {
-        $order = Order::with('items.menu')->findOrFail($order->id);
+        $order = Order::with('items.menu', 'user')->findOrFail($order->id);
 
         $request->validate([
             'status' => 'required|in:sedang dibuat,sudah dibuat',
@@ -55,12 +55,27 @@ class DetailPesananController extends Controller
             }
         }
 
-        // Update status pesanan
+        if ($request->status === 'sudah dibuat') {
+            $user = $order->user;
+            if ($user) {
+                $user->status = 'kosong'; 
+                $user->current_session_id = null;
+                $user->session_expired_at = null;
+                $user->save();
+
+                if (Auth::id() === $user->id) {
+                    Auth::logout();
+                    session()->invalidate();
+                    session()->regenerateToken();
+                }
+            }
+        }
+
         $order->status = $request->status;
         $order->save();
 
         return redirect()->route('order.detail', $order->id)
-                         ->with('success', 'Status pesanan telah diperbarui!');
+                        ->with('success', 'Status pesanan telah diperbarui!');
     }
 
     public function done(Order $order)
