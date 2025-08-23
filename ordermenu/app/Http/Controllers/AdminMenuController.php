@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Menu;
+use Jenssegers\Agent\Agent;
 
 class AdminMenuController extends Controller
 {
@@ -28,7 +29,13 @@ class AdminMenuController extends Controller
 
 public function create()
 {
-    return view('admin.create'); // atau sesuaikan dengan view yang kamu punya
+    $agent = new Agent();
+
+    if ($agent->isMobile()) {
+        return view('admin.create-mobile');
+    }
+
+    return view('admin.create'); // default desktop
 }
 
 public function edit($id)

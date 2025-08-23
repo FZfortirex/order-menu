@@ -5,24 +5,31 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\UserDiscount;
+use Jenssegers\Agent\Agent;
 
 class DetailPesananController extends Controller
 {
 
     public function show($id)
-    {
-        $order = Order::with(['items.menu', 'userDiscount.reward'])->findOrFail($id);
+{
+    $order = Order::with(['items.menu', 'userDiscount.reward'])->findOrFail($id);
 
-        foreach ($order->items as $item) {
-            $filename = strtolower(str_replace(' ', '_', $item->menu->name)) . '.jpg';
-            $imagePath = public_path('images/' . $filename);
-            $item->image_url = file_exists($imagePath)
-                ? asset('images/' . $filename)
-                : asset('images/default.png');
-        }
-
-        return view('admin.detail-pesanan', compact('order'));
+    foreach ($order->items as $item) {
+        $filename = strtolower(str_replace(' ', '_', $item->menu->name)) . '.jpg';
+        $imagePath = public_path('images/' . $filename);
+        $item->image_url = file_exists($imagePath)
+            ? asset('images/' . $filename)
+            : asset('images/default.png');
     }
+
+    $agent = new Agent();
+
+    if ($agent->isMobile()) {
+        return view('admin.detail-pesanan-mobile', compact('order'));
+    }
+
+    return view('admin.detail-pesanan', compact('order'));
+}
 
     public function updateStatus(Request $request, Order $order)
     {

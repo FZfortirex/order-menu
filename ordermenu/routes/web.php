@@ -22,6 +22,8 @@ use App\Http\Controllers\RekapController;
 use App\Http\Controllers\AdminMenuController;
 use App\Http\Controllers\AdminBannerController;
 use App\Http\Controllers\QrMenuController;
+use App\Http\Controllers\VoucherController;
+
 
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
 Route::get('/welcome', [WelcomeController::class, 'index'])->name('welcome');
@@ -101,6 +103,14 @@ Route::delete('/galeri/{id}', [GaleriController::class, 'destroy'])->name('galer
 
 Route::get('/kontak', [KontakController::class, 'index'])->name('kontak');
 Route::post('/kontak', [KontakController::class, 'store'])->name('kontak.store');
+
+Route::get('/vouchers', [VoucherController::class, 'index'])->name('admin.vouchers');       // list voucher
+Route::get('/vouchers/create', [VoucherController::class, 'create'])->name('vouchers.create'); // form tambah
+Route::post('/vouchers', [VoucherController::class, 'store'])->name('vouchers.store');      // simpan data
+Route::get('/vouchers/{voucher}', [VoucherController::class, 'show'])->name('vouchers.show'); // detail
+Route::get('/vouchers/{voucher}/edit', [VoucherController::class, 'edit'])->name('vouchers.edit'); // form edit
+Route::put('/vouchers/{voucher}', [VoucherController::class, 'update'])->name('vouchers.update'); // update data
+Route::delete('/vouchers/{voucher}', [VoucherController::class, 'destroy'])->name('vouchers.destroy'); // hapus data
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

@@ -30,6 +30,9 @@
                 <a href="{{ route('admin.menu') }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg shadow">
                     Menu Admin
                 </a>
+                <a href="{{ route('admin.vouchers') }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg shadow">
+                    Voucher
+                </a>
             </div>
 
         </div>
@@ -198,7 +201,7 @@
             searchInput.value = savedSearch;
 
             searchInput.addEventListener('input', () => {
-                searchOrders(); 
+                searchOrders();
             });
         }
 
