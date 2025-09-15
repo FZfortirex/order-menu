@@ -20,10 +20,10 @@
   <a href="/rekap-penjualan" class="bg-yellow-500 hover:bg-yellow-400 text-white py-2 px-4 rounded shadow text-sm font-semibold w-[140px] text-center">
     Rekap Penjualan
   </a>
-  <a href="{{ route('admin.menu') }}" class="bg-yellow-500 hover:bg-yellow-400 text-white py-2 px-4 rounded shadow text-sm font-semibold w-[140px] text-center">
+  <a href="{{ route('admin.banner') }}" class="bg-yellow-500 hover:bg-yellow-400 text-white py-2 px-4 rounded shadow text-sm font-semibold w-[140px] text-center">
     Custom Banners
   </a>
-  <a href="{{ route('admin.banner') }}" class="bg-yellow-500 hover:bg-yellow-400 text-white py-2 px-4 rounded shadow text-sm font-semibold w-[140px] text-center">
+  <a href="{{ route('admin.menu') }}" class="bg-yellow-500 hover:bg-yellow-400 text-white py-2 px-4 rounded shadow text-sm font-semibold w-[140px] text-center">
     Menu
   </a>
 </div>

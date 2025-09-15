@@ -31,6 +31,8 @@ class User extends Authenticatable
         'password',
         'my_points',
         'role',
+        'current_session_id', 
+        'session_expired_at',
     ];
 
     /**

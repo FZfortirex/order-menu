@@ -103,6 +103,14 @@
                         Buat
                     </button>
                 </form>
+                <form action="{{ route('orders.updateStatus', $order->id) }}" method="POST">
+                    @csrf
+                    @method('PATCH')
+                    <input type="hidden" name="status" value="cancelled">
+                    <button type="submit" class="w-full border bg-white text-red-600 border-red-500 font-semibold py-2 rounded-lg hover:bg-red-50 transition">
+                        Cancel
+                    </button>
+                </form>
             @elseif($order->status == 'sedang dibuat')
                 <form action="{{ route('orders.updateStatus', $order->id) }}" method="POST">
                     @csrf
@@ -131,6 +139,8 @@
                     <span>Siap</span>
                 @elseif($order->status == 'selesai')
                     <span>Selesai</span>
+                @elseif($order->status == 'cancelled')
+                    <span class="text-red-600">Dibatalkan</span>
                 @else
                     <span>Tidak Diketahui</span>
                 @endif

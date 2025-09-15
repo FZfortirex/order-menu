@@ -128,24 +128,28 @@
       </div>
 
       @if($status === null || $status === 'selesai')
-      <form action="{{ route('pesanan.submit') }}" method="POST">
-        @csrf
-        <button type="submit" class="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 rounded-md transition">
-          Pesan Sekarang
+        <form action="{{ route('pesanan.submit') }}" method="POST">
+          @csrf
+          <button type="submit" class="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 rounded-md transition">
+            Pesan Sekarang
+          </button>
+        </form>
+      @elseif($status === 'menunggu')
+        <form action="{{ route('pesanan.cancel', $currentOrderId) }}" method="POST">
+          @csrf
+          <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-md transition">
+            Batalkan Pesanan
+          </button>
+        </form>
+      @elseif($status === 'cancelled')
+        <button type="button" class="w-full bg-red-200 text-red-700 font-semibold py-2 rounded-md cursor-not-allowed" disabled>
+          Pesanan Dibatalkan
         </button>
-      </form>
-    @elseif($status === 'menunggu')
-      <form action="{{ route('pesanan.cancel', $currentOrderId) }}" method="POST">
-        @csrf
-        <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-md transition">
-          Batalkan Pesanan
+      @else
+        <button type="button" class="w-full bg-gray-300 text-gray-700 font-semibold py-2 rounded-md cursor-not-allowed" disabled>
+          {{ ucfirst($status) }}
         </button>
-      </form>
-    @else
-      <button type="button" class="w-full bg-gray-300 text-gray-700 font-semibold py-2 rounded-md cursor-not-allowed" disabled>
-        {{ ucfirst($status) }}
-      </button>
-    @endif
+      @endif
     </form>
   </div>
 </div>

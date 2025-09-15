@@ -36,7 +36,7 @@ class DetailPesananController extends Controller
         $order = Order::with('items.menu', 'user')->findOrFail($order->id);
 
         $request->validate([
-            'status' => 'required|in:sedang dibuat,sudah dibuat',
+            'status' => 'required|in:sedang dibuat,sudah dibuat,selesai,cancelled',
         ]);
 
         if ($request->status === 'sedang dibuat' && $order->status !== 'sedang dibuat') {
@@ -55,20 +55,12 @@ class DetailPesananController extends Controller
             }
         }
 
-        if ($request->status === 'sudah dibuat') {
-            $user = $order->user;
-            if ($user) {
-                $user->status = 'kosong'; 
-                $user->current_session_id = null;
-                $user->session_expired_at = null;
-                $user->save();
+        if ($request->status === 'cancelled') {
+            $order->status = 'cancelled';
+            $order->save();
 
-                if (Auth::id() === $user->id) {
-                    Auth::logout();
-                    session()->invalidate();
-                    session()->regenerateToken();
-                }
-            }
+            return redirect()->route('order.detail', $order->id)
+                            ->with('success', 'Pesanan telah dibatalkan!');
         }
 
         $order->status = $request->status;
@@ -87,14 +79,20 @@ class DetailPesananController extends Controller
             $totalPoint += $item->menu->point ?? 0;
         }
 
-        $user->my_points += $totalPoint;
-        $user->save();
+        if ($user) {
+            $user->my_points += $totalPoint;
+
+            $user->current_session_id = null;
+            $user->session_expired_at = null;
+
+            $user->save();
+        }
 
         $order->status = 'selesai';
         $order->save();
 
         UserDiscount::where('order_id', $order->id)->update(['is_used' => 1]);
 
-        return redirect()->route('dashboard')->with('success', 'Pesanan selesai dan poin ditambahkan.');
+        return redirect()->route('dashboard')->with('success', 'Pesanan selesai, poin ditambahkan, dan session user dihapus.');
     }
 }

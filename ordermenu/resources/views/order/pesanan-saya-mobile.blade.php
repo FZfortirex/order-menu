@@ -122,6 +122,10 @@
           class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded transition">
           Batalkan Pesanan
         </button>
+      @elseif($status === 'cancelled')
+      <button type="button" class="w-full bg-red-200 text-red-700 font-semibold py-2 rounded-md cursor-not-allowed" disabled>
+        Pesanan Dibatalkan
+      </button>
       @else
         <button type="button"
           class="w-full bg-gray-300 text-gray-700 font-semibold py-2 rounded cursor-not-allowed" disabled>

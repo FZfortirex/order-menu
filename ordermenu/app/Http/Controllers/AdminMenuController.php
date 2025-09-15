@@ -141,11 +141,16 @@ public function store(Request $request)
     return redirect()->route('admin.menu')->with('success', 'Menu berhasil ditambahkan!');
 }
 
-    public function restock()
+    public function restock(Request $request)
     {
-        Menu::query()->update(['stock' => 50]);
+        $request->validate([
+            'stock' => 'required|integer|min:1'
+        ]);
 
-        return redirect()->route('admin.menu')->with('success', 'Semua menu berhasil direstock menjadi 50!');
+        Menu::query()->update(['stock' => $request->stock]);
+
+        return redirect()->route('admin.menu')->with('success', 'Semua menu berhasil direstock menjadi ' . $request->stock . '!');
     }
+
 
 }

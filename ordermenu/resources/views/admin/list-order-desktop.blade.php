@@ -19,9 +19,14 @@
             <!-- Top Controls -->
         <div class="flex flex-wrap justify-between items-center gap-4 mb-4">
             <!-- Tombol Recap -->
-            <a href="/rekap-penjualan" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg shadow">
-                Lihat Rekap Penjualan
-            </a>
+            <div class="flex gap-4">
+                <a href="/rekap-penjualan" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg shadow">
+                    Rekap Penjualan
+                </a>
+                <a href="{{ route('admin.table') }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg shadow">
+                    Tabel Manajemen
+                </a>
+            </div>
 
             <div class="flex gap-4">
                 <a href="{{ route('admin.banner') }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg shadow">

@@ -48,12 +48,11 @@ class AuthController extends Controller
                 : Carbon::parse($user->session_expired_at))
             : null;
 
-        if ($user->status === 'terisi' && $expiredAt && $expiredAt->isFuture()) {
+        if ($user->current_session_id && $expiredAt && $expiredAt->isFuture()) {
             return redirect('/welcome')->with('error', 'Meja sedang digunakan.');
         }
 
         if ($expiredAt && $expiredAt->isPast()) {
-            $user->status = 'kosong';
             $user->current_session_id = null;
             $user->session_expired_at = null;
             $user->save();
@@ -63,7 +62,6 @@ class AuthController extends Controller
 
         $user->current_session_id = $newSessionId;
         $user->session_expired_at = Carbon::now()->addMinutes(30);
-        $user->status = 'terisi'; 
         $user->save();
 
         Auth::logout();

@@ -45,12 +45,22 @@
                         <div class="bg-white rounded-lg shadow-lg w-96 p-6">
                             <h2 class="text-lg font-semibold text-gray-800 mb-3">Konfirmasi Restock</h2>
                             <p class="text-sm text-gray-600 mb-5">
-                                Apakah kamu yakin ingin merestock semua menu menjadi <b>50 stok</b>?
+                                Masukkan jumlah stok baru untuk semua menu:
                             </p>
-                            <div class="flex justify-end gap-3">
-                                <button id="cancelRestock" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-sm">Batal</button>
-                                <button id="confirmRestock" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded text-sm">Ya, Restock</button>
-                            </div>
+                            
+                            <form id="restockForm" action="{{ route('menu.restock') }}" method="POST">
+                                @csrf
+                                <input type="number" name="stock" id="restockInput" 
+                                    class="w-full border px-3 py-2 rounded-lg mb-4 text-sm focus:ring"
+                                    min="1" value="50" required>
+                                
+                                <div class="flex justify-end gap-3">
+                                    <button type="button" id="cancelRestock" 
+                                        class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-sm">Batal</button>
+                                    <button type="submit" 
+                                        class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded text-sm">Ya, Restock</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     <a href="{{ route('menu.create') }}" class="mt-4 md:mt-0 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold px-5 py-2 rounded-xl shadow transition">
